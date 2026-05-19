@@ -1,0 +1,36 @@
+hardware:
+  plc:
+    enabled: true
+    port: "COM3"
+    baud: 38400
+    poll_bits: [5, 6, 7]
+    poll_interval_ms: 20
+    heartbeat_word: 10
+    heartbeat_interval_ms: 200
+  imada:
+    enabled: true
+    port: "COM5"
+    baud: 19200
+    decimal_format: true
+  esp32:
+    enabled: true
+    port: "COM7"
+    baud: 115200
+    calibration:
+      slope: 0.0123
+      offset: -45.0
+  state_timeouts:
+    wait_clamp_force_ms: 10000
+    wait_b5_ms: 30000
+    tension_check_ms: 30000
+    done_b7_ms: 30000
+
+mock_mode: true
+
+storage:
+  db_url: "sqlite:///./../data/pinch.db"
+  waveforms_dir: "../data/waveforms"
+
+server:
+  host: "127.0.0.1"
+  port: 8000

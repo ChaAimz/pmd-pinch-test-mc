@@ -1,0 +1,43 @@
+[project]
+name = "pinch-test-mc-backend"
+version = "0.1.0"
+description = "Pinch test machine backend (FastAPI + mock/real hardware drivers)"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "websockets>=12",
+    "pyserial>=3.5",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.4",
+    "sqlmodel>=0.0.21",
+    "alembic>=1.13",
+    "pyarrow>=16",
+    "pyyaml>=6",
+    "loguru>=0.7",
+    "anyio>=4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.23",
+    "httpx>=0.27",
+    "ruff>=0.5",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

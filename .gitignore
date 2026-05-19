@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.uv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.claude/
+.vscode/
+.idea/
+
+# Project
+backend/config.yaml
+data/pinch.db
+data/pinch.db-journal
+data/pinch.db-wal
+data/pinch.db-shm
+data/waveforms/*
+!data/waveforms/.gitkeep
+logs/
