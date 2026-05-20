@@ -27,6 +27,11 @@ Thumbs.db
 
 # Project
 backend/config.yaml
+
+# Graphify
+**/graphify-out/cache/
+.graphify_*
+backend/app/graphify-out/
 data/pinch.db
 data/pinch.db-journal
 data/pinch.db-wal
