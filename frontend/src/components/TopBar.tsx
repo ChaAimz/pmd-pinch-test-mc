@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Wifi, WifiOff } from 'lucide-react'
 import { useAppStore } from '@/store/app'
 import { cn } from '@/lib/utils'
 
@@ -43,16 +44,10 @@ export function TopBar() {
         <DeviceDot label="PLC" ok={hwStatus.plc} />
         <DeviceDot label="Imada" ok={hwStatus.imada} />
         <DeviceDot label="ESP32" ok={hwStatus.esp32} />
-        <span className={cn(
-          'flex items-center gap-1.5 text-sm',
-          wsConnected ? 'text-muted-foreground' : 'text-red-500'
-        )}>
-          <span className={cn(
-            'inline-block w-2 h-2 rounded-full shrink-0',
-            wsConnected ? 'bg-green-500' : 'bg-red-500 animate-pulse'
-          )} />
-          {wsConnected ? 'WebSocket' : 'WS Disconnected'}
-        </span>
+        {wsConnected
+          ? <Wifi size={18} className="text-green-500" />
+          : <WifiOff size={18} className="text-red-500 animate-pulse" />
+        }
       </div>
     </header>
 
