@@ -101,10 +101,11 @@ export default function Layout() {
             ))}
           </div>
 
-          {/* Accent swatches (collapsed: palette icon only) */}
+          {/* Accent swatches (collapsed: palette icon expands sidebar) */}
           {sidebarCollapsed ? (
             <button
-              title="Accent color"
+              onClick={() => setSidebarCollapsed(false)}
+              title="Accent color (expand to pick)"
               className="p-1.5 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
             >
               <Palette size={15} />
