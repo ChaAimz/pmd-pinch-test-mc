@@ -11,8 +11,8 @@ const NAV = [
 
 export default function Layout() {
   return (
-    <div className="flex h-screen bg-slate-50">
-      <aside className="w-48 bg-slate-900 text-slate-100 flex flex-col gap-1 p-3 shrink-0">
+    <div className="flex h-screen bg-background">
+      <aside aria-label="Main navigation" className="w-48 bg-slate-900 text-slate-100 flex flex-col gap-1 p-3 shrink-0">
         <div className="text-xs font-bold mb-4 px-2 text-slate-400 uppercase tracking-wider">
           Pinch Test
         </div>

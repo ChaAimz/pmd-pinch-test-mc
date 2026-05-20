@@ -1,4 +1,4 @@
-// WS client stub — full implementation in Task 4
-export function getWsClient(): WebSocket | null {
+// Stub — replaced by Task 4 with the real WsClient implementation
+export function getWsClient(): null {
   return null
 }

@@ -11,8 +11,8 @@ function Placeholder({ title }: { title: string }) {
 export default function App() {
   useEffect(() => {
     // WS singleton init — imported lazily to avoid circular dep at module load
-    import('@/lib/ws').then(({ getWsClient }) => getWsClient()).catch(() => {
-      // ws.ts created in Task 4 — safe to fail here
+    import('@/lib/ws').then(({ getWsClient }) => getWsClient()).catch((err: unknown) => {
+      if (import.meta.env.DEV) console.warn('[ws] init failed:', err)
     })
   }, [])
 
