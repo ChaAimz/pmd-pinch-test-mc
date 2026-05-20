@@ -81,6 +81,18 @@ ruff format .
 
 **Important — pytest temp dir:** `pyproject.toml` pins `addopts = "--basetemp=.pytest_tmp"` because the Windows default `%TEMP%\pytest-of-*` had a legacy deny ACL on this machine. Do not remove this line.
 
+## Frontend commands
+
+All frontend commands run from `frontend/`.
+
+```powershell
+npm install                  # first-time setup
+npm run dev                  # dev server at http://localhost:5173
+npm run build                # production build → frontend/dist/
+npx vitest run               # unit tests (ws, stores)
+npx playwright test          # E2E (both servers must be running)
+```
+
 ## Repository layout (Phase A done; later phases incoming)
 
 ```
@@ -209,6 +221,6 @@ The `graphify` skill (global: `~/.claude/skills/graphify/SKILL.md`) turns any in
 - ✅ **Phase A (Plan 1, Tasks 1–6)** — committed. Skeleton, config, logging, DB models, alembic migrations, recipe CRUD + REST.
 - ✅ **Phase B (Tasks 7–14)** — committed. Hardware base + 3 mock drivers + async event bus + state machine + waveform (parquet) + HardwareManager.
 - ⏳ **Phase C (Tasks 15–23)** — pending. WS hub, deps, TestRunner (full async orchestration), sessions/runs/hardware/config APIs, full E2E test, README polish. `pytest` currently reports 28/28 passing.
-- ⏳ **Plan 2** — Frontend (Vite + ShadcnUI + uPlot) driven by mock backend.
+- ✅ **Plan 2** — Frontend committed. Vite + React + ShadcnUI + uPlot. Recipes CRUD done. Run page done (requires Phase C for live WS).
 - ⏳ **Plan 3** — Real PLC / Imada / ESP32 drivers (replace mocks; add heartbeat W10 + 20 ms multi-bit poll).
 - ⏳ **Plan 4** — History UI, Hardware page, Settings, ESP32 calibration wizard.
