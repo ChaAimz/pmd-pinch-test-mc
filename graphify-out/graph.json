@@ -1,0 +1,3611 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "config.py",
+      "file_type": "code",
+      "source_file": "config.py",
+      "source_location": "L1",
+      "id": "config_py",
+      "community": 1,
+      "norm_label": "config.py"
+    },
+    {
+      "label": "PlcConfig",
+      "file_type": "code",
+      "source_file": "config.py",
+      "source_location": "L11",
+      "id": "app_config_plcconfig",
+      "community": 1,
+      "norm_label": "plcconfig"
+    },
+    {
+      "label": "BaseModel",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "id": "basemodel",
+      "community": 1,
+      "norm_label": "basemodel"
+    },
+    {
+      "label": "ImadaConfig",
+      "file_type": "code",
+      "source_file": "config.py",
+      "source_location": "L21",
+      "id": "app_config_imadaconfig",
+      "community": 1,
+      "norm_label": "imadaconfig"
+    },
+    {
+      "label": "Esp32Calibration",
+      "file_type": "code",
+      "source_file": "config.py",
+      "source_location": "L28",
+      "id": "app_config_esp32calibration",
+      "community": 1,
+      "norm_label": "esp32calibration"
+    },
+    {
+      "label": "Esp32Config",
+      "file_type": "code",
+      "source_file": "config.py",
+      "source_location": "L33",
+      "id": "app_config_esp32config",
+      "community": 1,
+      "norm_label": "esp32config"
+    },
+    {
+      "label": "StateTimeouts",
+      "file_type": "code",
+      "source_file": "config.py",
+      "source_location": "L40",
+      "id": "app_config_statetimeouts",
+      "community": 1,
+      "norm_label": "statetimeouts"
+    },
+    {
+      "label": "HardwareConfig",
+      "file_type": "code",
+      "source_file": "config.py",
+      "source_location": "L47",
+      "id": "app_config_hardwareconfig",
+      "community": 1,
+      "norm_label": "hardwareconfig"
+    },
+    {
+      "label": "StorageConfig",
+      "file_type": "code",
+      "source_file": "config.py",
+      "source_location": "L54",
+      "id": "app_config_storageconfig",
+      "community": 1,
+      "norm_label": "storageconfig"
+    },
+    {
+      "label": "ServerConfig",
+      "file_type": "code",
+      "source_file": "config.py",
+      "source_location": "L59",
+      "id": "app_config_serverconfig",
+      "community": 1,
+      "norm_label": "serverconfig"
+    },
+    {
+      "label": "Settings",
+      "file_type": "code",
+      "source_file": "config.py",
+      "source_location": "L64",
+      "id": "app_config_settings",
+      "community": 1,
+      "norm_label": "settings"
+    },
+    {
+      "label": "BaseSettings",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "id": "basesettings",
+      "community": 1,
+      "norm_label": "basesettings"
+    },
+    {
+      "label": "load_settings()",
+      "file_type": "code",
+      "source_file": "config.py",
+      "source_location": "L73",
+      "id": "app_config_load_settings",
+      "community": 1,
+      "norm_label": "load_settings()"
+    },
+    {
+      "label": "logging_setup.py",
+      "file_type": "code",
+      "source_file": "logging_setup.py",
+      "source_location": "L1",
+      "id": "logging_setup_py",
+      "community": 11,
+      "norm_label": "logging_setup.py"
+    },
+    {
+      "label": "configure_logging()",
+      "file_type": "code",
+      "source_file": "logging_setup.py",
+      "source_location": "L8",
+      "id": "app_logging_setup_configure_logging",
+      "community": 11,
+      "norm_label": "configure_logging()"
+    },
+    {
+      "label": "main.py",
+      "file_type": "code",
+      "source_file": "main.py",
+      "source_location": "L1",
+      "id": "main_py",
+      "community": 12,
+      "norm_label": "main.py"
+    },
+    {
+      "label": "build_app()",
+      "file_type": "code",
+      "source_file": "main.py",
+      "source_location": "L8",
+      "id": "app_main_build_app",
+      "community": 12,
+      "norm_label": "build_app()"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "__init__.py",
+      "source_location": "L1",
+      "id": "init_py",
+      "community": 13,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "recipes.py",
+      "file_type": "code",
+      "source_file": "api/recipes.py",
+      "source_location": "L1",
+      "id": "api_recipes_py",
+      "community": 0,
+      "norm_label": "recipes.py"
+    },
+    {
+      "label": "list_recipes()",
+      "file_type": "code",
+      "source_file": "api/recipes.py",
+      "source_location": "L16",
+      "id": "api_recipes_list_recipes",
+      "community": 0,
+      "norm_label": "list_recipes()"
+    },
+    {
+      "label": "create_recipe()",
+      "file_type": "code",
+      "source_file": "api/recipes.py",
+      "source_location": "L21",
+      "id": "api_recipes_create_recipe",
+      "community": 0,
+      "norm_label": "create_recipe()"
+    },
+    {
+      "label": "get_recipe()",
+      "file_type": "code",
+      "source_file": "api/recipes.py",
+      "source_location": "L26",
+      "id": "api_recipes_get_recipe",
+      "community": 0,
+      "norm_label": "get_recipe()"
+    },
+    {
+      "label": "update_recipe()",
+      "file_type": "code",
+      "source_file": "api/recipes.py",
+      "source_location": "L34",
+      "id": "api_recipes_update_recipe",
+      "community": 0,
+      "norm_label": "update_recipe()"
+    },
+    {
+      "label": "delete_recipe()",
+      "file_type": "code",
+      "source_file": "api/recipes.py",
+      "source_location": "L42",
+      "id": "api_recipes_delete_recipe",
+      "community": 0,
+      "norm_label": "delete_recipe()"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "api/__init__.py",
+      "source_location": "L1",
+      "id": "api_init_py",
+      "community": 14,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "engine.py",
+      "file_type": "code",
+      "source_file": "db/engine.py",
+      "source_location": "L1",
+      "id": "db_engine_py",
+      "community": 10,
+      "norm_label": "engine.py"
+    },
+    {
+      "label": "init_engine()",
+      "file_type": "code",
+      "source_file": "db/engine.py",
+      "source_location": "L10",
+      "id": "db_engine_init_engine",
+      "community": 10,
+      "norm_label": "init_engine()"
+    },
+    {
+      "label": "get_engine()",
+      "file_type": "code",
+      "source_file": "db/engine.py",
+      "source_location": "L16",
+      "id": "db_engine_get_engine",
+      "community": 10,
+      "norm_label": "get_engine()"
+    },
+    {
+      "label": "get_session()",
+      "file_type": "code",
+      "source_file": "db/engine.py",
+      "source_location": "L22",
+      "id": "db_engine_get_session",
+      "community": 10,
+      "norm_label": "get_session()"
+    },
+    {
+      "label": "models.py",
+      "file_type": "code",
+      "source_file": "db/models.py",
+      "source_location": "L1",
+      "id": "db_models_py",
+      "community": 0,
+      "norm_label": "models.py"
+    },
+    {
+      "label": "Recipe",
+      "file_type": "code",
+      "source_file": "db/models.py",
+      "source_location": "L8",
+      "id": "db_models_recipe",
+      "community": 0,
+      "norm_label": "recipe"
+    },
+    {
+      "label": "SQLModel",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "id": "sqlmodel",
+      "community": 0,
+      "norm_label": "sqlmodel"
+    },
+    {
+      "label": "TestRun",
+      "file_type": "code",
+      "source_file": "db/models.py",
+      "source_location": "L26",
+      "id": "db_models_testrun",
+      "community": 0,
+      "norm_label": "testrun"
+    },
+    {
+      "label": "TestLoop",
+      "file_type": "code",
+      "source_file": "db/models.py",
+      "source_location": "L42",
+      "id": "db_models_testloop",
+      "community": 0,
+      "norm_label": "testloop"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "db/__init__.py",
+      "source_location": "L1",
+      "id": "db_init_py",
+      "community": 15,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "env.py",
+      "file_type": "code",
+      "source_file": "db/migrations/env.py",
+      "source_location": "L1",
+      "id": "db_migrations_env_py",
+      "community": 0,
+      "norm_label": "env.py"
+    },
+    {
+      "label": "run_migrations_offline()",
+      "file_type": "code",
+      "source_file": "db/migrations/env.py",
+      "source_location": "L16",
+      "id": "migrations_env_run_migrations_offline",
+      "community": 0,
+      "norm_label": "run_migrations_offline()"
+    },
+    {
+      "label": "run_migrations_online()",
+      "file_type": "code",
+      "source_file": "db/migrations/env.py",
+      "source_location": "L27",
+      "id": "migrations_env_run_migrations_online",
+      "community": 0,
+      "norm_label": "run_migrations_online()"
+    },
+    {
+      "label": "0001_initial.py",
+      "file_type": "code",
+      "source_file": "db/migrations/versions/0001_initial.py",
+      "source_location": "L1",
+      "id": "db_migrations_versions_0001_initial_py",
+      "community": 0,
+      "norm_label": "0001_initial.py"
+    },
+    {
+      "label": "upgrade()",
+      "file_type": "code",
+      "source_file": "db/migrations/versions/0001_initial.py",
+      "source_location": "L17",
+      "id": "versions_0001_initial_upgrade",
+      "community": 0,
+      "norm_label": "upgrade()"
+    },
+    {
+      "label": "downgrade()",
+      "file_type": "code",
+      "source_file": "db/migrations/versions/0001_initial.py",
+      "source_location": "L69",
+      "id": "versions_0001_initial_downgrade",
+      "community": 0,
+      "norm_label": "downgrade()"
+    },
+    {
+      "label": "initial schema  Revision ID: 0001 Revises: Create Date: 2026-05-19",
+      "file_type": "rationale",
+      "source_file": "db/migrations/versions/0001_initial.py",
+      "source_location": "L1",
+      "id": "versions_0001_initial_rationale_1",
+      "community": 0,
+      "norm_label": "initial schema  revision id: 0001 revises: create date: 2026-05-19"
+    },
+    {
+      "label": "base.py",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L1",
+      "id": "hardware_base_py",
+      "community": 2,
+      "norm_label": "base.py"
+    },
+    {
+      "label": "ImadaReading",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L8",
+      "id": "hardware_base_imadareading",
+      "community": 6,
+      "norm_label": "imadareading"
+    },
+    {
+      "label": "Esp32Reading",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L15",
+      "id": "hardware_base_esp32reading",
+      "community": 5,
+      "norm_label": "esp32reading"
+    },
+    {
+      "label": "PlcEvent",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L22",
+      "id": "hardware_base_plcevent",
+      "community": 2,
+      "norm_label": "plcevent"
+    },
+    {
+      "label": "bit()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L29",
+      "id": "hardware_base_bit",
+      "community": 2,
+      "norm_label": "bit()"
+    },
+    {
+      "label": "word()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L33",
+      "id": "hardware_base_word",
+      "community": 2,
+      "norm_label": "word()"
+    },
+    {
+      "label": "PlcClient",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L38",
+      "id": "hardware_base_plcclient",
+      "community": 2,
+      "norm_label": "plcclient"
+    },
+    {
+      "label": "Protocol",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "id": "protocol",
+      "community": 2,
+      "norm_label": "protocol"
+    },
+    {
+      "label": "is_connected()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L40",
+      "id": "hardware_base_is_connected",
+      "community": 2,
+      "norm_label": "is_connected()"
+    },
+    {
+      "label": ".connect()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L41",
+      "id": "hardware_base_plcclient_connect",
+      "community": 2,
+      "norm_label": ".connect()"
+    },
+    {
+      "label": ".disconnect()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L42",
+      "id": "hardware_base_plcclient_disconnect",
+      "community": 2,
+      "norm_label": ".disconnect()"
+    },
+    {
+      "label": ".write_word()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L43",
+      "id": "hardware_base_plcclient_write_word",
+      "community": 2,
+      "norm_label": ".write_word()"
+    },
+    {
+      "label": ".read_word()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L44",
+      "id": "hardware_base_plcclient_read_word",
+      "community": 2,
+      "norm_label": ".read_word()"
+    },
+    {
+      "label": ".set_bit()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L45",
+      "id": "hardware_base_plcclient_set_bit",
+      "community": 2,
+      "norm_label": ".set_bit()"
+    },
+    {
+      "label": ".read_bit()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L46",
+      "id": "hardware_base_plcclient_read_bit",
+      "community": 2,
+      "norm_label": ".read_bit()"
+    },
+    {
+      "label": "ImadaClient",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L50",
+      "id": "hardware_base_imadaclient",
+      "community": 2,
+      "norm_label": "imadaclient"
+    },
+    {
+      "label": ".connect()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L53",
+      "id": "hardware_base_imadaclient_connect",
+      "community": 2,
+      "norm_label": ".connect()"
+    },
+    {
+      "label": ".disconnect()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L54",
+      "id": "hardware_base_imadaclient_disconnect",
+      "community": 2,
+      "norm_label": ".disconnect()"
+    },
+    {
+      "label": "Esp32Client",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L58",
+      "id": "hardware_base_esp32client",
+      "community": 2,
+      "norm_label": "esp32client"
+    },
+    {
+      "label": ".connect()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L61",
+      "id": "hardware_base_esp32client_connect",
+      "community": 2,
+      "norm_label": ".connect()"
+    },
+    {
+      "label": ".disconnect()",
+      "file_type": "code",
+      "source_file": "hardware/base.py",
+      "source_location": "L62",
+      "id": "hardware_base_esp32client_disconnect",
+      "community": 2,
+      "norm_label": ".disconnect()"
+    },
+    {
+      "label": "manager.py",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L1",
+      "id": "hardware_manager_py",
+      "community": 4,
+      "norm_label": "manager.py"
+    },
+    {
+      "label": "HardwareManager",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L13",
+      "id": "hardware_manager_hardwaremanager",
+      "community": 4,
+      "norm_label": "hardwaremanager"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L14",
+      "id": "hardware_manager_hardwaremanager_init",
+      "community": 4,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": ".start()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L24",
+      "id": "hardware_manager_hardwaremanager_start",
+      "community": 3,
+      "norm_label": ".start()"
+    },
+    {
+      "label": ".shutdown()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L51",
+      "id": "hardware_manager_hardwaremanager_shutdown",
+      "community": 4,
+      "norm_label": ".shutdown()"
+    },
+    {
+      "label": ".start_imada_stream()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L61",
+      "id": "hardware_manager_hardwaremanager_start_imada_stream",
+      "community": 4,
+      "norm_label": ".start_imada_stream()"
+    },
+    {
+      "label": ".stop_imada_stream()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L65",
+      "id": "hardware_manager_hardwaremanager_stop_imada_stream",
+      "community": 4,
+      "norm_label": ".stop_imada_stream()"
+    },
+    {
+      "label": ".start_esp32_stream()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L69",
+      "id": "hardware_manager_hardwaremanager_start_esp32_stream",
+      "community": 4,
+      "norm_label": ".start_esp32_stream()"
+    },
+    {
+      "label": ".stop_esp32_stream()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L73",
+      "id": "hardware_manager_hardwaremanager_stop_esp32_stream",
+      "community": 4,
+      "norm_label": ".stop_esp32_stream()"
+    },
+    {
+      "label": "._on_plc_event()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L77",
+      "id": "hardware_manager_hardwaremanager_on_plc_event",
+      "community": 4,
+      "norm_label": "._on_plc_event()"
+    },
+    {
+      "label": "._on_imada_reading()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L80",
+      "id": "hardware_manager_hardwaremanager_on_imada_reading",
+      "community": 4,
+      "norm_label": "._on_imada_reading()"
+    },
+    {
+      "label": "._on_esp32_reading()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L83",
+      "id": "hardware_manager_hardwaremanager_on_esp32_reading",
+      "community": 4,
+      "norm_label": "._on_esp32_reading()"
+    },
+    {
+      "label": "._push()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L86",
+      "id": "hardware_manager_hardwaremanager_push",
+      "community": 4,
+      "norm_label": "._push()"
+    },
+    {
+      "label": "_enqueue()",
+      "file_type": "code",
+      "source_file": "hardware/manager.py",
+      "source_location": "L92",
+      "id": "hardware_manager_enqueue",
+      "community": 4,
+      "norm_label": "_enqueue()"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "hardware/__init__.py",
+      "source_location": "L1",
+      "id": "hardware_init_py",
+      "community": 16,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "mock_esp32.py",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L1",
+      "id": "hardware_mock_mock_esp32_py",
+      "community": 5,
+      "norm_label": "mock_esp32.py"
+    },
+    {
+      "label": "MockEsp32",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L10",
+      "id": "mock_mock_esp32_mockesp32",
+      "community": 5,
+      "norm_label": "mockesp32"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L13",
+      "id": "mock_mock_esp32_mockesp32_init",
+      "community": 5,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": "is_connected()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L32",
+      "id": "mock_mock_esp32_is_connected",
+      "community": 5,
+      "norm_label": "is_connected()"
+    },
+    {
+      "label": ".connect()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L35",
+      "id": "mock_mock_esp32_mockesp32_connect",
+      "community": 5,
+      "norm_label": ".connect()"
+    },
+    {
+      "label": ".disconnect()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L38",
+      "id": "mock_mock_esp32_mockesp32_disconnect",
+      "community": 5,
+      "norm_label": ".disconnect()"
+    },
+    {
+      "label": ".subscribe()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L42",
+      "id": "mock_mock_esp32_mockesp32_subscribe",
+      "community": 5,
+      "norm_label": ".subscribe()"
+    },
+    {
+      "label": ".start_stream()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L45",
+      "id": "mock_mock_esp32_mockesp32_start_stream",
+      "community": 5,
+      "norm_label": ".start_stream()"
+    },
+    {
+      "label": ".stop_stream()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L52",
+      "id": "mock_mock_esp32_mockesp32_stop_stream",
+      "community": 5,
+      "norm_label": ".stop_stream()"
+    },
+    {
+      "label": "._run()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L60",
+      "id": "mock_mock_esp32_mockesp32_run",
+      "community": 5,
+      "norm_label": "._run()"
+    },
+    {
+      "label": "Emits a ramp from 0 to target_n over ramp_ms and then holds.",
+      "file_type": "rationale",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L11",
+      "id": "mock_mock_esp32_rationale_11",
+      "community": 5,
+      "norm_label": "emits a ramp from 0 to target_n over ramp_ms and then holds."
+    },
+    {
+      "label": "mock_imada.py",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L1",
+      "id": "hardware_mock_mock_imada_py",
+      "community": 6,
+      "norm_label": "mock_imada.py"
+    },
+    {
+      "label": "MockImada",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L11",
+      "id": "mock_mock_imada_mockimada",
+      "community": 6,
+      "norm_label": "mockimada"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L14",
+      "id": "mock_mock_imada_mockimada_init",
+      "community": 6,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": "is_connected()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L24",
+      "id": "mock_mock_imada_is_connected",
+      "community": 6,
+      "norm_label": "is_connected()"
+    },
+    {
+      "label": ".connect()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L27",
+      "id": "mock_mock_imada_mockimada_connect",
+      "community": 6,
+      "norm_label": ".connect()"
+    },
+    {
+      "label": ".disconnect()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L30",
+      "id": "mock_mock_imada_mockimada_disconnect",
+      "community": 6,
+      "norm_label": ".disconnect()"
+    },
+    {
+      "label": ".subscribe()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L34",
+      "id": "mock_mock_imada_mockimada_subscribe",
+      "community": 6,
+      "norm_label": ".subscribe()"
+    },
+    {
+      "label": ".start_stream()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L37",
+      "id": "mock_mock_imada_mockimada_start_stream",
+      "community": 6,
+      "norm_label": ".start_stream()"
+    },
+    {
+      "label": ".stop_stream()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L44",
+      "id": "mock_mock_imada_mockimada_stop_stream",
+      "community": 6,
+      "norm_label": ".stop_stream()"
+    },
+    {
+      "label": "._run()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L52",
+      "id": "mock_mock_imada_mockimada_run",
+      "community": 6,
+      "norm_label": "._run()"
+    },
+    {
+      "label": "Emits a synthetic sine half-wave to simulate a tensile pull.",
+      "file_type": "rationale",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L12",
+      "id": "mock_mock_imada_rationale_12",
+      "community": 6,
+      "norm_label": "emits a synthetic sine half-wave to simulate a tensile pull."
+    },
+    {
+      "label": "mock_plc.py",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L1",
+      "id": "hardware_mock_mock_plc_py",
+      "community": 3,
+      "norm_label": "mock_plc.py"
+    },
+    {
+      "label": "MockPlcScript",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L12",
+      "id": "mock_mock_plc_mockplcscript",
+      "community": 3,
+      "norm_label": "mockplcscript"
+    },
+    {
+      "label": "MockPlc",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L26",
+      "id": "mock_mock_plc_mockplc",
+      "community": 3,
+      "norm_label": "mockplc"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L27",
+      "id": "mock_mock_plc_mockplc_init",
+      "community": 3,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": "is_connected()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L36",
+      "id": "mock_mock_plc_is_connected",
+      "community": 3,
+      "norm_label": "is_connected()"
+    },
+    {
+      "label": ".connect()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L39",
+      "id": "mock_mock_plc_mockplc_connect",
+      "community": 3,
+      "norm_label": ".connect()"
+    },
+    {
+      "label": ".disconnect()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L42",
+      "id": "mock_mock_plc_mockplc_disconnect",
+      "community": 3,
+      "norm_label": ".disconnect()"
+    },
+    {
+      "label": ".subscribe()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L45",
+      "id": "mock_mock_plc_mockplc_subscribe",
+      "community": 3,
+      "norm_label": ".subscribe()"
+    },
+    {
+      "label": "._emit()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L48",
+      "id": "mock_mock_plc_mockplc_emit",
+      "community": 3,
+      "norm_label": "._emit()"
+    },
+    {
+      "label": ".write_word()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L55",
+      "id": "mock_mock_plc_mockplc_write_word",
+      "community": 3,
+      "norm_label": ".write_word()"
+    },
+    {
+      "label": ".read_word()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L60",
+      "id": "mock_mock_plc_mockplc_read_word",
+      "community": 3,
+      "norm_label": ".read_word()"
+    },
+    {
+      "label": ".set_bit()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L64",
+      "id": "mock_mock_plc_mockplc_set_bit",
+      "community": 3,
+      "norm_label": ".set_bit()"
+    },
+    {
+      "label": ".read_bit()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L73",
+      "id": "mock_mock_plc_mockplc_read_bit",
+      "community": 3,
+      "norm_label": ".read_bit()"
+    },
+    {
+      "label": "._run_script()",
+      "file_type": "code",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L77",
+      "id": "mock_mock_plc_mockplc_run_script",
+      "community": 3,
+      "norm_label": "._run_script()"
+    },
+    {
+      "label": "Optional script that auto-emits PLC bits to simulate the rig.      after_b3_to_b",
+      "file_type": "rationale",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L13",
+      "id": "mock_mock_plc_rationale_13",
+      "community": 3,
+      "norm_label": "optional script that auto-emits plc bits to simulate the rig.      after_b3_to_b"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "hardware/mock/__init__.py",
+      "source_location": "L1",
+      "id": "hardware_mock_init_py",
+      "community": 17,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "recipe.py",
+      "file_type": "code",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L1",
+      "id": "schemas_recipe_py",
+      "community": 1,
+      "norm_label": "recipe.py"
+    },
+    {
+      "label": "RecipeBase",
+      "file_type": "code",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L8",
+      "id": "schemas_recipe_recipebase",
+      "community": 1,
+      "norm_label": "recipebase"
+    },
+    {
+      "label": "check_min_max()",
+      "file_type": "code",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L21",
+      "id": "schemas_recipe_check_min_max",
+      "community": 1,
+      "norm_label": "check_min_max()"
+    },
+    {
+      "label": "RecipeCreate",
+      "file_type": "code",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L28",
+      "id": "schemas_recipe_recipecreate",
+      "community": 1,
+      "norm_label": "recipecreate"
+    },
+    {
+      "label": "RecipeUpdate",
+      "file_type": "code",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L32",
+      "id": "schemas_recipe_recipeupdate",
+      "community": 1,
+      "norm_label": "recipeupdate"
+    },
+    {
+      "label": "RecipeRead",
+      "file_type": "code",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L45",
+      "id": "schemas_recipe_reciperead",
+      "community": 1,
+      "norm_label": "reciperead"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "schemas/__init__.py",
+      "source_location": "L1",
+      "id": "schemas_init_py",
+      "community": 18,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "event_bus.py",
+      "file_type": "code",
+      "source_file": "services/event_bus.py",
+      "source_location": "L1",
+      "id": "services_event_bus_py",
+      "community": 9,
+      "norm_label": "event_bus.py"
+    },
+    {
+      "label": "EventBus",
+      "file_type": "code",
+      "source_file": "services/event_bus.py",
+      "source_location": "L7",
+      "id": "services_event_bus_eventbus",
+      "community": 9,
+      "norm_label": "eventbus"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "services/event_bus.py",
+      "source_location": "L8",
+      "id": "services_event_bus_eventbus_init",
+      "community": 9,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": ".subscribe()",
+      "file_type": "code",
+      "source_file": "services/event_bus.py",
+      "source_location": "L12",
+      "id": "services_event_bus_eventbus_subscribe",
+      "community": 9,
+      "norm_label": ".subscribe()"
+    },
+    {
+      "label": ".unsubscribe()",
+      "file_type": "code",
+      "source_file": "services/event_bus.py",
+      "source_location": "L18",
+      "id": "services_event_bus_eventbus_unsubscribe",
+      "community": 9,
+      "norm_label": ".unsubscribe()"
+    },
+    {
+      "label": ".publish()",
+      "file_type": "code",
+      "source_file": "services/event_bus.py",
+      "source_location": "L23",
+      "id": "services_event_bus_eventbus_publish",
+      "community": 9,
+      "norm_label": ".publish()"
+    },
+    {
+      "label": "recipe_service.py",
+      "file_type": "code",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L1",
+      "id": "services_recipe_service_py",
+      "community": 0,
+      "norm_label": "recipe_service.py"
+    },
+    {
+      "label": "_utcnow()",
+      "file_type": "code",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L12",
+      "id": "services_recipe_service_utcnow",
+      "community": 0,
+      "norm_label": "_utcnow()"
+    },
+    {
+      "label": "RecipeService",
+      "file_type": "code",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L16",
+      "id": "services_recipe_service_recipeservice",
+      "community": 0,
+      "norm_label": "recipeservice"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L17",
+      "id": "services_recipe_service_recipeservice_init",
+      "community": 0,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": ".create()",
+      "file_type": "code",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L20",
+      "id": "services_recipe_service_recipeservice_create",
+      "community": 0,
+      "norm_label": ".create()"
+    },
+    {
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L28",
+      "id": "services_recipe_service_recipeservice_get",
+      "community": 0,
+      "norm_label": ".get()"
+    },
+    {
+      "label": ".list_all()",
+      "file_type": "code",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L31",
+      "id": "services_recipe_service_recipeservice_list_all",
+      "community": 0,
+      "norm_label": ".list_all()"
+    },
+    {
+      "label": ".update()",
+      "file_type": "code",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L34",
+      "id": "services_recipe_service_recipeservice_update",
+      "community": 0,
+      "norm_label": ".update()"
+    },
+    {
+      "label": ".delete()",
+      "file_type": "code",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L46",
+      "id": "services_recipe_service_recipeservice_delete",
+      "community": 0,
+      "norm_label": ".delete()"
+    },
+    {
+      "label": "state_machine.py",
+      "file_type": "code",
+      "source_file": "services/state_machine.py",
+      "source_location": "L1",
+      "id": "services_state_machine_py",
+      "community": 7,
+      "norm_label": "state_machine.py"
+    },
+    {
+      "label": "State",
+      "file_type": "code",
+      "source_file": "services/state_machine.py",
+      "source_location": "L7",
+      "id": "services_state_machine_state",
+      "community": 7,
+      "norm_label": "state"
+    },
+    {
+      "label": "str",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "id": "str",
+      "community": 7,
+      "norm_label": "str"
+    },
+    {
+      "label": "Enum",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "id": "enum",
+      "community": 7,
+      "norm_label": "enum"
+    },
+    {
+      "label": "Event",
+      "file_type": "code",
+      "source_file": "services/state_machine.py",
+      "source_location": "L22",
+      "id": "services_state_machine_event",
+      "community": 7,
+      "norm_label": "event"
+    },
+    {
+      "label": "RunMode",
+      "file_type": "code",
+      "source_file": "services/state_machine.py",
+      "source_location": "L39",
+      "id": "services_state_machine_runmode",
+      "community": 7,
+      "norm_label": "runmode"
+    },
+    {
+      "label": "StateMachine",
+      "file_type": "code",
+      "source_file": "services/state_machine.py",
+      "source_location": "L56",
+      "id": "services_state_machine_statemachine",
+      "community": 7,
+      "norm_label": "statemachine"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "services/state_machine.py",
+      "source_location": "L57",
+      "id": "services_state_machine_statemachine_init",
+      "community": 7,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": ".add_listener()",
+      "file_type": "code",
+      "source_file": "services/state_machine.py",
+      "source_location": "L64",
+      "id": "services_state_machine_statemachine_add_listener",
+      "community": 7,
+      "norm_label": ".add_listener()"
+    },
+    {
+      "label": ".dispatch()",
+      "file_type": "code",
+      "source_file": "services/state_machine.py",
+      "source_location": "L67",
+      "id": "services_state_machine_statemachine_dispatch",
+      "community": 7,
+      "norm_label": ".dispatch()"
+    },
+    {
+      "label": "._transition()",
+      "file_type": "code",
+      "source_file": "services/state_machine.py",
+      "source_location": "L94",
+      "id": "services_state_machine_statemachine_transition",
+      "community": 7,
+      "norm_label": "._transition()"
+    },
+    {
+      "label": "waveform.py",
+      "file_type": "code",
+      "source_file": "services/waveform.py",
+      "source_location": "L1",
+      "id": "services_waveform_py",
+      "community": 8,
+      "norm_label": "waveform.py"
+    },
+    {
+      "label": "WaveformSample",
+      "file_type": "code",
+      "source_file": "services/waveform.py",
+      "source_location": "L12",
+      "id": "services_waveform_waveformsample",
+      "community": 8,
+      "norm_label": "waveformsample"
+    },
+    {
+      "label": "LoopSummary",
+      "file_type": "code",
+      "source_file": "services/waveform.py",
+      "source_location": "L18",
+      "id": "services_waveform_loopsummary",
+      "community": 8,
+      "norm_label": "loopsummary"
+    },
+    {
+      "label": "WaveformService",
+      "file_type": "code",
+      "source_file": "services/waveform.py",
+      "source_location": "L24",
+      "id": "services_waveform_waveformservice",
+      "community": 8,
+      "norm_label": "waveformservice"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "services/waveform.py",
+      "source_location": "L25",
+      "id": "services_waveform_waveformservice_init",
+      "community": 8,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": "._run_dir()",
+      "file_type": "code",
+      "source_file": "services/waveform.py",
+      "source_location": "L29",
+      "id": "services_waveform_waveformservice_run_dir",
+      "community": 8,
+      "norm_label": "._run_dir()"
+    },
+    {
+      "label": "._loop_path()",
+      "file_type": "code",
+      "source_file": "services/waveform.py",
+      "source_location": "L34",
+      "id": "services_waveform_waveformservice_loop_path",
+      "community": 8,
+      "norm_label": "._loop_path()"
+    },
+    {
+      "label": ".write_loop()",
+      "file_type": "code",
+      "source_file": "services/waveform.py",
+      "source_location": "L37",
+      "id": "services_waveform_waveformservice_write_loop",
+      "community": 8,
+      "norm_label": ".write_loop()"
+    },
+    {
+      "label": ".read_loop()",
+      "file_type": "code",
+      "source_file": "services/waveform.py",
+      "source_location": "L46",
+      "id": "services_waveform_waveformservice_read_loop",
+      "community": 8,
+      "norm_label": ".read_loop()"
+    },
+    {
+      "label": ".relative_path()",
+      "file_type": "code",
+      "source_file": "services/waveform.py",
+      "source_location": "L53",
+      "id": "services_waveform_waveformservice_relative_path",
+      "community": 8,
+      "norm_label": ".relative_path()"
+    },
+    {
+      "label": ".summarize()",
+      "file_type": "code",
+      "source_file": "services/waveform.py",
+      "source_location": "L56",
+      "id": "services_waveform_waveformservice_summarize",
+      "community": 8,
+      "norm_label": ".summarize()"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "services/__init__.py",
+      "source_location": "L1",
+      "id": "services_init_py",
+      "community": 19,
+      "norm_label": "__init__.py"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "config_py",
+      "target": "app_config_plcconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "config_py",
+      "target": "app_config_imadaconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "config_py",
+      "target": "app_config_esp32calibration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "config_py",
+      "target": "app_config_esp32config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "config_py",
+      "target": "app_config_statetimeouts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "config_py",
+      "target": "app_config_hardwareconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "config_py",
+      "target": "app_config_storageconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "config_py",
+      "target": "app_config_serverconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "config_py",
+      "target": "app_config_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "config_py",
+      "target": "app_config_load_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "app_config_plcconfig",
+      "target": "basemodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "app_config_imadaconfig",
+      "target": "basemodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "app_config_esp32calibration",
+      "target": "basemodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "app_config_esp32config",
+      "target": "basemodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "app_config_statetimeouts",
+      "target": "basemodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "app_config_hardwareconfig",
+      "target": "basemodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "app_config_storageconfig",
+      "target": "basemodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "app_config_serverconfig",
+      "target": "basemodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "schemas_recipe_recipebase",
+      "target": "basemodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "schemas_recipe_recipeupdate",
+      "target": "basemodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "config.py",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "app_config_settings",
+      "target": "basesettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L6",
+      "weight": 0.8,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "app_config_settings",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "logging_setup.py",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "logging_setup_py",
+      "target": "app_logging_setup_configure_logging",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "main.py",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "main_py",
+      "target": "app_main_build_app",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "api/recipes.py",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "api_recipes_py",
+      "target": "sqlmodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "api/recipes.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "api_recipes_py",
+      "target": "api_recipes_list_recipes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "api/recipes.py",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "api_recipes_py",
+      "target": "api_recipes_create_recipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "api/recipes.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "api_recipes_py",
+      "target": "api_recipes_get_recipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "api/recipes.py",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "api_recipes_py",
+      "target": "api_recipes_update_recipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "api/recipes.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "api_recipes_py",
+      "target": "api_recipes_delete_recipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "api/recipes.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "api_recipes_list_recipes",
+      "target": "services_recipe_service_recipeservice"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "api/recipes.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "api_recipes_create_recipe",
+      "target": "services_recipe_service_recipeservice"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "api/recipes.py",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "api_recipes_get_recipe",
+      "target": "services_recipe_service_recipeservice"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "api/recipes.py",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "api_recipes_update_recipe",
+      "target": "services_recipe_service_recipeservice"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "api/recipes.py",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "api_recipes_delete_recipe",
+      "target": "services_recipe_service_recipeservice"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "db/engine.py",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "db_engine_py",
+      "target": "sqlmodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "db/engine.py",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "db_engine_py",
+      "target": "db_engine_init_engine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "db/engine.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "db_engine_py",
+      "target": "db_engine_get_engine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "db/engine.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "db_engine_py",
+      "target": "db_engine_get_session",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "db/engine.py",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "db_engine_get_session",
+      "target": "db_engine_get_engine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "db/models.py",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "db_models_py",
+      "target": "sqlmodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "db/models.py",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "db_models_py",
+      "target": "db_models_recipe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "db/models.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "db_models_py",
+      "target": "db_models_testrun",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "db/models.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "db_models_py",
+      "target": "db_models_testloop",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "db/models.py",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "db_models_recipe",
+      "target": "sqlmodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L8",
+      "weight": 0.8,
+      "source": "services_recipe_service_recipeservice",
+      "target": "db_models_recipe",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "services/recipe_service.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "services_recipe_service_recipeservice_create",
+      "target": "db_models_recipe"
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "db/models.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "db_models_testrun",
+      "target": "sqlmodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "db/models.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "db_models_testloop",
+      "target": "sqlmodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "db/migrations/env.py",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "db_migrations_env_py",
+      "target": "sqlmodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "db/migrations/versions/0001_initial.py",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "db_migrations_versions_0001_initial_py",
+      "target": "sqlmodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "services_recipe_service_py",
+      "target": "sqlmodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "db/migrations/env.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "db_migrations_env_py",
+      "target": "migrations_env_run_migrations_offline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "db/migrations/env.py",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "db_migrations_env_py",
+      "target": "migrations_env_run_migrations_online",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "db/migrations/versions/0001_initial.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "db_migrations_versions_0001_initial_py",
+      "target": "versions_0001_initial_upgrade",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "db/migrations/versions/0001_initial.py",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "db_migrations_versions_0001_initial_py",
+      "target": "versions_0001_initial_downgrade",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "db/migrations/versions/0001_initial.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "versions_0001_initial_rationale_1",
+      "target": "db_migrations_versions_0001_initial_py",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "hardware_base_py",
+      "target": "hardware_base_imadareading",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "hardware_base_py",
+      "target": "hardware_base_esp32reading",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "hardware_base_py",
+      "target": "hardware_base_plcevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "hardware_base_py",
+      "target": "hardware_base_bit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "hardware_base_py",
+      "target": "hardware_base_word",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "hardware_base_py",
+      "target": "hardware_base_plcclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "hardware_base_py",
+      "target": "hardware_base_is_connected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "hardware_base_py",
+      "target": "hardware_base_imadaclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "hardware_base_py",
+      "target": "hardware_base_esp32client",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L7",
+      "weight": 0.8,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_base_imadareading",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L8",
+      "weight": 0.8,
+      "source": "mock_mock_imada_mockimada",
+      "target": "hardware_base_imadareading",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "mock_mock_imada_mockimada_run",
+      "target": "hardware_base_imadareading"
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L7",
+      "weight": 0.8,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_base_esp32reading",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L7",
+      "weight": 0.8,
+      "source": "mock_mock_esp32_mockesp32",
+      "target": "hardware_base_esp32reading",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "mock_mock_esp32_mockesp32_run",
+      "target": "hardware_base_esp32reading"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "hardware_base_bit",
+      "target": "hardware_base_plcevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "hardware_base_word",
+      "target": "hardware_base_plcevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L7",
+      "weight": 0.8,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_base_plcevent",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L8",
+      "weight": 0.8,
+      "source": "mock_mock_plc_mockplcscript",
+      "target": "hardware_base_plcevent",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L8",
+      "weight": 0.8,
+      "source": "mock_mock_plc_mockplc",
+      "target": "hardware_base_plcevent",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "hardware_base_plcclient",
+      "target": "protocol",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "hardware_base_plcclient",
+      "target": "hardware_base_plcclient_connect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "hardware_base_plcclient",
+      "target": "hardware_base_plcclient_disconnect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "hardware_base_plcclient",
+      "target": "hardware_base_plcclient_write_word",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "hardware_base_plcclient",
+      "target": "hardware_base_plcclient_read_word",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "hardware_base_plcclient",
+      "target": "hardware_base_plcclient_set_bit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "hardware_base_plcclient",
+      "target": "hardware_base_plcclient_read_bit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "hardware_base_imadaclient",
+      "target": "protocol",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "hardware_base_esp32client",
+      "target": "protocol",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "hardware_base_imadaclient",
+      "target": "hardware_base_imadaclient_connect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "hardware_base_imadaclient",
+      "target": "hardware_base_imadaclient_disconnect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "hardware_base_esp32client",
+      "target": "hardware_base_esp32client_connect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/base.py",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "hardware_base_esp32client",
+      "target": "hardware_base_esp32client_disconnect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "hardware_manager_py",
+      "target": "hardware_manager_hardwaremanager",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "hardware_manager_py",
+      "target": "hardware_manager_enqueue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_manager_hardwaremanager_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_manager_hardwaremanager_start",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_manager_hardwaremanager_shutdown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_manager_hardwaremanager_start_imada_stream",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_manager_hardwaremanager_stop_imada_stream",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_manager_hardwaremanager_start_esp32_stream",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_manager_hardwaremanager_stop_esp32_stream",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L77",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_manager_hardwaremanager_on_plc_event",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_manager_hardwaremanager_on_imada_reading",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_manager_hardwaremanager_on_esp32_reading",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L86",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "hardware_manager_hardwaremanager_push",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L8",
+      "weight": 0.8,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "mock_mock_esp32_mockesp32",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L9",
+      "weight": 0.8,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "mock_mock_imada_mockimada",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L10",
+      "weight": 0.8,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "mock_mock_plc_mockplc",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L10",
+      "weight": 0.8,
+      "source": "hardware_manager_hardwaremanager",
+      "target": "mock_mock_plc_mockplcscript",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "hardware/manager.py",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager_start",
+      "target": "mock_mock_plc_mockplc"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "hardware/manager.py",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager_start",
+      "target": "mock_mock_plc_mockplcscript"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "hardware/manager.py",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager_start",
+      "target": "mock_mock_imada_mockimada"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "hardware/manager.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager_start",
+      "target": "mock_mock_esp32_mockesp32"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager_on_plc_event",
+      "target": "hardware_manager_hardwaremanager_push",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L81",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager_on_imada_reading",
+      "target": "hardware_manager_hardwaremanager_push",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/manager.py",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "hardware_manager_hardwaremanager_on_esp32_reading",
+      "target": "hardware_manager_hardwaremanager_push",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "hardware_mock_mock_esp32_py",
+      "target": "mock_mock_esp32_mockesp32",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "hardware_mock_mock_esp32_py",
+      "target": "mock_mock_esp32_is_connected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "mock_mock_esp32_mockesp32",
+      "target": "mock_mock_esp32_mockesp32_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "mock_mock_esp32_mockesp32",
+      "target": "mock_mock_esp32_mockesp32_connect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "mock_mock_esp32_mockesp32",
+      "target": "mock_mock_esp32_mockesp32_disconnect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "mock_mock_esp32_mockesp32",
+      "target": "mock_mock_esp32_mockesp32_subscribe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "mock_mock_esp32_mockesp32",
+      "target": "mock_mock_esp32_mockesp32_start_stream",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "mock_mock_esp32_mockesp32",
+      "target": "mock_mock_esp32_mockesp32_stop_stream",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "mock_mock_esp32_mockesp32",
+      "target": "mock_mock_esp32_mockesp32_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "mock_mock_esp32_rationale_11",
+      "target": "mock_mock_esp32_mockesp32",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_esp32.py",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "mock_mock_esp32_mockesp32_disconnect",
+      "target": "mock_mock_esp32_mockesp32_stop_stream",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "hardware_mock_mock_imada_py",
+      "target": "mock_mock_imada_mockimada",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "hardware_mock_mock_imada_py",
+      "target": "mock_mock_imada_is_connected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "mock_mock_imada_mockimada",
+      "target": "mock_mock_imada_mockimada_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "mock_mock_imada_mockimada",
+      "target": "mock_mock_imada_mockimada_connect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "mock_mock_imada_mockimada",
+      "target": "mock_mock_imada_mockimada_disconnect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "mock_mock_imada_mockimada",
+      "target": "mock_mock_imada_mockimada_subscribe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "mock_mock_imada_mockimada",
+      "target": "mock_mock_imada_mockimada_start_stream",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "mock_mock_imada_mockimada",
+      "target": "mock_mock_imada_mockimada_stop_stream",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "mock_mock_imada_mockimada",
+      "target": "mock_mock_imada_mockimada_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "mock_mock_imada_rationale_12",
+      "target": "mock_mock_imada_mockimada",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_imada.py",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "mock_mock_imada_mockimada_disconnect",
+      "target": "mock_mock_imada_mockimada_stop_stream",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "hardware_mock_mock_plc_py",
+      "target": "mock_mock_plc_mockplcscript",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "hardware_mock_mock_plc_py",
+      "target": "mock_mock_plc_mockplc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "hardware_mock_mock_plc_py",
+      "target": "mock_mock_plc_is_connected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "mock_mock_plc_rationale_13",
+      "target": "mock_mock_plc_mockplcscript",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc",
+      "target": "mock_mock_plc_mockplc_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc",
+      "target": "mock_mock_plc_mockplc_connect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc",
+      "target": "mock_mock_plc_mockplc_disconnect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc",
+      "target": "mock_mock_plc_mockplc_subscribe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc",
+      "target": "mock_mock_plc_mockplc_emit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc",
+      "target": "mock_mock_plc_mockplc_write_word",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc",
+      "target": "mock_mock_plc_mockplc_read_word",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc",
+      "target": "mock_mock_plc_mockplc_set_bit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc",
+      "target": "mock_mock_plc_mockplc_read_bit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L77",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc",
+      "target": "mock_mock_plc_mockplc_run_script",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc_write_word",
+      "target": "mock_mock_plc_mockplc_emit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc_set_bit",
+      "target": "mock_mock_plc_mockplc_emit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hardware/mock/mock_plc.py",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "mock_mock_plc_mockplc_run_script",
+      "target": "mock_mock_plc_mockplc_set_bit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "schemas_recipe_py",
+      "target": "schemas_recipe_recipebase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "schemas_recipe_py",
+      "target": "schemas_recipe_check_min_max",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "schemas_recipe_py",
+      "target": "schemas_recipe_recipecreate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "schemas_recipe_py",
+      "target": "schemas_recipe_recipeupdate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "schemas_recipe_py",
+      "target": "schemas_recipe_reciperead",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "schemas_recipe_recipecreate",
+      "target": "schemas_recipe_recipebase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "schemas/recipe.py",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "schemas_recipe_reciperead",
+      "target": "schemas_recipe_recipebase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L9",
+      "weight": 0.8,
+      "source": "services_recipe_service_recipeservice",
+      "target": "schemas_recipe_recipecreate",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L9",
+      "weight": 0.8,
+      "source": "services_recipe_service_recipeservice",
+      "target": "schemas_recipe_recipeupdate",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "services/event_bus.py",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "services_event_bus_py",
+      "target": "services_event_bus_eventbus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/event_bus.py",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "services_event_bus_eventbus",
+      "target": "services_event_bus_eventbus_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/event_bus.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "services_event_bus_eventbus",
+      "target": "services_event_bus_eventbus_subscribe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/event_bus.py",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "services_event_bus_eventbus",
+      "target": "services_event_bus_eventbus_unsubscribe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/event_bus.py",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "services_event_bus_eventbus",
+      "target": "services_event_bus_eventbus_publish",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "services_recipe_service_py",
+      "target": "services_recipe_service_utcnow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "services_recipe_service_py",
+      "target": "services_recipe_service_recipeservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "services_recipe_service_recipeservice_create",
+      "target": "services_recipe_service_utcnow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "services_recipe_service_recipeservice_update",
+      "target": "services_recipe_service_utcnow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "services_recipe_service_recipeservice",
+      "target": "services_recipe_service_recipeservice_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "services_recipe_service_recipeservice",
+      "target": "services_recipe_service_recipeservice_create",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "services_recipe_service_recipeservice",
+      "target": "services_recipe_service_recipeservice_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "services_recipe_service_recipeservice",
+      "target": "services_recipe_service_recipeservice_list_all",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "services_recipe_service_recipeservice",
+      "target": "services_recipe_service_recipeservice_update",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "services_recipe_service_recipeservice",
+      "target": "services_recipe_service_recipeservice_delete",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "services_recipe_service_recipeservice_update",
+      "target": "services_recipe_service_recipeservice_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "services/recipe_service.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "services_recipe_service_recipeservice_delete",
+      "target": "services_recipe_service_recipeservice_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "services_state_machine_py",
+      "target": "enum",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "services_state_machine_py",
+      "target": "services_state_machine_state",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "services_state_machine_py",
+      "target": "services_state_machine_event",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "services_state_machine_py",
+      "target": "services_state_machine_runmode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "services_state_machine_py",
+      "target": "services_state_machine_statemachine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "services_state_machine_state",
+      "target": "str",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "services_state_machine_state",
+      "target": "enum",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "services_state_machine_event",
+      "target": "str",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "services_state_machine_runmode",
+      "target": "str",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "services/waveform.py",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice_run_dir",
+      "target": "str"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "services/waveform.py",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice_relative_path",
+      "target": "str"
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "services_state_machine_event",
+      "target": "enum",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "services_state_machine_runmode",
+      "target": "enum",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L57",
+      "weight": 1.0,
+      "source": "services_state_machine_statemachine",
+      "target": "services_state_machine_statemachine_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "services_state_machine_statemachine",
+      "target": "services_state_machine_statemachine_add_listener",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "services_state_machine_statemachine",
+      "target": "services_state_machine_statemachine_dispatch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "services_state_machine_statemachine",
+      "target": "services_state_machine_statemachine_transition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "services/state_machine.py",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "services_state_machine_statemachine_dispatch",
+      "target": "services_state_machine_statemachine_transition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "services_waveform_py",
+      "target": "services_waveform_waveformsample",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "services_waveform_py",
+      "target": "services_waveform_loopsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "services_waveform_py",
+      "target": "services_waveform_waveformservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice_summarize",
+      "target": "services_waveform_loopsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice",
+      "target": "services_waveform_waveformservice_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice",
+      "target": "services_waveform_waveformservice_run_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice",
+      "target": "services_waveform_waveformservice_loop_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice",
+      "target": "services_waveform_waveformservice_write_loop",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice",
+      "target": "services_waveform_waveformservice_read_loop",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice",
+      "target": "services_waveform_waveformservice_relative_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice",
+      "target": "services_waveform_waveformservice_summarize",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice_loop_path",
+      "target": "services_waveform_waveformservice_run_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice_write_loop",
+      "target": "services_waveform_waveformservice_loop_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "services/waveform.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "services_waveform_waveformservice_read_loop",
+      "target": "services_waveform_waveformservice_loop_path",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "built_at_commit": "860f1674a41a8c2d5ade578ce45b793c49d2c2aa"
+}
