@@ -26,7 +26,7 @@ export default function Run() {
 
   return (
     <div className="flex flex-col gap-4 max-w-5xl">
-      {/* Controls row — state badge + recipe select + start + e-stop */}
+      {/* Controls row — state badge + recipe select + start */}
       <div className="flex items-center gap-3 bg-white border rounded-lg p-4 shadow-sm">
         <StateBadge state={machineState} />
         {currentLoop !== null && isRunning && (
@@ -45,19 +45,11 @@ export default function Run() {
         </Select>
 
         <Button
+          className="h-10 px-8 text-base font-semibold"
           disabled={!recipeId || isRunning || isStarting}
           onClick={() => recipeId && start(recipeId)}
         >
           {isStarting ? 'Starting…' : 'Start'}
-        </Button>
-
-        <Button
-          variant="destructive"
-          className="ml-auto h-14 px-10 text-lg font-bold tracking-wide"
-          disabled={!isRunning || isStopping}
-          onClick={stop}
-        >
-          E-STOP
         </Button>
       </div>
 
@@ -65,6 +57,16 @@ export default function Run() {
       <div className="bg-white border rounded-lg p-4 shadow-sm">
         <WaveformChart />
       </div>
+
+      {/* E-STOP */}
+      <Button
+        variant="destructive"
+        className="w-full h-14 text-lg font-bold tracking-wide"
+        disabled={!isRunning || isStopping}
+        onClick={stop}
+      >
+        E-STOP
+      </Button>
 
       {/* Loop results */}
       {loopResults.length > 0 && (
