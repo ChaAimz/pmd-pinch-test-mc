@@ -5,6 +5,7 @@ import Layout from '@/components/Layout'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import Run from '@/pages/Run'
 import Recipes from '@/pages/Recipes'
+import Hardware from '@/pages/Hardware'
 import Settings from '@/pages/Settings'
 
 function Placeholder({ title }: { title: string }) {
@@ -29,7 +30,7 @@ export default function App() {
         <Route path="run" element={<Run />} />
         <Route path="recipes" element={<Recipes />} />
         <Route path="history" element={<Placeholder title="History" />} />
-        <Route path="hardware" element={<Placeholder title="Hardware" />} />
+        <Route path="hardware" element={<Hardware />} />
         <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>
