@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from app.services.waveform import WaveformService, WaveformSample
 
 
@@ -17,7 +19,8 @@ def test_write_and_read_waveform(tmp_path: Path):
 
     arr = svc.read_loop(run_id=42, loop_index=1)
     assert arr["t_ms"] == [0, 10, 20]
-    assert arr["force_n"] == [0.0, 1.5, 3.2]
+    # float32 storage means values come back with float32 precision.
+    assert arr["force_n"] == pytest.approx([0.0, 1.5, 3.2], rel=1e-6)
 
 
 def test_loop_summary(tmp_path: Path):
