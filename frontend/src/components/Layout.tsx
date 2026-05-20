@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { Play, ClipboardList, History, Cpu, Settings2, ChevronLeft, ChevronRight, Sun, Moon, Monitor, Palette } from 'lucide-react'
+import { Play, ClipboardList, History, Cpu, Settings2, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSettingsStore } from '@/store/settings'
 import { TopBar } from '@/components/TopBar'
@@ -12,22 +12,8 @@ const NAV = [
   { to: '/settings', label: 'Settings', Icon: Settings2 },
 ]
 
-const ACCENT_PRESETS = [
-  { hue: 240, label: 'Blue' },
-  { hue: 280, label: 'Purple' },
-  { hue: 150, label: 'Green' },
-  { hue: 30,  label: 'Orange' },
-  { hue: 10,  label: 'Red' },
-]
-
-const THEME_OPTIONS = [
-  { value: 'light' as const, Icon: Sun, label: 'Light' },
-  { value: 'system' as const, Icon: Monitor, label: 'System' },
-  { value: 'dark' as const, Icon: Moon, label: 'Dark' },
-]
-
 export default function Layout() {
-  const { sidebarCollapsed, setSidebarCollapsed, theme, setTheme, accentHue, setAccentHue } = useSettingsStore()
+  const { sidebarCollapsed, setSidebarCollapsed } = useSettingsStore()
 
   return (
     <div className="flex h-screen bg-background">
@@ -78,58 +64,6 @@ export default function Layout() {
           ))}
         </nav>
 
-        {/* Bottom controls: theme + accent */}
-        <div className={cn(
-          'border-t border-slate-800 p-2 flex flex-col gap-2',
-          sidebarCollapsed ? 'items-center' : ''
-        )}>
-          {/* Theme buttons */}
-          <div className={cn('flex gap-1', sidebarCollapsed ? 'flex-col' : 'flex-row')}>
-            {THEME_OPTIONS.map(({ value, Icon: ThemeIcon, label }) => (
-              <button
-                key={value}
-                onClick={() => setTheme(value)}
-                title={label}
-                className={cn(
-                  'p-1.5 rounded transition-colors',
-                  theme === value
-                    ? 'bg-slate-600 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
-                )}
-              >
-                <ThemeIcon size={15} />
-              </button>
-            ))}
-          </div>
-
-          {/* Accent swatches (collapsed: palette icon expands sidebar) */}
-          {sidebarCollapsed ? (
-            <button
-              onClick={() => setSidebarCollapsed(false)}
-              title="Accent color (expand to pick)"
-              className="p-1.5 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-            >
-              <Palette size={15} />
-            </button>
-          ) : (
-            <div className="flex gap-1.5 px-1 pb-1">
-              {ACCENT_PRESETS.map(({ hue, label }) => (
-                <button
-                  key={hue}
-                  onClick={() => setAccentHue(hue)}
-                  title={label}
-                  className={cn(
-                    'w-5 h-5 rounded-full transition-all',
-                    accentHue === hue
-                      ? 'ring-2 ring-white ring-offset-1 ring-offset-slate-900 scale-110'
-                      : 'hover:scale-110'
-                  )}
-                  style={{ backgroundColor: `oklch(0.55 0.22 ${hue})` }}
-                />
-              ))}
-            </div>
-          )}
-        </div>
       </aside>
 
       <main className="flex-1 flex flex-col overflow-hidden">
