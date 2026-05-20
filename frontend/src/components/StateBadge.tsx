@@ -18,7 +18,7 @@ const COLORS: Record<string, string> = {
 
 export function StateBadge({ state }: { state: string }) {
   return (
-    <Badge className={cn('font-mono text-sm px-3 py-1', COLORS[state] ?? 'bg-slate-200 text-slate-700')}>
+    <Badge className={cn('font-mono text-base px-4 py-1.5', COLORS[state] ?? 'bg-slate-200 text-slate-700')}>
       {state}
     </Badge>
   )

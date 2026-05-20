@@ -33,24 +33,26 @@ export default function Run() {
           <span className="text-sm text-slate-500">Loop {currentLoop}</span>
         )}
 
-        <Select disabled={isRunning} onValueChange={(v) => setRecipeId(v ? Number(v) : null)}>
-          <SelectTrigger className="w-64">
-            <SelectValue placeholder="Select recipe…" />
-          </SelectTrigger>
-          <SelectContent>
-            {recipes.map((r) => (
-              <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="ml-auto flex items-center gap-3">
+          <Select disabled={isRunning} onValueChange={(v) => setRecipeId(v ? Number(v) : null)}>
+            <SelectTrigger className="w-64">
+              <SelectValue placeholder="Select recipe…" />
+            </SelectTrigger>
+            <SelectContent>
+              {recipes.map((r) => (
+                <SelectItem key={r.id} value={String(r.id)}>{r.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Button
-          className="h-10 px-8 text-base font-semibold"
-          disabled={!recipeId || isRunning || isStarting}
-          onClick={() => recipeId && start(recipeId)}
-        >
-          {isStarting ? 'Starting…' : 'Start'}
-        </Button>
+          <Button
+            className="h-10 px-8 text-base font-semibold"
+            disabled={!recipeId || isRunning || isStarting}
+            onClick={() => recipeId && start(recipeId)}
+          >
+            {isStarting ? 'Starting…' : 'Start'}
+          </Button>
+        </div>
       </div>
 
       {/* Waveform */}
