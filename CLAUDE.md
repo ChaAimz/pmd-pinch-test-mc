@@ -171,6 +171,22 @@ This repo follows the user's global orchestration model in `~/.claude/CLAUDE.md`
 - `pip install` is blocked inside the Codex sandbox; the project venv lives outside the sandbox at `backend/.venv` and must be created/maintained by the Aimz user account. If Codex starts shimming `loguru.py` or `sqlmodel/`, stop and re-run the dependency install yourself.
 - The Codex sandbox cannot write to `.git/` (deny ACL). If commits are needed during Codex tasks, finish the edits inside Codex and commit from the Aimz shell afterwards.
 
+## Project agents
+
+Project-scoped agents live in `.claude/agents/`. Invoke with `Agent(subagent_type="<slug>")`.
+
+| Slug | Nickname | Best for |
+|---|---|---|
+| `george` | ไอ้จอร์จ | PLC / KV-Link / serial drivers / `pyserial` threading / Python device connection |
+| `pi-front` | พี่ Front | Vite + React + ShadcnUI operator UI / uPlot real-time chart / WebSocket client |
+| `black` | ไอ้แบล็ค | Backend polyglot — Python/Java/Node, FastAPI services, REST/WS contracts, cross-stack integration |
+| `database` | ไอ้ต้า | Schema design, Alembic migrations, query plans, time-series storage choices |
+| `devops` | ไอ้ออฟ | CI/CD, Windows service hosting (NSSM), packaging, lockfiles, single-machine deployment |
+| `qa` | ไอ้คิว | pytest design, Playwright E2E, hardware-in-loop checklists, regression tests |
+| `docs` | พี่ดอก | README/CLAUDE.md/spec/plan upkeep, Mermaid diagrams, changelog, commit-message coaching |
+
+When delegating, write a self-contained prompt — agents don't see this conversation. Include the spec/plan section the work touches (`docs/superpowers/specs/...md §6`, etc.).
+
 ## /graphify
 
 The `graphify` skill (global: `~/.claude/skills/graphify/SKILL.md`) turns any input (code, docs, papers, images) into a knowledge graph → clustered communities → HTML + JSON + audit report.
