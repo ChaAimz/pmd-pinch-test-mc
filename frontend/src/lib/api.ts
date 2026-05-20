@@ -37,7 +37,7 @@ export const api = {
     list: (params?: { status?: string; recipe_id?: number; operator?: string; limit?: number; offset?: number }) => {
       const q = new URLSearchParams()
       if (params?.status) q.set('status', params.status)
-      if (params?.recipe_id) q.set('recipe_id', String(params.recipe_id))
+      if (params?.recipe_id != null) q.set('recipe_id', String(params.recipe_id))
       if (params?.operator) q.set('operator', params.operator)
       if (params?.limit != null) q.set('limit', String(params.limit))
       if (params?.offset != null) q.set('offset', String(params.offset))

@@ -33,40 +33,38 @@ function LoopChart({ runId, loopIdx }: { runId: number; loopIdx: number }) {
     queryFn: () => api.runs.waveform(runId, loopIdx),
   })
 
+  // Create chart once per (runId, loopIdx) mount
   useEffect(() => {
-    if (!ref.current || isLoading || points.length === 0) return
+    if (!ref.current) return
+    chartRef.current = new uPlot(
+      {
+        width: ref.current.clientWidth || 700,
+        height: 220,
+        series: [
+          { label: 'Time (s)' },
+          { label: 'Force (N)', stroke: 'oklch(0.55 0.22 240)', width: 2 },
+        ],
+        axes: [
+          { label: 'ms' },
+          { label: 'N' },
+        ],
+      },
+      [[], []],
+      ref.current
+    )
+    return () => {
+      chartRef.current?.destroy()
+      chartRef.current = null
+    }
+  }, [runId, loopIdx])
 
+  // Push data whenever points change
+  useEffect(() => {
+    if (!chartRef.current || points.length === 0) return
     const ts = points.map((p: WaveformPoint) => p.t_ms / 1000)
     const fs = points.map((p: WaveformPoint) => p.force_n)
-
-    if (chartRef.current) {
-      chartRef.current.setData([ts, fs])
-    } else {
-      chartRef.current = new uPlot(
-        {
-          width: ref.current.clientWidth || 700,
-          height: 220,
-          series: [
-            { label: 'Time (s)' },
-            { label: 'Force (N)', stroke: 'oklch(0.55 0.22 240)', width: 2 },
-          ],
-          axes: [
-            { label: 'ms' },
-            { label: 'N' },
-          ],
-        },
-        [ts, fs],
-        ref.current
-      )
-    }
-
-    return () => {
-      if (chartRef.current) {
-        chartRef.current.destroy()
-        chartRef.current = null
-      }
-    }
-  }, [points, isLoading])
+    chartRef.current.setData([ts, fs])
+  }, [points])
 
   if (isLoading) return <Skeleton className="h-[220px] w-full" />
   if (points.length === 0) return <p className="text-xs text-muted-foreground">No waveform data</p>
@@ -76,12 +74,13 @@ function LoopChart({ runId, loopIdx }: { runId: number; loopIdx: number }) {
 
 export default function HistoryDetail() {
   const { id } = useParams<{ id: string }>()
-  const runId = Number(id)
+  const runId = id != null ? Number(id) : null
   const [selectedLoop, setSelectedLoop] = useState<number | null>(null)
 
   const { data: run, isLoading } = useQuery({
     queryKey: ['run', runId],
-    queryFn: () => api.runs.get(runId),
+    queryFn: () => api.runs.get(runId!),
+    enabled: runId != null && !Number.isNaN(runId),
   })
 
   if (isLoading) {
@@ -109,7 +108,7 @@ export default function HistoryDetail() {
         <Badge className={STATUS_COLORS[run.status] ?? 'bg-slate-100'}>
           {run.status.toUpperCase()}
         </Badge>
-        <a href={api.runs.exportCsvUrl(runId)} download>
+        <a href={api.runs.exportCsvUrl(runId!)} download>
           <Button variant="outline" size="sm" className="ml-auto gap-1">
             <Download size={14} /> Export CSV
           </Button>
@@ -163,7 +162,7 @@ export default function HistoryDetail() {
                   {selectedLoop === loop.loop_index && (
                     <tr>
                       <td colSpan={6} className="px-4 py-3 bg-muted/20">
-                        <LoopChart runId={runId} loopIdx={loop.loop_index} />
+                        <LoopChart runId={runId!} loopIdx={loop.loop_index} />
                       </td>
                     </tr>
                   )}

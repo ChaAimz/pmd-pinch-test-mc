@@ -11,12 +11,13 @@ import type { HardwareStatus } from '@/lib/types'
 
 type Device = 'plc' | 'imada' | 'esp32'
 
-function DeviceRow({ label, ok, device, onReconnect, reconnecting }: {
+function DeviceRow({ label, ok, device, onReconnect, isReconnecting, isTarget }: {
   label: string
   ok: boolean
   device: Device
   onReconnect: (d: Device) => void
-  reconnecting: boolean
+  isReconnecting: boolean
+  isTarget: boolean
 }) {
   return (
     <div className="flex items-center justify-between py-3 border-b last:border-0">
@@ -33,11 +34,11 @@ function DeviceRow({ label, ok, device, onReconnect, reconnecting }: {
       <Button
         variant="outline"
         size="sm"
-        disabled={reconnecting}
+        disabled={isReconnecting}
         onClick={() => onReconnect(device)}
         className="gap-1"
       >
-        <RefreshCw size={13} className={reconnecting ? 'animate-spin' : ''} />
+        <RefreshCw size={13} className={isTarget ? 'animate-spin' : ''} />
         Reconnect
       </Button>
     </div>
@@ -195,7 +196,8 @@ export default function Hardware() {
               ok={(status as HardwareStatus | undefined)?.[dev] ?? false}
               device={dev}
               onReconnect={(d) => reconnectM.mutate(d)}
-              reconnecting={reconnectM.isPending && reconnectM.variables === dev}
+              isReconnecting={reconnectM.isPending}
+              isTarget={reconnectM.isPending && reconnectM.variables === dev}
             />
           ))
         )}
