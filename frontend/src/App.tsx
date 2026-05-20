@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from '@/components/ui/sonner'
 import Layout from '@/components/Layout'
+import { ThemeProvider } from '@/components/ThemeProvider'
 import Run from '@/pages/Run'
 import Recipes from '@/pages/Recipes'
 
@@ -19,6 +20,7 @@ export default function App() {
 
   return (
     <>
+      <ThemeProvider />
       <Toaster />
       <Routes>
       <Route path="/" element={<Layout />}>

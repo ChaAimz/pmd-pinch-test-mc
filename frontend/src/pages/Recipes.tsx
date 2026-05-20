@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { Skeleton } from '@/components/ui/skeleton'
 import { api } from '@/lib/api'
 import type { Recipe } from '@/lib/types'
 import { RecipeForm } from './RecipeForm'
@@ -20,7 +21,19 @@ export default function Recipes() {
   const openEdit = (r: Recipe) => { setEdit(r); setOpen(true) }
   const saved = () => { setOpen(false); void qc.invalidateQueries({ queryKey: ['recipes'] }) }
 
-  if (isLoading) return <div className="text-slate-400 animate-pulse">Loading…</div>
+  if (isLoading) return (
+    <div className="space-y-3">
+      <div className="flex justify-between items-center mb-5">
+        <Skeleton className="h-7 w-24" />
+        <Skeleton className="h-9 w-32" />
+      </div>
+      <div className="space-y-2">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Skeleton key={i} className="h-12 w-full" />
+        ))}
+      </div>
+    </div>
+  )
 
   return (
     <div>
