@@ -1,4 +1,7 @@
-import type { Recipe, RecipeCreate, RecipeUpdate } from './types'
+import type {
+  Recipe, RecipeCreate, RecipeUpdate,
+  TestRun, HardwareStatus, WaveformPoint,
+} from './types'
 
 async function req<T>(method: string, path: string, body?: unknown): Promise<T> {
   const res = await fetch(`/api${path}`, {
@@ -23,10 +26,36 @@ export const api = {
     delete: (id: number) => req<void>('DELETE', `/recipes/${id}`),
   },
   sessions: {
-    start: (recipeId: number) => req<{ run_id: number }>('POST', '/sessions', { recipe_id: recipeId }),
-    stop: () => req<void>('DELETE', '/sessions/current'),
+    // Fixed: backend endpoint is /sessions/start, not /sessions
+    start: (recipeId: number, mode: 'auto' | 'manual' = 'auto') =>
+      req<{ run_id: number }>('POST', '/sessions/start', { recipe_id: recipeId, mode }),
+    // Fixed: backend endpoint is POST /sessions/{run_id}/stop
+    stop: (runId: number) =>
+      req<{ ok: boolean }>('POST', `/sessions/${runId}/stop`),
   },
   runs: {
-    list: () => req<{ id: number; recipe_name: string; status: string; created_at: string; passed: number; failed: number }[]>('GET', '/runs'),
+    list: (params?: { status?: string; recipe_id?: number; operator?: string; limit?: number; offset?: number }) => {
+      const q = new URLSearchParams()
+      if (params?.status) q.set('status', params.status)
+      if (params?.recipe_id) q.set('recipe_id', String(params.recipe_id))
+      if (params?.operator) q.set('operator', params.operator)
+      if (params?.limit) q.set('limit', String(params.limit))
+      if (params?.offset) q.set('offset', String(params.offset))
+      const qs = q.toString()
+      return req<TestRun[]>('GET', `/runs${qs ? `?${qs}` : ''}`)
+    },
+    get: (id: number) => req<TestRun>('GET', `/runs/${id}`),
+    waveform: (runId: number, loopIdx: number) =>
+      req<WaveformPoint[]>('GET', `/runs/${runId}/loops/${loopIdx}/waveform`),
+    exportCsvUrl: (runId: number) => `/api/runs/${runId}/export.csv`,
+  },
+  hardware: {
+    status: () => req<HardwareStatus>('GET', '/hardware/status'),
+    reconnect: (device: 'plc' | 'imada' | 'esp32') =>
+      req<{ ok: boolean }>('POST', '/hardware/reconnect', { device }),
+    calibrate: (raw_at_zero: number, raw_at_known: number, known_force_n: number) =>
+      req<{ slope: number; offset: number }>('POST', '/hardware/esp32/calibrate', {
+        raw_at_zero, raw_at_known, known_force_n,
+      }),
   },
 }

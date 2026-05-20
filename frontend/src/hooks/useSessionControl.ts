@@ -6,6 +6,7 @@ import { api } from '@/lib/api'
 
 export function useSessionControl() {
   const machineState = useAppStore((s) => s.machineState)
+  const currentRunId = useAppStore((s) => s.currentRunId)
   const isRunning = !['IDLE', 'ABORTED', 'ERROR', 'DONE_B7'].includes(machineState)
 
   const startM = useMutation({
@@ -17,13 +18,13 @@ export function useSessionControl() {
     },
   })
 
-  const stopM = useMutation({ mutationFn: api.sessions.stop })
+  const stopM = useMutation({ mutationFn: (runId: number) => api.sessions.stop(runId) })
 
   return {
     isRunning,
     machineState,
     start: (recipeId: number) => startM.mutate(recipeId),
-    stop: () => stopM.mutate(),
+    stop: () => { if (currentRunId != null) stopM.mutate(currentRunId) },
     isStarting: startM.isPending,
     isStopping: stopM.isPending,
     startError: startM.error,
