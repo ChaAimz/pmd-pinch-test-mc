@@ -33,7 +33,7 @@ export interface TestLoop {
   peak_force_n: number | null
   avg_force_n: number | null
   hold_time_ms: number | null
-  judgment: string | null
+  judgment: 'pass' | 'fail' | null
   waveform_file: string | null
 }
 
@@ -45,7 +45,7 @@ export interface TestRun {
   shift: string | null
   started_at: string
   finished_at: string | null
-  status: string          // 'running' | 'pass' | 'fail' | 'aborted' | 'error'
+  status: 'running' | 'pass' | 'fail' | 'aborted' | 'error'
   abort_reason: string | null
   loops_completed: number
   waveform_dir: string | null

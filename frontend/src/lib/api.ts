@@ -39,8 +39,8 @@ export const api = {
       if (params?.status) q.set('status', params.status)
       if (params?.recipe_id) q.set('recipe_id', String(params.recipe_id))
       if (params?.operator) q.set('operator', params.operator)
-      if (params?.limit) q.set('limit', String(params.limit))
-      if (params?.offset) q.set('offset', String(params.offset))
+      if (params?.limit != null) q.set('limit', String(params.limit))
+      if (params?.offset != null) q.set('offset', String(params.offset))
       const qs = q.toString()
       return req<TestRun[]>('GET', `/runs${qs ? `?${qs}` : ''}`)
     },
