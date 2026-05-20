@@ -32,19 +32,23 @@ export class WsClient {
       this.attempts++
       this.reconnectTimer = setTimeout(() => this.connect(), delay)
     }
+    this.ws.onerror = (ev) => {
+      if (import.meta.env.DEV) console.error('[ws] error', ev)
+    }
     this.ws.onmessage = (ev) => {
-      try {
-        const msg = JSON.parse(ev.data as string)
-        const type: string = msg?.type
-        if (!type) return
-        ;(this.handlers.get(type) ?? []).forEach(h => h(msg))
-        ;(this.handlers.get('*') ?? []).forEach(h => h(msg))
-      } catch { /* non-JSON ignored */ }
+      if (typeof ev.data !== 'string') return
+      let msg: { type?: string } | null = null
+      try { msg = JSON.parse(ev.data) } catch { return }
+      const type = msg?.type
+      if (!type) return
+      ;(this.handlers.get(type) ?? []).forEach(h => h(msg))
+      ;(this.handlers.get('*') ?? []).forEach(h => h(msg))
     }
   }
 
   on<T = unknown>(type: string, handler: Handler<T>): () => void {
     const list = this.handlers.get(type) ?? []
+    // T is caller-side only; runtime dispatch is untyped (string key → unknown payload)
     list.push(handler as Handler)
     this.handlers.set(type, list)
     return () => {
@@ -58,7 +62,7 @@ export class WsClient {
 
   destroy() {
     this.destroyed = true
-    if (this.reconnectTimer) clearTimeout(this.reconnectTimer)
+    if (this.reconnectTimer) { clearTimeout(this.reconnectTimer); this.reconnectTimer = null }
     this.ws?.close(); this.ws = null
   }
 }
