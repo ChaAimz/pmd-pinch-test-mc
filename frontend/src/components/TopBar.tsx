@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Wifi, WifiOff } from 'lucide-react'
+import { Clock as ClockIcon, Wifi, WifiOff } from 'lucide-react'
 import { useAppStore } from '@/store/app'
 import { cn } from '@/lib/utils'
 
@@ -24,9 +24,12 @@ function Clock() {
   }, [])
 
   return (
-    <time className="font-mono text-sm tabular-nums text-foreground">
-      {time.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
-    </time>
+    <div className="flex items-center gap-2 text-foreground">
+      <ClockIcon size={16} className="text-muted-foreground shrink-0" />
+      <time className="font-mono text-base font-semibold tabular-nums tracking-widest">
+        {time.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
+      </time>
+    </div>
   )
 }
 
