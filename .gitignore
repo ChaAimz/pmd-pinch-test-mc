@@ -20,7 +20,8 @@ dist/
 Thumbs.db
 
 # Editor / IDE
-.claude/
+.claude/settings.local.json
+.claude/cache/
 .vscode/
 .idea/
 
