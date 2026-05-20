@@ -2,6 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import { Play, ClipboardList, History, Cpu, Settings2, ChevronLeft, ChevronRight, Sun, Moon, Monitor, Palette } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSettingsStore } from '@/store/settings'
+import { TopBar } from '@/components/TopBar'
 
 const NAV = [
   { to: '/run', label: 'Run Test', Icon: Play },
@@ -131,8 +132,11 @@ export default function Layout() {
         </div>
       </aside>
 
-      <main className="flex-1 overflow-auto p-6">
-        <Outlet />
+      <main className="flex-1 flex flex-col overflow-hidden">
+        <TopBar />
+        <div className="flex-1 overflow-auto p-6">
+          <Outlet />
+        </div>
       </main>
     </div>
   )
