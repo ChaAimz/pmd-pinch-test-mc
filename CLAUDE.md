@@ -187,6 +187,15 @@ Project-scoped agents live in `.claude/agents/`. Invoke with `Agent(subagent_typ
 
 When delegating, write a self-contained prompt — agents don't see this conversation. Include the spec/plan section the work touches (`docs/superpowers/specs/...md §6`, etc.).
 
+### Routing rule (Codex vs Sonnet)
+
+- **Bulk / repetitive / mechanical work** (apply the same change across many files, scaffolding a known pattern, mass renames, boilerplate generation) → hand to `/codex:rescue`. It's cheaper and reserves Claude tokens for thinking work.
+- **Judgment-heavy work** (architecture decisions, contract design, ambiguous bug triage, risk review, anything where being wrong is expensive) → keep on Sonnet (these project agents, or Claude inline). Don't outsource judgment to Codex.
+
+A useful rule of thumb: if you can describe the task with "do X to each Y in Z" and a fresh dev would handle it the same way, it's a Codex job. If the task asks "should we do X, or maybe Y, given Z?", it stays on Sonnet.
+
+If using `/codex:rescue` in this repo, remember the sandbox limits from the *Workflow rules* section above (no pip, no `.git` writes) — give Codex tasks that don't need new dependencies or git commits.
+
 ## /graphify
 
 The `graphify` skill (global: `~/.claude/skills/graphify/SKILL.md`) turns any input (code, docs, papers, images) into a knowledge graph → clustered communities → HTML + JSON + audit report.
@@ -197,9 +206,9 @@ The `graphify` skill (global: `~/.claude/skills/graphify/SKILL.md`) turns any in
 
 ## Current status (2026-05-20)
 
-- ✅ **Phase A (Plan 1, Tasks 1–6)** — committed. Skeleton, config, logging, DB models, alembic migrations, recipe CRUD + REST. `pytest` reports 11/11 passing.
-- ⏳ **Phase B (Tasks 7–14)** — pending. Hardware base + mocks + event bus + state machine + waveform service + HardwareManager.
-- ⏳ **Phase C (Tasks 15–23)** — pending. WS hub, deps, TestRunner, sessions/runs/hardware/config APIs, full E2E test, README polish.
+- ✅ **Phase A (Plan 1, Tasks 1–6)** — committed. Skeleton, config, logging, DB models, alembic migrations, recipe CRUD + REST.
+- ✅ **Phase B (Tasks 7–14)** — committed. Hardware base + 3 mock drivers + async event bus + state machine + waveform (parquet) + HardwareManager.
+- ⏳ **Phase C (Tasks 15–23)** — pending. WS hub, deps, TestRunner (full async orchestration), sessions/runs/hardware/config APIs, full E2E test, README polish. `pytest` currently reports 28/28 passing.
 - ⏳ **Plan 2** — Frontend (Vite + ShadcnUI + uPlot) driven by mock backend.
 - ⏳ **Plan 3** — Real PLC / Imada / ESP32 drivers (replace mocks; add heartbeat W10 + 20 ms multi-bit poll).
 - ⏳ **Plan 4** — History UI, Hardware page, Settings, ESP32 calibration wizard.
