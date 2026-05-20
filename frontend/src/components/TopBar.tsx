@@ -34,17 +34,12 @@ export function TopBar() {
   const wsConnected = useAppStore((s) => s.wsConnected)
 
   return (
-    <header className="h-12 shrink-0 grid grid-cols-3 items-center px-6 border-b bg-card">
-      {/* Left — empty */}
-      <div />
-
-      {/* Center — Clock */}
-      <div className="flex justify-center">
-        <Clock />
-      </div>
+    <header className="h-12 shrink-0 flex items-center justify-between px-6 border-b bg-card">
+      {/* Left — Clock */}
+      <Clock />
 
       {/* Right — Device status */}
-      <div className="flex items-center justify-end gap-6">
+      <div className="flex items-center gap-6">
         <DeviceDot label="PLC" ok={hwStatus.plc} />
         <DeviceDot label="Imada" ok={hwStatus.imada} />
         <DeviceDot label="ESP32" ok={hwStatus.esp32} />
@@ -60,5 +55,6 @@ export function TopBar() {
         </span>
       </div>
     </header>
+
   )
 }
