@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { StateBadge } from '@/components/StateBadge'
-import { HwStatusBar } from '@/components/HwStatusBar'
 import { WaveformChart } from '@/components/WaveformChart'
 import { useAppStore } from '@/store/app'
 import { useSessionControl } from '@/hooks/useSessionControl'
@@ -16,8 +14,6 @@ export default function Run() {
   const { data: recipes = [] } = useQuery({ queryKey: ['recipes'], queryFn: api.recipes.list })
 
   const machineState = useAppStore((s) => s.machineState)
-  const hwStatus = useAppStore((s) => s.hwStatus)
-  const wsConnected = useAppStore((s) => s.wsConnected)
   const loopResults = useAppStore((s) => s.loopResults)
   const currentLoop = useAppStore((s) => s.currentLoop)
 
@@ -31,19 +27,11 @@ export default function Run() {
   return (
     <div className="flex flex-col gap-4 max-w-5xl">
       {/* Status bar */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <StateBadge state={machineState} />
-          {currentLoop !== null && isRunning && (
-            <span className="text-sm text-slate-500">Loop {currentLoop}</span>
-          )}
-        </div>
-        <div className="flex items-center gap-3">
-          {!wsConnected && (
-            <Badge variant="destructive" className="text-xs animate-pulse">WS disconnected</Badge>
-          )}
-          <HwStatusBar status={hwStatus} />
-        </div>
+      <div className="flex items-center gap-3">
+        <StateBadge state={machineState} />
+        {currentLoop !== null && isRunning && (
+          <span className="text-sm text-slate-500">Loop {currentLoop}</span>
+        )}
       </div>
 
       {/* Waveform */}

@@ -28,7 +28,7 @@ export default function Layout() {
       >
         {/* Logo + collapse toggle */}
         <div className={cn(
-          'flex items-center p-3 border-b border-slate-200 dark:border-slate-800',
+          'flex items-center h-12 px-3 border-b border-slate-200 dark:border-slate-800',
           sidebarCollapsed ? 'justify-center' : 'justify-between'
         )}>
           {!sidebarCollapsed && (
