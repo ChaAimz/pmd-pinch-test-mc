@@ -41,25 +41,24 @@ function LoopChart({ runId, loopIdx }: { runId: number; loopIdx: number }) {
 
     if (chartRef.current) {
       chartRef.current.setData([ts, fs])
-      return
+    } else {
+      chartRef.current = new uPlot(
+        {
+          width: ref.current.clientWidth || 700,
+          height: 220,
+          series: [
+            { label: 'Time (s)' },
+            { label: 'Force (N)', stroke: 'oklch(0.55 0.22 240)', width: 2 },
+          ],
+          axes: [
+            { label: 'ms' },
+            { label: 'N' },
+          ],
+        },
+        [ts, fs],
+        ref.current
+      )
     }
-
-    chartRef.current = new uPlot(
-      {
-        width: ref.current.clientWidth || 700,
-        height: 220,
-        series: [
-          { label: 'Time (s)' },
-          { label: 'Force (N)', stroke: 'oklch(0.55 0.22 240)', width: 2 },
-        ],
-        axes: [
-          { label: 'ms' },
-          { label: 'N' },
-        ],
-      },
-      [ts, fs],
-      ref.current
-    )
 
     return () => {
       if (chartRef.current) {
