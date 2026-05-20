@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { Toaster } from '@/components/ui/sonner'
 import Layout from '@/components/Layout'
 import Run from '@/pages/Run'
 import Recipes from '@/pages/Recipes'
@@ -17,7 +18,9 @@ export default function App() {
   }, [])
 
   return (
-    <Routes>
+    <>
+      <Toaster />
+      <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Navigate to="/run" replace />} />
         <Route path="run" element={<Run />} />
@@ -27,5 +30,6 @@ export default function App() {
         <Route path="settings" element={<Placeholder title="Settings" />} />
       </Route>
     </Routes>
+    </>
   )
 }

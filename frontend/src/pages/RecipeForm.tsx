@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -23,8 +24,14 @@ export function RecipeForm({ recipe: r, onSaved }: Props) {
     },
   })
 
-  const createM = useMutation({ mutationFn: api.recipes.create })
-  const updateM = useMutation({ mutationFn: ({ id, data }: { id: number; data: Partial<RecipeCreate> }) => api.recipes.update(id, data) })
+  const createM = useMutation({
+    mutationFn: api.recipes.create,
+    onError: (e: Error) => toast.error(e.message),
+  })
+  const updateM = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: Partial<RecipeCreate> }) => api.recipes.update(id, data),
+    onError: (e: Error) => toast.error(e.message),
+  })
   const pending = createM.isPending || updateM.isPending
 
   const submit = async (v: F) => {
