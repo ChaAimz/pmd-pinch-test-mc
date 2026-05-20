@@ -26,21 +26,13 @@ export default function Run() {
 
   return (
     <div className="flex flex-col gap-4 max-w-5xl">
-      {/* Status bar */}
-      <div className="flex items-center gap-3">
+      {/* Controls row — state badge + recipe select + start + e-stop */}
+      <div className="flex items-center gap-3 bg-white border rounded-lg p-4 shadow-sm">
         <StateBadge state={machineState} />
         {currentLoop !== null && isRunning && (
           <span className="text-sm text-slate-500">Loop {currentLoop}</span>
         )}
-      </div>
 
-      {/* Waveform */}
-      <div className="bg-white border rounded-lg p-4 shadow-sm">
-        <WaveformChart />
-      </div>
-
-      {/* Controls */}
-      <div className="flex items-center gap-3 bg-white border rounded-lg p-4 shadow-sm">
         <Select disabled={isRunning} onValueChange={(v) => setRecipeId(v ? Number(v) : null)}>
           <SelectTrigger className="w-64">
             <SelectValue placeholder="Select recipe…" />
@@ -67,6 +59,11 @@ export default function Run() {
         >
           E-STOP
         </Button>
+      </div>
+
+      {/* Waveform */}
+      <div className="bg-white border rounded-lg p-4 shadow-sm">
+        <WaveformChart />
       </div>
 
       {/* Loop results */}
