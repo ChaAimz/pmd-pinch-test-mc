@@ -218,9 +218,20 @@ The `graphify` skill (global: `~/.claude/skills/graphify/SKILL.md`) turns any in
 
 ## Current status (2026-05-20)
 
-- ✅ **Phase A (Plan 1, Tasks 1–6)** — committed. Skeleton, config, logging, DB models, alembic migrations, recipe CRUD + REST.
-- ✅ **Phase B (Tasks 7–14)** — committed. Hardware base + 3 mock drivers + async event bus + state machine + waveform (parquet) + HardwareManager.
-- ⏳ **Phase C (Tasks 15–23)** — pending. WS hub, deps, TestRunner (full async orchestration), sessions/runs/hardware/config APIs, full E2E test, README polish. `pytest` currently reports 28/28 passing.
-- ✅ **Plan 2** — Frontend committed. Vite + React + ShadcnUI + uPlot. Recipes CRUD done. Run page done (requires Phase C for live WS).
-- ⏳ **Plan 3** — Real PLC / Imada / ESP32 drivers (replace mocks; add heartbeat W10 + 20 ms multi-bit poll).
-- ⏳ **Plan 4** — History UI, Hardware page, Settings, ESP32 calibration wizard.
+- ✅ **Plan 1, Phase A (Tasks 1–6)** — Skeleton, config, logging, DB models, alembic migrations, recipe CRUD + REST.
+- ✅ **Plan 1, Phase B (Tasks 7–14)** — Hardware base + 3 mock drivers + async event bus + state machine + waveform (parquet) + HardwareManager.
+- ✅ **Plan 1, Phase C (Tasks 15–23)** — WS hub, deps, TestRunner, sessions/runs/hardware/config APIs, README. `pytest` 39/39 passing.
+- ✅ **Plan 2** — Frontend: Vite + React + ShadcnUI + uPlot. Recipes CRUD, Run page, TopBar (clock + device status), sidebar dark mode. Live WS connected.
+- ⏳ **Plan 3** — Real PLC / Imada / ESP32 drivers (replace mocks; add heartbeat W10 + 20 ms multi-bit poll). **NOT STARTED.**
+- ✅ **Plan 4** — History list + detail (uPlot per-loop waveform + CSV export), Hardware page (live status + reconnect + ESP32 calibration wizard), fixed session API endpoints, App routes wired. HEAD `e128dce`.
+
+## What to work on next
+
+**Plan 3 — Real hardware drivers** (`docs/superpowers/specs/2026-05-19-pinch-test-machine-design.md` §2–3):
+- `backend/app/hardware/plc.py` — KV-Link ASCII over RS232, `pyserial` thread, 20 ms multi-bit poll, heartbeat W10
+- `backend/app/hardware/imada.py` — RS232 stream parser, unit=N filter
+- `backend/app/hardware/esp32.py` — RS232 int stream, calibration formula from config.yaml
+- `backend/app/hardware/manager.py` — swap mock → real based on `config.yaml: mock_mode: false`
+- COM ports configured in `config.yaml: hardware.plc.port / imada.port / esp32.port`
+
+Before starting Plan 3: read spec §2 (PLC bit/word map), §3 (hardware threading model), and the existing mock implementations in `backend/app/hardware/mock/` to understand the Protocol contracts.
