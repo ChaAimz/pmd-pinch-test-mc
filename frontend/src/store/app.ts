@@ -78,13 +78,17 @@ export const useAppStore = create<AppState>((set) => ({
       unseenErrorCount: to === 'ERROR' ? s.unseenErrorCount + 1 : s.unseenErrorCount,
     })),
   setHwStatus: ({ plc, imada, esp32 }) => set({ hwStatus: { plc, imada, esp32 } }),
-  addLoopResult: ({ type: _t, peak_clamp_n = null, avg_clamp_n = null, ...r }) =>
-    set((s) => ({
-      loopResults: s.loopResults.some((x) => x.loop === r.loop)
-        ? s.loopResults
-        : [...s.loopResults, { ...r, peak_clamp_n, avg_clamp_n }],
-    })),
-  setRunFinished: (_msg) => set({ machineState: 'IDLE' }),
+  addLoopResult: ({ type: _t, run_id, peak_clamp_n = null, avg_clamp_n = null, ...r }) =>
+    set((s) => {
+      // Reject stale replays from a previous run that arrive after reconnect.
+      if (run_id !== undefined && s.currentRunId !== null && run_id !== s.currentRunId) return s
+      return {
+        loopResults: s.loopResults.some((x) => x.loop === r.loop)
+          ? s.loopResults
+          : [...s.loopResults, { ...r, peak_clamp_n, avg_clamp_n }],
+      }
+    }),
+  setRunFinished: (msg) => set({ machineState: msg.status }),
   resetRun: () => set((s) => ({
     machineState: 'IDLE',
     currentRunId: null,

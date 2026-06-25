@@ -74,6 +74,15 @@ class TestRunner:
         self._reset.clear()
         self._manual_clamp.clear()
 
+        # Flush stale hardware events left by any previous session so that
+        # orphaned mock/driver thread emissions don't corrupt the new session.
+        for _q in (self.manager.plc_event_queue, self.manager.imada_queue, self.manager.esp32_queue):
+            while True:
+                try:
+                    _q.get_nowait()
+                except asyncio.QueueEmpty:
+                    break
+
         with Session(get_engine()) as s:
             run = TestRun(
                 recipe_id=recipe.id,

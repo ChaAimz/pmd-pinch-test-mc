@@ -47,17 +47,6 @@ class WsHub:
         try:
             while True:
                 msg = await bus_q.get()
-                for client in list(self._clients):
-                    try:
-                        client.put_nowait(msg)
-                    except asyncio.QueueFull:
-                        try:
-                            client.get_nowait()
-                        except Exception:
-                            pass
-                        try:
-                            client.put_nowait(msg)
-                        except Exception:
-                            pass
+                self._enqueue_to_clients(msg)
         finally:
             await self.bus.unsubscribe(bus_q)

@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from 'react'
-import { Pencil, Loader2, Play, Square, RotateCcw, ChevronsUpDown, Check, AlertTriangle, Download, Radio, Activity, Grip, Ruler, Zap, Repeat, Keyboard } from 'lucide-react'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import { Pencil, Loader2, Play, Square, RotateCcw, ChevronsUpDown, Check, AlertTriangle, Download, ImageDown, Radio, Activity, Grip, Ruler, Zap, Repeat, Keyboard } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useQuery, useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
@@ -95,6 +95,9 @@ export default function Run() {
   const [errorPopoverOpen, setErrorPopoverOpen] = useState(false)
   const [selectedCycle, setSelectedCycle] = useState<number | 'all' | 'allmax' | 'allcof' | null>(null)
   const currentRunId = useAppStore((s) => s.currentRunId)
+
+  const waveformExportRef = useRef<(() => void) | null>(null)
+  const maxCycleExportRef = useRef<(() => void) | null>(null)
 
   const { data: cycleWaveform } = useQuery({
     queryKey: ['waveform', currentRunId, selectedCycle],
@@ -656,28 +659,45 @@ export default function Run() {
             </TableBody>
           </Table>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full mt-2 shrink-0 gap-1"
-            onClick={() => {
-              if (staticData) {
-                const label = selectedCycle === 'all'
-                  ? `run${currentRunId}_all_cycles`
-                  : selectedCycle === 'allcof'
-                    ? `run${currentRunId}_all_cof`
-                    : `run${currentRunId}_cycle${selectedCycle}`
-                const header = selectedCycle === 'allcof' ? 'cycle,cof' : 'time_s,force_n'
-                const rows = [header, ...staticData.map(([tv, fv]) => `${tv.toFixed(4)},${fv.toFixed(4)}`)]
-                downloadCsvBlob(rows, `${label}.csv`)
-              } else {
-                exportLiveImadaCsv()
-              }
-            }}
-            title={staticData ? 'Export trimmed waveform as CSV (matches chart)' : 'Export live Imada stream as CSV'}
-          >
-            <Download size={14} /> {t('run.exportCSV')}
-          </Button>
+          <div className="flex gap-1 mt-2 shrink-0">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1 gap-1"
+              onClick={() => {
+                if (staticData) {
+                  const label = selectedCycle === 'all'
+                    ? `run${currentRunId}_all_cycles`
+                    : selectedCycle === 'allcof'
+                      ? `run${currentRunId}_all_cof`
+                      : `run${currentRunId}_cycle${selectedCycle}`
+                  const header = selectedCycle === 'allcof' ? 'cycle,cof' : 'time_s,force_n'
+                  const rows = [header, ...staticData.map(([tv, fv]) => `${tv.toFixed(4)},${fv.toFixed(4)}`)]
+                  downloadCsvBlob(rows, `${label}.csv`)
+                } else {
+                  exportLiveImadaCsv()
+                }
+              }}
+              title={staticData ? 'Export trimmed waveform as CSV (matches chart)' : 'Export live Imada stream as CSV'}
+            >
+              <Download size={14} /> {t('run.exportCSV')}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1 gap-1"
+              onClick={() => {
+                if (selectedCycle === 'allmax') {
+                  maxCycleExportRef.current?.()
+                } else {
+                  waveformExportRef.current?.()
+                }
+              }}
+              title="Export chart as PNG"
+            >
+              <ImageDown size={14} /> {t('run.exportPNG')}
+            </Button>
+          </div>
         </div>
 
         {/* Right: realtime chart — fills remaining width */}
@@ -771,11 +791,12 @@ export default function Run() {
                 yLabel={selectedCycle === 'allcof' ? t('run.cof') : undefined}
                 valueUnit={selectedCycle === 'allcof' ? '' : undefined}
                 overlay={cycleOverlay}
+                exportRef={waveformExportRef}
               />
             </div>
             {selectedCycle === 'allmax' && (
               <div className="absolute inset-0">
-                <MaxCycleChart loopResults={loopResults} />
+                <MaxCycleChart loopResults={loopResults} exportRef={maxCycleExportRef} />
               </div>
             )}
             {(selectedCycle === 'all' || selectedCycle === 'allcof') && (

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useEffect } from 'react'
+import { useMemo, useRef, useEffect, type MutableRefObject } from 'react'
 import ReactECharts from 'echarts-for-react'
 import type { EChartsOption } from 'echarts'
 import { useSettingsStore } from '@/store/settings'
@@ -6,8 +6,10 @@ import type { LoopResult } from '@/store/app'
 
 export function MaxCycleChart({
   loopResults,
+  exportRef,
 }: {
   loopResults: LoopResult[]
+  exportRef?: MutableRefObject<(() => void) | null>
 }) {
   const chartRef = useRef<ReactECharts>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -106,6 +108,20 @@ export function MaxCycleChart({
     ro.observe(el)
     return () => ro.disconnect()
   }, [])
+
+  // Expose a PNG export callback to the parent via exportRef.
+  useEffect(() => {
+    if (!exportRef) return
+    exportRef.current = () => {
+      const inst = chartRef.current?.getEchartsInstance()
+      if (!inst) return
+      const url = inst.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: isDark ? '#0f172a' : '#ffffff' })
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'waveform.png'
+      a.click()
+    }
+  }, [exportRef, isDark])
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%' }}>

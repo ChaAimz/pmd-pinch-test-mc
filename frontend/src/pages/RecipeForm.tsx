@@ -12,8 +12,7 @@ import { KeyboardInput } from '@/components/ui/keyboard-input'
 import { api } from '@/lib/api'
 import type { Recipe, RecipeCreate } from '@/lib/types'
 import { useSettingsStore } from '@/store/settings'
-
-const GF_PER_N = 101.97162129779283
+import { GF_PER_N } from '@/lib/units'
 
 interface Props {
   recipe: Recipe | null

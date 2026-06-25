@@ -1,7 +1,7 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useQuery, useQueries } from '@tanstack/react-query'
-import { ArrowLeft, Download, FileText, Ruler, Zap, Repeat, Grip, Circle, Timer, Radio } from 'lucide-react'
+import { ArrowLeft, Download, FileText, ImageDown, Ruler, Zap, Repeat, Grip, Circle, Timer, Radio } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -52,6 +52,9 @@ export default function HistoryDetail() {
   })
 
   const esp32Unit = useSettingsStore((s) => s.esp32Unit)
+
+  const waveformExportRef = useRef<(() => void) | null>(null)
+  const maxCycleExportRef = useRef<(() => void) | null>(null)
 
   // --- Data layer (hooks must run before any early return) ---
   // Fetch every loop's waveform once. The same fetch set feeds the stitched
@@ -291,56 +294,73 @@ export default function HistoryDetail() {
               </TableBody>
             </Table>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full mt-2 shrink-0 gap-1"
-              onClick={() => {
-                if (view === 'allmax') {
-                  downloadRows(`run${run.id}_all_max.csv`, [
-                    'cycle,max_force_n,avg_clamp_n,cof,judgment',
-                    ...run.loops.filter((l) => l.peak_force_n != null).map((l) => {
-                      const cof = l.avg_clamp_n != null && l.avg_clamp_n !== 0
-                        ? (l.peak_force_n! / l.avg_clamp_n).toFixed(4) : ''
-                      return `${l.loop_index},${l.peak_force_n!.toFixed(4)},${l.avg_clamp_n?.toFixed(4) ?? ''},${cof},${l.judgment ?? ''}`
-                    }),
-                  ])
-                  return
-                }
-                if (view === 'all' || view === 'allcof') {
-                  if (!combinedStaticData || !combinedCofData || !combinedClampData) return
-                  const label = view === 'allcof' ? `run${run.id}_all_cof` : `run${run.id}_all_cycles`
-                  const rows = ['cycle_x,tension_n,cof,clamp_n']
-                  for (let i = 0; i < combinedStaticData.length; i++) {
-                    const [x, force_n] = combinedStaticData[i]
-                    const [, cof] = combinedCofData[i]
-                    const [, clamp] = combinedClampData[i]
-                    rows.push(`${x.toFixed(4)},${force_n.toFixed(4)},${Number.isFinite(cof) ? cof.toFixed(4) : ''},${clamp != null ? clamp.toFixed(4) : ''}`)
+            <div className="flex gap-1 mt-2 shrink-0">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1 gap-1"
+                onClick={() => {
+                  if (view === 'allmax') {
+                    downloadRows(`run${run.id}_all_max.csv`, [
+                      'cycle,max_force_n,avg_clamp_n,cof,judgment',
+                      ...run.loops.filter((l) => l.peak_force_n != null).map((l) => {
+                        const cof = l.avg_clamp_n != null && l.avg_clamp_n !== 0
+                          ? (l.peak_force_n! / l.avg_clamp_n).toFixed(4) : ''
+                        return `${l.loop_index},${l.peak_force_n!.toFixed(4)},${l.avg_clamp_n?.toFixed(4) ?? ''},${cof},${l.judgment ?? ''}`
+                      }),
+                    ])
+                    return
                   }
-                  downloadRows(`${label}.csv`, rows)
-                  return
-                }
-                if (!singleData) return
-                const loopData = run.loops.find((l) => l.loop_index === view)
-                const clamp_n = loopData?.avg_clamp_n ?? null
-                const rows = ['time_s,tension_n,cof,clamp_n']
-                for (const [time_s, force_n] of singleData) {
-                  const cof = clamp_n != null && clamp_n !== 0 ? force_n / clamp_n : NaN
-                  rows.push(`${time_s.toFixed(4)},${force_n.toFixed(4)},${Number.isFinite(cof) ? cof.toFixed(4) : ''},${clamp_n?.toFixed(4) ?? ''}`)
-                }
-                downloadRows(`run${run.id}_cycle${view}.csv`, rows)
-              }}
-              title={t('historyDetail.exportCsvTitle')}
-            >
-              <Download size={14} />
-              {t('run.exportCSV')}
-              <span className="text-muted-foreground font-normal">·{' '}
-                {view === 'allmax' ? t('run.allMax')
-                  : view === 'allcof' ? t('run.allCof')
-                  : view === 'all' ? t('run.allCycles')
-                  : `${t('run.cycle')} ${view}`}
-              </span>
-            </Button>
+                  if (view === 'all' || view === 'allcof') {
+                    if (!combinedStaticData || !combinedCofData || !combinedClampData) return
+                    const label = view === 'allcof' ? `run${run.id}_all_cof` : `run${run.id}_all_cycles`
+                    const rows = ['cycle_x,tension_n,cof,clamp_n']
+                    for (let i = 0; i < combinedStaticData.length; i++) {
+                      const [x, force_n] = combinedStaticData[i]
+                      const [, cof] = combinedCofData[i]
+                      const [, clamp] = combinedClampData[i]
+                      rows.push(`${x.toFixed(4)},${force_n.toFixed(4)},${Number.isFinite(cof) ? cof.toFixed(4) : ''},${clamp != null ? clamp.toFixed(4) : ''}`)
+                    }
+                    downloadRows(`${label}.csv`, rows)
+                    return
+                  }
+                  if (!singleData) return
+                  const loopData = run.loops.find((l) => l.loop_index === view)
+                  const clamp_n = loopData?.avg_clamp_n ?? null
+                  const rows = ['time_s,tension_n,cof,clamp_n']
+                  for (const [time_s, force_n] of singleData) {
+                    const cof = clamp_n != null && clamp_n !== 0 ? force_n / clamp_n : NaN
+                    rows.push(`${time_s.toFixed(4)},${force_n.toFixed(4)},${Number.isFinite(cof) ? cof.toFixed(4) : ''},${clamp_n?.toFixed(4) ?? ''}`)
+                  }
+                  downloadRows(`run${run.id}_cycle${view}.csv`, rows)
+                }}
+                title={t('historyDetail.exportCsvTitle')}
+              >
+                <Download size={14} />
+                {t('run.exportCSV')}
+                <span className="text-muted-foreground font-normal">·{' '}
+                  {view === 'allmax' ? t('run.allMax')
+                    : view === 'allcof' ? t('run.allCof')
+                    : view === 'all' ? t('run.allCycles')
+                    : `${t('run.cycle')} ${view}`}
+                </span>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1 gap-1"
+                onClick={() => {
+                  if (view === 'allmax') {
+                    maxCycleExportRef.current?.()
+                  } else {
+                    waveformExportRef.current?.()
+                  }
+                }}
+                title="Export chart as PNG"
+              >
+                <ImageDown size={14} /> {t('run.exportPNG')}
+              </Button>
+            </div>
           </div>
 
           {/* Right: waveform chart — fills remaining width */}
@@ -418,6 +438,7 @@ export default function HistoryDetail() {
                   yLabel={view === 'allcof' ? t('run.cof') : undefined}
                   valueUnit={view === 'allcof' ? '' : undefined}
                   overlay={cycleOverlay}
+                  exportRef={waveformExportRef}
                 />
               </div>
               {view === 'allmax' && (
@@ -434,6 +455,7 @@ export default function HistoryDetail() {
                       peak_clamp_n: null,
                       avg_clamp_n: l.avg_clamp_n,
                     }))}
+                    exportRef={maxCycleExportRef}
                   />
                 </div>
               )}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, type MutableRefObject } from 'react'
 import ReactECharts from 'echarts-for-react'
 import type { EChartsOption } from 'echarts'
 import { useChartStore } from '@/store/chart'
@@ -143,6 +143,7 @@ export function WaveformChart({
   minForceN,
   maxForceN,
   overlay,
+  exportRef,
 }: {
   staticData?: Array<[number, number]>
   cycleBoundaries?: number[]
@@ -153,6 +154,7 @@ export function WaveformChart({
   maxForceN?: number | null
   /** Optional 2nd line (e.g. peak value per test cycle); empty/undefined = hidden. */
   overlay?: Array<[number, number]>
+  exportRef?: MutableRefObject<(() => void) | null>
 } = {}) {
   const chartRef = useRef<ReactECharts>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -301,6 +303,20 @@ export function WaveformChart({
     zr.on('dblclick', reset)
     return () => zr.off('dblclick', reset)
   }, [])
+
+  // Expose a PNG export callback to the parent via exportRef.
+  useEffect(() => {
+    if (!exportRef) return
+    exportRef.current = () => {
+      const inst = chartRef.current?.getEchartsInstance()
+      if (!inst) return
+      const url = inst.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: isDark ? '#0f172a' : '#ffffff' })
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'waveform.png'
+      a.click()
+    }
+  }, [exportRef, isDark])
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%' }}>

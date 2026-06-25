@@ -64,6 +64,9 @@ def get_waveform(run_id: int, idx: int):
 
 @router.delete("/{run_id}", status_code=204)
 def delete_run(run_id: int, session: Session = Depends(get_session)):
+    runner = deps.get_runner()
+    if runner is not None and runner.is_running and runner._run_id == run_id:
+        raise HTTPException(409, "Cannot delete a run that is currently in progress")
     run = session.get(TestRun, run_id)
     if run is None:
         raise HTTPException(404, "Run not found")
@@ -126,6 +129,6 @@ def export_csv(run_id: int, trimmed: bool = True, session: Session = Depends(get
         avg_clamp = l.avg_clamp_n
         for t_ms, force_n in zip(t_list, f_list):
             cof = round(force_n / avg_clamp, 6) if avg_clamp else ""
-            writer.writerow([l.loop_index, round((t_ms - t0) / 1000, 4), round(force_n, 4), cof, round(avg_clamp, 4) if avg_clamp else ""])
+            writer.writerow([l.loop_index, round((t_ms - t0) / 1000, 4), round(force_n, 4), cof, round(avg_clamp, 4) if avg_clamp is not None else ""])
     buffer.seek(0)
     return StreamingResponse(iter([buffer.getvalue()]), media_type="text/csv", headers={"Content-Disposition": f'attachment; filename="run_{run_id}_imada.csv"'})

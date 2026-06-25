@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import {
-  Tag, Ruler, Gauge, Weight, Repeat, ArrowUpDown,
-  Search, ChevronUp, ChevronDown, X,
+  Tag, Ruler, Gauge, Weight, Repeat, Circle, Timer,
+  Search, ChevronUp, ChevronDown, X, Trash2, Pencil, Copy,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { LucideIcon } from 'lucide-react'
@@ -15,9 +15,11 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { api } from '@/lib/api'
 import type { Recipe } from '@/lib/types'
+import { useSettingsStore } from '@/store/settings'
+import { formatClampForce } from '@/lib/units'
 import { RecipeForm } from './RecipeForm'
 
-type SortKey = 'name' | 'position_mm' | 'speed_mms' | 'clamp_threshold_n' | 'loop_count'
+type SortKey = 'name' | 'position_mm' | 'speed_mms' | 'diameter_mm' | 'clamp_threshold_n' | 'loop_count' | 'prepare_timer_s'
 type SortDir = 'asc' | 'desc'
 
 function matches(r: Recipe, query: string): boolean {
@@ -27,10 +29,10 @@ function matches(r: Recipe, query: string): boolean {
     r.name,
     r.position_mm,
     r.speed_mms,
+    r.diameter_mm,
     r.clamp_threshold_n,
     r.loop_count,
-    r.min_force_n ?? '',
-    r.max_force_n ?? '',
+    r.prepare_timer_s,
   ]
   return fields.some((v) => String(v).toLowerCase().includes(q))
 }
@@ -50,12 +52,13 @@ interface HeadProps {
   active?: SortKey | null
   dir?: SortDir
   onSort?: (key: SortKey) => void
+  className?: string
 }
-function SortableHead({ icon: Icon, label, sortKey, active, dir, onSort }: HeadProps) {
+function SortableHead({ icon: Icon, label, sortKey, active, dir, onSort, className }: HeadProps) {
   const isActive = sortKey && active === sortKey
   const sortable = !!sortKey && !!onSort
   return (
-    <TableHead>
+    <TableHead className={className}>
       {sortable ? (
         <button
           type="button"
@@ -82,6 +85,7 @@ function SortableHead({ icon: Icon, label, sortKey, active, dir, onSort }: HeadP
 
 export default function Recipes() {
   const { t } = useTranslation()
+  const esp32Unit = useSettingsStore((s) => s.esp32Unit)
   const qc = useQueryClient()
   const [edit, setEdit] = useState<Recipe | null>(null)
   const [clone, setClone] = useState<Recipe | null>(null)
@@ -165,31 +169,35 @@ export default function Recipes() {
         <Table>
           <TableHeader className="sticky top-0 z-10 bg-card">
             <TableRow>
-              <SortableHead icon={Tag} label={t('recipes.name')} sortKey="name" active={sortKey} dir={sortDir} onSort={handleSort} />
+              <SortableHead icon={Tag} label={t('recipes.name')} sortKey="name" active={sortKey} dir={sortDir} onSort={handleSort} className="min-w-[200px]" />
               <SortableHead icon={Ruler} label={t('recipes.position')} sortKey="position_mm" active={sortKey} dir={sortDir} onSort={handleSort} />
               <SortableHead icon={Gauge} label={t('recipes.speed')} sortKey="speed_mms" active={sortKey} dir={sortDir} onSort={handleSort} />
-              <SortableHead icon={Weight} label={t('recipes.holdTime')} sortKey="clamp_threshold_n" active={sortKey} dir={sortDir} onSort={handleSort} />
+              <SortableHead icon={Circle} label={t('recipes.diameter')} sortKey="diameter_mm" active={sortKey} dir={sortDir} onSort={handleSort} />
+              <SortableHead icon={Weight} label={`${t('recipes.clamp')} (${esp32Unit})`} sortKey="clamp_threshold_n" active={sortKey} dir={sortDir} onSort={handleSort} />
               <SortableHead icon={Repeat} label={t('recipes.loopCount')} sortKey="loop_count" active={sortKey} dir={sortDir} onSort={handleSort} />
-              <SortableHead icon={ArrowUpDown} label={`${t('recipes.minForce')} / ${t('recipes.maxForce')}`} />
-              <TableHead className="w-44" />
+              <SortableHead icon={Timer} label={t('recipes.prepareTimer')} sortKey="prepare_timer_s" active={sortKey} dir={sortDir} onSort={handleSort} />
+              <TableHead className="w-24" />
             </TableRow>
           </TableHeader>
           <TableBody>
             {visible.map((r) => (
               <TableRow key={r.id}>
-                <TableCell className="font-medium">{r.name}</TableCell>
+                <TableCell className="font-medium align-top">
+                  <div className="max-w-[360px] break-words" title={r.name}>{r.name}</div>
+                </TableCell>
                 <TableCell>{r.position_mm}</TableCell>
                 <TableCell>{r.speed_mms}</TableCell>
-                <TableCell>{r.clamp_threshold_n}</TableCell>
+                <TableCell>{r.diameter_mm}</TableCell>
+                <TableCell>{formatClampForce(r.clamp_threshold_n, esp32Unit)}</TableCell>
                 <TableCell>{r.loop_count}</TableCell>
-                <TableCell>{r.min_force_n ?? '—'} / {r.max_force_n ?? '—'}</TableCell>
+                <TableCell>{r.prepare_timer_s}</TableCell>
                 <TableCell>
-                  <div className="flex gap-2 justify-end">
-                    <Button size="sm" variant="outline" onClick={() => openEdit(r)}>{t('recipes.edit')}</Button>
-                    <Button size="sm" variant="outline" onClick={() => openClone(r)}>{t('recipes.cloneBtn')}</Button>
+                  <div className="flex gap-1 justify-end">
+                    <Button size="icon" variant="ghost" onClick={() => openEdit(r)} title={t('recipes.edit')}><Pencil size={15} /></Button>
+                    <Button size="icon" variant="ghost" onClick={() => openClone(r)} title={t('recipes.cloneBtn')}><Copy size={15} /></Button>
                     <AlertDialog>
-                      <AlertDialogTrigger render={<Button size="sm" variant="destructive" />}>
-                        {t('common.delete')}
+                      <AlertDialogTrigger render={<Button size="icon" variant="ghost" className="text-destructive hover:text-destructive" title={t('common.delete')} />}>
+                        <Trash2 size={15} />
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
@@ -208,7 +216,7 @@ export default function Recipes() {
             ))}
             {visible.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-muted-foreground py-10">
+                <TableCell colSpan={8} className="text-center text-muted-foreground py-10">
                   {recipes.length === 0
                     ? t('recipes.noRecipes')
                     : t('recipes.noMatch', { query })}

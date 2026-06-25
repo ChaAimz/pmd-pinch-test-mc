@@ -19,13 +19,13 @@ export function ClampProgress({ threshold }: Props) {
   const reached = value >= threshold
 
   return (
-    <div className="bg-amber-50 dark:bg-amber-950/30 border-2 border-amber-300 dark:border-amber-700 rounded-xl p-4 shadow-sm">
+    <div className="bg-amber-50 dark:bg-amber-950/30 border-2 border-amber-300 dark:border-amber-700 rounded-xl p-4 shadow-sm animate-fade-in-up">
       <div className="flex items-baseline justify-between mb-2">
         <span className="text-sm font-bold text-amber-800 dark:text-amber-200 uppercase tracking-wider">
           {reached ? 'Clamp Threshold Reached' : 'Clamping…'}
         </span>
         <span className="font-mono text-xl tabular-nums">
-          <span className={cn('font-bold', reached ? 'text-green-700 dark:text-green-400' : 'text-amber-700 dark:text-amber-300')}>
+          <span className={cn('font-bold transition-colors duration-300', reached ? 'text-green-700 dark:text-green-400' : 'text-amber-700 dark:text-amber-300')}>
             {value.toFixed(1)}
           </span>
           <span className="text-slate-400"> / {threshold.toFixed(1)} N</span>

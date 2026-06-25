@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Play, ClipboardList, History, Cpu, Settings2, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
@@ -7,6 +7,7 @@ import { TopBar } from '@/components/TopBar'
 
 export default function Layout() {
   const { t } = useTranslation()
+  const location = useLocation()
   const { sidebarCollapsed, setSidebarCollapsed } = useSettingsStore()
 
   const NAV = [
@@ -60,7 +61,7 @@ export default function Layout() {
         </div>
 
         {/* Nav links */}
-        <nav className="flex-1 flex flex-col gap-0.5 p-2 pt-3">
+        <nav className="flex-1 flex flex-col gap-0.5 p-2 pt-3 stagger-children">
           {NAV.map(({ to, label, Icon }) => (
             <NavLink
               key={to}
@@ -68,16 +69,16 @@ export default function Layout() {
               title={sidebarCollapsed ? label : undefined}
               className={({ isActive }) =>
                 cn(
-                  'group flex items-center gap-3 px-2.5 py-2 rounded-md text-sm font-medium transition-colors',
+                  'group flex items-center gap-3 px-2.5 py-2 rounded-md text-sm font-medium transition-all duration-150 animate-slide-in-left',
                   sidebarCollapsed && 'justify-center',
                   isActive
                     // Inverted-pill: active item flips sidebar's color scheme — Vercel/Linear feel
                     ? 'bg-zinc-900 text-white shadow-sm dark:bg-zinc-100 dark:text-zinc-900'
-                    : 'text-zinc-600 hover:bg-zinc-200/60 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/60 dark:hover:text-zinc-50',
+                    : 'text-zinc-600 hover:bg-zinc-200/60 hover:text-zinc-900 hover:translate-x-0.5 dark:text-zinc-400 dark:hover:bg-zinc-800/60 dark:hover:text-zinc-50',
                 )
               }
             >
-              <Icon size={17} className="shrink-0" />
+              <Icon size={17} className="shrink-0 transition-transform duration-150 group-hover:scale-110" />
               {!sidebarCollapsed && <span className="truncate">{label}</span>}
             </NavLink>
           ))}
@@ -95,7 +96,7 @@ export default function Layout() {
 
       <main className="flex-1 flex flex-col overflow-hidden">
         <TopBar />
-        <div className="flex-1 overflow-auto p-6">
+        <div key={location.key} className="flex-1 overflow-auto p-6 animate-fade-in-up">
           <Outlet />
         </div>
       </main>

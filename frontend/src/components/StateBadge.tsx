@@ -38,7 +38,11 @@ export function StateBadge({ state, machineReady }: { state: string; machineRead
   const effectiveState = state === 'IDLE' && machineReady === false ? 'IDLE_NOT_READY' : state
   return (
     <Badge
-      className={cn('font-mono text-base px-4 py-4', COLORS[effectiveState] ?? 'bg-slate-500 text-white')}
+      key={effectiveState}
+      className={cn(
+        'font-mono text-base px-4 py-4 animate-pop transition-colors duration-300',
+        COLORS[effectiveState] ?? 'bg-slate-500 text-white',
+      )}
       title={effectiveState === 'IDLE_NOT_READY' ? 'MR303 OFF — machine not ready' : undefined}
     >
       {DISPLAY_LABEL[effectiveState] ?? state}

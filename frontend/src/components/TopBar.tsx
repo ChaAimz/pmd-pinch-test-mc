@@ -24,7 +24,7 @@ function Dot({ ok }: { ok: boolean }) {
   return (
     <span
       className={cn(
-        'relative inline-block w-2 h-2 rounded-full shrink-0',
+        'relative inline-block w-2 h-2 rounded-full shrink-0 transition-colors duration-500 animate-scale-in',
         ok ? 'bg-emerald-500' : 'bg-zinc-400 dark:bg-zinc-600',
       )}
     >
@@ -250,9 +250,9 @@ function WsStatusPopover() {
           title={t('topbar.ws.statusTitle')}
         >
           {wsConnected ? (
-            <PlugZap size={16} className="text-emerald-500" />
+            <PlugZap key="connected" size={16} className="text-emerald-500 animate-scale-in" />
           ) : (
-            <Unplug size={16} className="text-rose-500 animate-pulse" />
+            <Unplug key="disconnected" size={16} className="text-rose-500 animate-pulse animate-scale-in" />
           )}
         </button>
       </PopoverTrigger>
@@ -312,9 +312,9 @@ function ShutdownButton() {
           title={t('topbar.shutdown')}
           className={cn(
             'flex items-center justify-center w-8 h-8 rounded-lg',
-            'text-rose-500 hover:bg-rose-500/15',
+            'text-rose-500 hover:bg-rose-500/15 hover:scale-110 active:scale-95',
             'disabled:opacity-50 disabled:cursor-not-allowed',
-            'transition-colors duration-150',
+            'transition-all duration-150',
           )}
         >
           <Power size={14} strokeWidth={2.5} />

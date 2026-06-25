@@ -107,24 +107,35 @@ class MockPlc:
     def _press_clamp(self) -> None:
         def run() -> None:
             time.sleep(self._script.before_mr803_ms / 1000)
-            self._loops_pressed += 1
+            with self._lock:
+                self._loops_pressed += 1
             self.set_bit(803, True)  # PLC presses the clamp
         threading.Thread(target=run, daemon=True).start()
 
     def _tension_seq(self) -> None:
         time.sleep(self._script.after_mr803_to_mr805_ms / 1000)
+        if not self._connected:
+            return
         self.set_bit(805, True)
         time.sleep(self._script.after_mr805_to_mr806_ms / 1000)
+        if not self._connected:
+            return
         self.set_bit(806, True)
 
     def _after_unclamp(self) -> None:
+        if not self._connected:
+            return
         loop_count = self.read_word(0) or 1
+        with self._lock:
+            loops_done = self._loops_pressed
         # De-assert the PLC-owned per-loop bits, like a real ladder would.
         self.set_bit(803, False)
         self.set_bit(805, False)
         self.set_bit(806, False)
-        if self._loops_pressed >= loop_count:
+        if loops_done >= loop_count:
             time.sleep(self._script.after_mr806_to_mr807_ms / 1000)
+            if not self._connected:
+                return
             if self._script.final_mr807:
                 self.set_bit(807, True)  # Finish All Loops
         else:
