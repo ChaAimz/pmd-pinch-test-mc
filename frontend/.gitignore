@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Temp Playwright audit scripts
+pw_audit_*.mjs
+
+# Scratchpad files accidentally created in this directory by tooling
+UserspmdAppData*
+screenshots/
