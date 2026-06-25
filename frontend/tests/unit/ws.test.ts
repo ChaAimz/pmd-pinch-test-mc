@@ -33,11 +33,15 @@ describe('WsClient', () => {
     expect(handler).toHaveBeenCalledWith({ type: 'state_change', from: 'IDLE', to: 'LOOP_BEGIN' })
     c.destroy()
   })
-  it('fires onConnected callback', () => {
+  it('notifies onConnection subscribers on open and close', () => {
+    const c = new WsClient('/ws')
     const cb = vi.fn()
-    const c = new WsClient('/ws', { onConnected: cb })
+    c.onConnection(cb)
+    // Initial state: not yet connected (immediate fire)
+    expect(cb).toHaveBeenLastCalledWith(false)
     MockWS.instances[0].open()
-    expect(cb).toHaveBeenCalled()
+    expect(cb).toHaveBeenLastCalledWith(true)
+    expect(c.isConnected).toBe(true)
     c.destroy()
   })
   it('off() unregisters handler', () => {

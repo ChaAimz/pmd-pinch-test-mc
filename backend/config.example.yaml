@@ -19,11 +19,14 @@ hardware:
     calibration:
       slope: 0.0123
       offset: -45.0
+    clamp_offset_gf: 0.0
   state_timeouts:
+    wait_clamp_press_ms: 30000
     wait_clamp_force_ms: 10000
     wait_b5_ms: 30000
     tension_check_ms: 30000
     done_b7_ms: 30000
+    tension_start_offset_ms: 50     # ms after MR805 to skip (mechanical travel delay)
 
 mock_mode: true
 

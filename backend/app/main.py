@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import asyncio
+import os
+import signal
+import threading
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Optional
@@ -9,6 +12,7 @@ from fastapi import FastAPI
 
 from app import deps
 from app.api import config as config_api, hardware as hardware_api, recipes, runs, sessions, ws
+from app.api import settings as settings_api
 from app.config import Settings, load_settings
 from app.db.engine import init_engine
 from app.hardware.manager import HardwareManager
@@ -56,6 +60,8 @@ def _load_or_default(test_mode: bool, waveform_dir: Optional[Path]) -> Settings:
 def build_app(test_mode: bool = False, waveform_dir: Optional[Path] = None) -> FastAPI:
     settings = _load_or_default(test_mode, waveform_dir)
     deps.set_settings(settings)
+    if not test_mode:
+        deps.set_config_path(Path("config.yaml").resolve())
 
     configure_logging(level="INFO", log_dir=Path("logs"))
 
@@ -89,7 +95,25 @@ def build_app(test_mode: bool = False, waveform_dir: Optional[Path] = None) -> F
     app.include_router(runs.router)
     app.include_router(hardware_api.router)
     app.include_router(config_api.router)
+    app.include_router(settings_api.router)
     app.include_router(ws.router)
+
+    from fastapi import APIRouter as _AR
+    _sys_router = _AR(prefix="/api/system", tags=["system"])
+
+    @_sys_router.post("/shutdown")
+    async def shutdown():
+        """Shut down the Windows PC, then kill this process."""
+        import subprocess, time
+        def _shutdown():
+            time.sleep(0.3)
+            subprocess.Popen(["shutdown", "/s", "/f", "/t", "0"])
+            time.sleep(0.5)
+            os._exit(0)
+        threading.Thread(target=_shutdown, daemon=True).start()
+        return {"ok": True}
+
+    app.include_router(_sys_router)
     return app
 
 

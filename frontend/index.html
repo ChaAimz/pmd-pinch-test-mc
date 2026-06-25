@@ -3,8 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>PMD Pinch Test</title>
+    <style>html,body{margin:0;background:#09090b}</style>
+    <script>
+      try {
+        var s = JSON.parse(localStorage.getItem('pmd-settings') || '{}')
+        var theme = (s.state || s).theme || 'system'
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (theme === 'light') document.documentElement.style.background = '#ffffff'
+        else document.documentElement.classList.add('dark')
+      } catch(e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

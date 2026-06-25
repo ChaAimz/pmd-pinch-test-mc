@@ -1,6 +1,6 @@
 # Plan 4 — History UI + Hardware Page + API Fixes
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Implement the History page (run list + detail with per-loop chart), Hardware page (live status + reconnect + ESP32 calibration wizard), and fix broken session API endpoints in the frontend.
 
@@ -34,7 +34,7 @@ frontend/src/
 - Modify: `frontend/src/lib/types.ts`
 - Modify: `frontend/src/lib/api.ts`
 
-- [ ] **Step 1: Add new types to `frontend/src/lib/types.ts`**
+- [x] **Step 1: Add new types to `frontend/src/lib/types.ts`**
 
 Append these interfaces (do NOT change the existing `Recipe` type — Recipes page depends on it):
 
@@ -84,7 +84,7 @@ export interface WaveformPoint {
 }
 ```
 
-- [ ] **Step 2: Fix and extend `frontend/src/lib/api.ts`**
+- [x] **Step 2: Fix and extend `frontend/src/lib/api.ts`**
 
 Replace the entire file:
 
@@ -152,7 +152,7 @@ export const api = {
 }
 ```
 
-- [ ] **Step 3: Run TypeScript check**
+- [x] **Step 3: Run TypeScript check**
 
 ```powershell
 cd c:\Users\Aimz\source\repos\pmd-pinch-test-mc\frontend
@@ -161,7 +161,7 @@ npx tsc --noEmit
 
 Expected: no errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```
 git add frontend/src/lib/types.ts frontend/src/lib/api.ts
@@ -177,7 +177,7 @@ git commit -m "fix(frontend): correct session endpoints; add runs/hardware API +
 
 The old `api.sessions.stop()` sent `DELETE /api/sessions/current` with no run_id. The backend requires `POST /api/sessions/{run_id}/stop`. Fix by reading `currentRunId` from the app store.
 
-- [ ] **Step 1: Update `frontend/src/hooks/useSessionControl.ts`**
+- [x] **Step 1: Update `frontend/src/hooks/useSessionControl.ts`**
 
 ```typescript
 import { useMutation } from '@tanstack/react-query'
@@ -220,7 +220,7 @@ export function useSessionControl() {
 }
 ```
 
-- [ ] **Step 2: Run TypeScript check**
+- [x] **Step 2: Run TypeScript check**
 
 ```powershell
 npx tsc --noEmit
@@ -228,7 +228,7 @@ npx tsc --noEmit
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```
 git add frontend/src/hooks/useSessionControl.ts
@@ -242,7 +242,7 @@ git commit -m "fix(frontend): useSessionControl stop sends run_id to correct end
 **Files:**
 - Create: `frontend/src/pages/History.tsx`
 
-- [ ] **Step 1: Create `frontend/src/pages/History.tsx`**
+- [x] **Step 1: Create `frontend/src/pages/History.tsx`**
 
 ```typescript
 import { useState } from 'react'
@@ -350,7 +350,7 @@ export default function History() {
 }
 ```
 
-- [ ] **Step 2: Run TypeScript check**
+- [x] **Step 2: Run TypeScript check**
 
 ```powershell
 npx tsc --noEmit
@@ -358,7 +358,7 @@ npx tsc --noEmit
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```
 git add frontend/src/pages/History.tsx
@@ -372,7 +372,7 @@ git commit -m "feat(frontend): History list page with status filter"
 **Files:**
 - Create: `frontend/src/pages/HistoryDetail.tsx`
 
-- [ ] **Step 1: Create `frontend/src/pages/HistoryDetail.tsx`**
+- [x] **Step 1: Create `frontend/src/pages/HistoryDetail.tsx`**
 
 ```typescript
 import { useRef, useEffect, useState } from 'react'
@@ -560,7 +560,7 @@ export default function HistoryDetail() {
 }
 ```
 
-- [ ] **Step 2: Run TypeScript check**
+- [x] **Step 2: Run TypeScript check**
 
 ```powershell
 npx tsc --noEmit
@@ -568,7 +568,7 @@ npx tsc --noEmit
 
 Expected: no errors. If uPlot types cause issues, check `frontend/src/components/WaveformChart.tsx` for how it's imported and mirror that pattern.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```
 git add frontend/src/pages/HistoryDetail.tsx
@@ -582,7 +582,7 @@ git commit -m "feat(frontend): History detail page — per-loop table + expandab
 **Files:**
 - Create: `frontend/src/pages/Hardware.tsx`
 
-- [ ] **Step 1: Create `frontend/src/pages/Hardware.tsx`**
+- [x] **Step 1: Create `frontend/src/pages/Hardware.tsx`**
 
 ```typescript
 import { useState } from 'react'
@@ -794,7 +794,7 @@ export default function Hardware() {
 }
 ```
 
-- [ ] **Step 2: Run TypeScript check**
+- [x] **Step 2: Run TypeScript check**
 
 ```powershell
 npx tsc --noEmit
@@ -802,7 +802,7 @@ npx tsc --noEmit
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```
 git add frontend/src/pages/Hardware.tsx
@@ -816,7 +816,7 @@ git commit -m "feat(frontend): Hardware page — device status, reconnect, ESP32
 **Files:**
 - Modify: `frontend/src/App.tsx`
 
-- [ ] **Step 1: Update `frontend/src/App.tsx`**
+- [x] **Step 1: Update `frontend/src/App.tsx`**
 
 ```typescript
 import { useEffect } from 'react'
@@ -858,7 +858,7 @@ export default function App() {
 }
 ```
 
-- [ ] **Step 2: Run TypeScript check**
+- [x] **Step 2: Run TypeScript check**
 
 ```powershell
 npx tsc --noEmit
@@ -866,7 +866,7 @@ npx tsc --noEmit
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```
 git add frontend/src/App.tsx
@@ -879,7 +879,7 @@ git commit -m "feat(frontend): wire History/:id + Hardware routes in App"
 
 **Files:** none (verification only)
 
-- [ ] **Step 1: Full TypeScript check**
+- [x] **Step 1: Full TypeScript check**
 
 ```powershell
 cd c:\Users\Aimz\source\repos\pmd-pinch-test-mc\frontend
@@ -888,7 +888,7 @@ npx tsc --noEmit
 
 Expected: 0 errors.
 
-- [ ] **Step 2: Run frontend unit tests**
+- [x] **Step 2: Run frontend unit tests**
 
 ```powershell
 npx vitest run
@@ -896,7 +896,7 @@ npx vitest run
 
 Expected: all pass (existing ws + store tests).
 
-- [ ] **Step 3: Start dev servers and smoke-test in browser**
+- [x] **Step 3: Start dev servers and smoke-test in browser**
 
 Terminal 1:
 ```powershell
@@ -916,7 +916,7 @@ Open `http://localhost:5173` and verify:
 - `/hardware` — shows PLC/Imada/ESP32 status dots + Reconnect buttons + calibration wizard
 - `/run` — start session still works (uses corrected endpoint)
 
-- [ ] **Step 4: Commit any fixes found during smoke test**
+- [x] **Step 4: Commit any fixes found during smoke test**
 
 ```
 git add -p

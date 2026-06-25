@@ -1,27 +1,53 @@
+// UI settings stored in SQLite via /api/settings.
+// Keys are camelCase — match the zustand settings store EXACTLY.
+// Backend stores them opaquely (JSON blob), so key mismatches are a silent data loss.
+export interface UiSettings {
+  theme: 'light' | 'dark' | 'system'
+  accentHue: number
+  sidebarCollapsed: boolean
+  esp32Unit: 'gf' | 'N'
+  showClampCard: boolean
+  chartMode: 'continuous' | 'gated'
+  minimalView: boolean
+  language: 'en' | 'th' | 'jp'
+  clampOffsetGf: number
+}
+
+// Field names mirror backend/app/schemas/recipe.py. Do NOT rename without
+// updating both sides — recipe POST is otherwise rejected with 422.
 export interface Recipe {
   id: number
   name: string
-  actuator_position_mm: number
-  speed_mm_s: number
+  description: string | null
+  position_mm: number
+  speed_mms: number
   clamp_threshold_n: number
-  loops: number
-  hold_time_ms: number
+  loop_count: number
   min_force_n: number | null
   max_force_n: number | null
+  sampling_hz: number
+  diameter_mm: number
+  prepare_timer_s: number
   created_at: string
   updated_at: string
 }
 export type RecipeCreate = Omit<Recipe, 'id' | 'created_at' | 'updated_at'>
 export type RecipeUpdate = Partial<RecipeCreate>
 
-export interface WsSample { t_ms: number; force_n: number }
-export interface WsStateChange { type: 'state_change'; from: string; to: string; run_id?: number; loop?: number }
+// Wire format: backend sends each sample as a tuple [t_ms, force_n] to keep the JSON small.
+export type WsSample = [t_ms: number, force_n: number]
+export interface WsStateChange { type: 'state_change'; from: string; to: string; run_id?: number; loop?: number; at?: string }
 export interface WsHwStatus { type: 'hw_status'; plc: boolean; imada: boolean; esp32: boolean }
-export interface WsLoopResult { type: 'loop_result'; loop: number; result: 'pass' | 'fail'; peak_n: number; hold_ms: number }
-export interface WsRunFinished { type: 'run_finished'; run_id: number; passed: number; failed: number }
+// Field names mirror backend/app/schemas/ws_messages.py WsLoopResult — keep in sync.
+export interface WsLoopResult { type: 'loop_result'; run_id: number; loop: number; peak_force_n: number; min_force_n: number; avg_force_n: number; hold_time_ms: number; tension_end_ms: number | null; peak_clamp_n: number | null; avg_clamp_n: number | null; judgment: 'pass' | 'fail' }
+export interface WsRunFinished { type: 'run_finished'; run_id: number; status: string; loops_completed: number }
 export interface WsImadaBatch { type: 'imada_batch'; samples: WsSample[] }
 export interface WsEsp32Batch { type: 'esp32_batch'; samples: WsSample[] }
+export interface WsPlcBit { type: 'plc_bit'; addr: number; value: boolean }
 export interface WsError { type: 'error'; message: string }
+// Hardware clamp-force limit (force_limit_gf) exceeded — always-on safety alarm.
+// Backend has already driven MR804/MR801/MR802 and forced the run to ERROR.
+export interface WsClampForceAlarm { type: 'clamp_force_alarm'; message: string; limit_gf: number | null }
 
 // --- History / Runs ---
 
@@ -33,6 +59,9 @@ export interface TestLoop {
   peak_force_n: number | null
   avg_force_n: number | null
   hold_time_ms: number | null
+  tension_end_ms: number | null
+  peak_clamp_n: number | null
+  avg_clamp_n: number | null
   judgment: 'pass' | 'fail' | null
   waveform_file: string | null
 }

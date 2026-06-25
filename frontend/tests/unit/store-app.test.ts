@@ -18,9 +18,11 @@ describe('useAppStore', () => {
     expect(s.currentLoop).toBe(1)
   })
   it('addLoopResult accumulates results', () => {
-    useAppStore.getState().addLoopResult({ type: 'loop_result', loop: 1, result: 'pass', peak_n: 50, hold_ms: 300 })
-    useAppStore.getState().addLoopResult({ type: 'loop_result', loop: 2, result: 'fail', peak_n: 20, hold_ms: 100 })
-    expect(useAppStore.getState().loopResults).toHaveLength(2)
+    useAppStore.getState().addLoopResult({ type: 'loop_result', loop: 1, judgment: 'pass', peak_force_n: 50, min_force_n: 0, avg_force_n: 40, hold_time_ms: 300, tension_end_ms: 280 })
+    useAppStore.getState().addLoopResult({ type: 'loop_result', loop: 2, judgment: 'fail', peak_force_n: 20, min_force_n: 0, avg_force_n: 15, hold_time_ms: 100, tension_end_ms: null })
+    const results = useAppStore.getState().loopResults
+    expect(results).toHaveLength(2)
+    expect(results[0]).toMatchObject({ loop: 1, judgment: 'pass', peak_force_n: 50, hold_time_ms: 300 })
   })
   it('resetRun clears run context', () => {
     useAppStore.getState().handleStateChange({ type: 'state_change', from: 'IDLE', to: 'LOOP_BEGIN', run_id: 1, loop: 1 })

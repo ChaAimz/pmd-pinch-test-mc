@@ -49,6 +49,9 @@ class MockImada:
             self._thread = None
             self._stop_event = None
 
+    def tare(self) -> None:
+        pass  # no-op in mock mode
+
     def _run(self) -> None:
         period_s = self.period_ms / 1000.0
         interval = 1.0 / self.rate_hz

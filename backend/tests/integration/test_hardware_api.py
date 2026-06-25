@@ -26,16 +26,11 @@ def test_hardware_status(client):
     assert body["esp32"] is True
 
 
-def test_esp32_calibration_compute(client):
-    r = client.post("/api/hardware/esp32/calibrate", json={
-        "raw_at_zero": 0,
-        "raw_at_known": 1000,
-        "known_force_n": 10.0,
-    })
+
+def test_imada_tare(client):
+    r = client.post("/api/hardware/imada/tare")
     assert r.status_code == 200
-    body = r.json()
-    assert abs(body["slope"] - 0.01) < 1e-9
-    assert abs(body["offset"]) < 1e-9
+    assert r.json() == {"ok": True}
 
 
 def test_config_get(client):

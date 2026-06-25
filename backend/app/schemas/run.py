@@ -11,8 +11,12 @@ class TestLoopRead(BaseModel):
     started_at: str
     finished_at: Optional[str] = None
     peak_force_n: Optional[float] = None
+    min_force_n: Optional[float] = None
     avg_force_n: Optional[float] = None
     hold_time_ms: Optional[int] = None
+    tension_end_ms: Optional[int] = None
+    peak_clamp_n: Optional[float] = None
+    avg_clamp_n: Optional[float] = None
     judgment: Optional[str] = None
     waveform_file: Optional[str] = None
 

@@ -1,20 +1,17 @@
 from __future__ import annotations
 
-from typing import Any, List, Literal, Optional
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
 
 class WsImadaBatch(BaseModel):
     type: Literal["imada_batch"] = "imada_batch"
-    run_id: int
-    loop: int
     samples: List[List[float]]  # [[t_ms, force_n], ...]
 
 
 class WsEsp32Batch(BaseModel):
     type: Literal["esp32_batch"] = "esp32_batch"
-    run_id: int
     samples: List[List[float]]
 
 
@@ -40,8 +37,12 @@ class WsLoopResult(BaseModel):
     run_id: int
     loop: int
     peak_force_n: float
+    min_force_n: float
     avg_force_n: float
     hold_time_ms: int
+    tension_end_ms: Optional[int] = None
+    peak_clamp_n: Optional[float] = None
+    avg_clamp_n: Optional[float] = None
     judgment: str
 
 

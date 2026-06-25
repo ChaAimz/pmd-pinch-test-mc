@@ -1,6 +1,6 @@
 # Plan 1 — Backend Foundation + Mock-Driven E2E
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Build the FastAPI backend with hardware abstraction, mock drivers, state machine, REST + WebSocket APIs, and an integration test that exercises a full pinch-test session end-to-end without any real hardware.
 
@@ -109,7 +109,7 @@ pinch-test-mc/
 **Files:**
 - Create: `.gitignore`, `README.md`, `backend/pyproject.toml`, `backend/config.example.yaml`, `data/.gitkeep`, `data/waveforms/.gitkeep`
 
-- [ ] **Step 1: Initialize git**
+- [x] **Step 1: Initialize git**
 
 Run:
 ```
@@ -118,7 +118,7 @@ git config core.autocrlf true
 ```
 Expected: `Initialized empty Git repository in ...`
 
-- [ ] **Step 2: Create `.gitignore`**
+- [x] **Step 2: Create `.gitignore`**
 
 ```
 # Python
@@ -152,7 +152,7 @@ data/waveforms/*
 logs/
 ```
 
-- [ ] **Step 3: Create `README.md`**
+- [x] **Step 3: Create `README.md`**
 
 ```markdown
 # Pinch Test Machine
@@ -174,7 +174,7 @@ uvicorn app.main:app --reload
 Tests: `cd backend && pytest`
 ```
 
-- [ ] **Step 4: Create `backend/pyproject.toml`**
+- [x] **Step 4: Create `backend/pyproject.toml`**
 
 ```toml
 [project]
@@ -222,7 +222,7 @@ line-length = 100
 target-version = "py311"
 ```
 
-- [ ] **Step 5: Create `backend/config.example.yaml`**
+- [x] **Step 5: Create `backend/config.example.yaml`**
 
 ```yaml
 hardware:
@@ -263,11 +263,11 @@ server:
   port: 8000
 ```
 
-- [ ] **Step 6: Touch placeholder dirs**
+- [x] **Step 6: Touch placeholder dirs**
 
 Create empty files: `data/.gitkeep`, `data/waveforms/.gitkeep`.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```
 git add .
@@ -282,7 +282,7 @@ git commit -m "chore: initial project skeleton + pyproject + config example"
 - Create: `backend/app/__init__.py`, `backend/app/config.py`
 - Test: `backend/tests/__init__.py`, `backend/tests/conftest.py`, `backend/tests/unit/__init__.py`, `backend/tests/unit/test_config.py`
 
-- [ ] **Step 1: Write the failing test `tests/unit/test_config.py`**
+- [x] **Step 1: Write the failing test `tests/unit/test_config.py`**
 
 ```python
 import textwrap
@@ -349,7 +349,7 @@ def test_load_settings_missing_file(tmp_path: Path):
         load_settings(tmp_path / "nope.yaml")
 ```
 
-- [ ] **Step 2: Add an empty `conftest.py`**
+- [x] **Step 2: Add an empty `conftest.py`**
 
 ```python
 # tests/conftest.py
@@ -360,7 +360,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 ```
 
-- [ ] **Step 3: Run test, expect failure**
+- [x] **Step 3: Run test, expect failure**
 
 Run (from `backend/`):
 ```
@@ -368,7 +368,7 @@ pytest tests/unit/test_config.py -v
 ```
 Expected: `ModuleNotFoundError: No module named 'app.config'`.
 
-- [ ] **Step 4: Implement `app/config.py`**
+- [x] **Step 4: Implement `app/config.py`**
 
 ```python
 from __future__ import annotations
@@ -451,16 +451,16 @@ def load_settings(path: Path | str) -> Settings:
     return Settings.model_validate(raw)
 ```
 
-- [ ] **Step 5: Create `app/__init__.py`** (empty file)
+- [x] **Step 5: Create `app/__init__.py`** (empty file)
 
-- [ ] **Step 6: Run test, expect pass**
+- [x] **Step 6: Run test, expect pass**
 
 ```
 pytest tests/unit/test_config.py -v
 ```
 Expected: both tests PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```
 git add backend/app/__init__.py backend/app/config.py backend/tests
@@ -475,7 +475,7 @@ git commit -m "feat(config): yaml-backed settings loader with pydantic-settings"
 - Create: `backend/app/logging_setup.py`
 - Test: `backend/tests/unit/test_logging.py`
 
-- [ ] **Step 1: Write failing test `tests/unit/test_logging.py`**
+- [x] **Step 1: Write failing test `tests/unit/test_logging.py`**
 
 ```python
 import logging
@@ -495,14 +495,14 @@ def test_configure_logging_default_level(tmp_path):
     assert logger is not None
 ```
 
-- [ ] **Step 2: Run test, expect failure**
+- [x] **Step 2: Run test, expect failure**
 
 ```
 pytest tests/unit/test_logging.py -v
 ```
 Expected: `ModuleNotFoundError`.
 
-- [ ] **Step 3: Implement `app/logging_setup.py`**
+- [x] **Step 3: Implement `app/logging_setup.py`**
 
 ```python
 from __future__ import annotations
@@ -532,14 +532,14 @@ def configure_logging(level: str = "INFO", log_dir: Path | str = "logs"):
     return logger
 ```
 
-- [ ] **Step 4: Run test, expect pass**
+- [x] **Step 4: Run test, expect pass**
 
 ```
 pytest tests/unit/test_logging.py -v
 ```
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```
 git add backend/app/logging_setup.py backend/tests/unit/test_logging.py
@@ -554,7 +554,7 @@ git commit -m "feat(logging): loguru-based logger with rotating file sink"
 - Create: `backend/app/db/__init__.py`, `backend/app/db/engine.py`, `backend/app/db/models.py`
 - Test: `backend/tests/unit/test_models.py`
 
-- [ ] **Step 1: Write failing test `tests/unit/test_models.py`**
+- [x] **Step 1: Write failing test `tests/unit/test_models.py`**
 
 ```python
 from datetime import datetime
@@ -615,16 +615,16 @@ def test_models_persist_and_query():
         assert fetched[0].judgment == "pass"
 ```
 
-- [ ] **Step 2: Run test, expect failure**
+- [x] **Step 2: Run test, expect failure**
 
 ```
 pytest tests/unit/test_models.py -v
 ```
 Expected: `ModuleNotFoundError`.
 
-- [ ] **Step 3: Create `app/db/__init__.py`** (empty)
+- [x] **Step 3: Create `app/db/__init__.py`** (empty)
 
-- [ ] **Step 4: Implement `app/db/models.py`**
+- [x] **Step 4: Implement `app/db/models.py`**
 
 ```python
 from __future__ import annotations
@@ -683,7 +683,7 @@ class TestLoop(SQLModel, table=True):
     waveform_file: Optional[str] = None
 ```
 
-- [ ] **Step 5: Implement `app/db/engine.py`**
+- [x] **Step 5: Implement `app/db/engine.py`**
 
 ```python
 from __future__ import annotations
@@ -712,14 +712,14 @@ def get_session() -> Iterator[Session]:
         yield session
 ```
 
-- [ ] **Step 6: Run test, expect pass**
+- [x] **Step 6: Run test, expect pass**
 
 ```
 pytest tests/unit/test_models.py -v
 ```
 Expected: PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```
 git add backend/app/db backend/tests/unit/test_models.py
@@ -733,7 +733,7 @@ git commit -m "feat(db): SQLModel schema for recipes, test_runs, test_loops"
 **Files:**
 - Create: `backend/alembic.ini`, `backend/app/db/migrations/env.py`, `backend/app/db/migrations/script.py.mako`, `backend/app/db/migrations/versions/0001_initial.py`
 
-- [ ] **Step 1: Create `backend/alembic.ini`**
+- [x] **Step 1: Create `backend/alembic.ini`**
 
 ```ini
 [alembic]
@@ -776,7 +776,7 @@ format = %(levelname)-5.5s [%(name)s] %(message)s
 datefmt = %H:%M:%S
 ```
 
-- [ ] **Step 2: Create `backend/app/db/migrations/env.py`**
+- [x] **Step 2: Create `backend/app/db/migrations/env.py`**
 
 ```python
 from logging.config import fileConfig
@@ -823,7 +823,7 @@ else:
     run_migrations_online()
 ```
 
-- [ ] **Step 3: Create `backend/app/db/migrations/script.py.mako`**
+- [x] **Step 3: Create `backend/app/db/migrations/script.py.mako`**
 
 ```mako
 """${message}
@@ -852,7 +852,7 @@ def downgrade():
     ${downgrades if downgrades else "pass"}
 ```
 
-- [ ] **Step 4: Create initial migration `backend/app/db/migrations/versions/0001_initial.py`**
+- [x] **Step 4: Create initial migration `backend/app/db/migrations/versions/0001_initial.py`**
 
 ```python
 """initial schema
@@ -933,7 +933,7 @@ def downgrade():
     op.drop_table("recipes")
 ```
 
-- [ ] **Step 5: Run migration**
+- [x] **Step 5: Run migration**
 
 From `backend/`:
 ```
@@ -942,7 +942,7 @@ alembic upgrade head
 ```
 Expected: `INFO  [alembic.runtime.migration] Running upgrade  -> 0001`.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```
 git add backend/alembic.ini backend/app/db/migrations
@@ -957,7 +957,7 @@ git commit -m "feat(db): alembic migrations with initial schema"
 - Create: `backend/app/schemas/__init__.py`, `backend/app/schemas/recipe.py`, `backend/app/services/__init__.py`, `backend/app/services/recipe_service.py`, `backend/app/api/__init__.py`, `backend/app/api/recipes.py`
 - Test: `backend/tests/unit/test_recipe_service.py`, `backend/tests/integration/__init__.py`, `backend/tests/integration/test_recipes_api.py`
 
-- [ ] **Step 1: Write failing unit test `tests/unit/test_recipe_service.py`**
+- [x] **Step 1: Write failing unit test `tests/unit/test_recipe_service.py`**
 
 ```python
 from sqlmodel import Session, SQLModel, create_engine
@@ -1016,14 +1016,14 @@ def test_list_recipes_sorted():
     assert [r.name for r in items] == ["a", "b"]
 ```
 
-- [ ] **Step 2: Run test, expect failure**
+- [x] **Step 2: Run test, expect failure**
 
 ```
 pytest tests/unit/test_recipe_service.py -v
 ```
 Expected: `ModuleNotFoundError`.
 
-- [ ] **Step 3: Implement `app/schemas/recipe.py`**
+- [x] **Step 3: Implement `app/schemas/recipe.py`**
 
 ```python
 from __future__ import annotations
@@ -1078,7 +1078,7 @@ class RecipeRead(RecipeBase):
     model_config = {"from_attributes": True}
 ```
 
-- [ ] **Step 4: Implement `app/services/recipe_service.py`**
+- [x] **Step 4: Implement `app/services/recipe_service.py`**
 
 ```python
 from __future__ import annotations
@@ -1134,16 +1134,16 @@ class RecipeService:
         self.session.commit()
 ```
 
-- [ ] **Step 5: Create `app/schemas/__init__.py`, `app/services/__init__.py`, `app/api/__init__.py`** (empty files)
+- [x] **Step 5: Create `app/schemas/__init__.py`, `app/services/__init__.py`, `app/api/__init__.py`** (empty files)
 
-- [ ] **Step 6: Run unit test, expect pass**
+- [x] **Step 6: Run unit test, expect pass**
 
 ```
 pytest tests/unit/test_recipe_service.py -v
 ```
 Expected: PASS (4 tests).
 
-- [ ] **Step 7: Implement `app/api/recipes.py`**
+- [x] **Step 7: Implement `app/api/recipes.py`**
 
 ```python
 from __future__ import annotations
@@ -1192,7 +1192,7 @@ def delete_recipe(recipe_id: int, session: Session = Depends(get_session)):
     return None
 ```
 
-- [ ] **Step 8: Write integration test `tests/integration/test_recipes_api.py`**
+- [x] **Step 8: Write integration test `tests/integration/test_recipes_api.py`**
 
 ```python
 import pytest
@@ -1257,14 +1257,14 @@ def test_validation_errors(client):
 
 (`tests/integration/__init__.py` — empty file)
 
-- [ ] **Step 9: Run integration test, expect failure (no `build_app` yet)**
+- [x] **Step 9: Run integration test, expect failure (no `build_app` yet)**
 
 ```
 pytest tests/integration/test_recipes_api.py -v
 ```
 Expected: ImportError on `app.main.build_app`.
 
-- [ ] **Step 10: Stub `app/main.py`** (full impl in Task 13; minimal stub to unblock tests)
+- [x] **Step 10: Stub `app/main.py`** (full impl in Task 13; minimal stub to unblock tests)
 
 ```python
 from __future__ import annotations
@@ -1283,14 +1283,14 @@ def build_app(test_mode: bool = False) -> FastAPI:
 app = build_app()
 ```
 
-- [ ] **Step 11: Run integration test, expect pass**
+- [x] **Step 11: Run integration test, expect pass**
 
 ```
 pytest tests/integration/test_recipes_api.py -v
 ```
 Expected: 2 tests PASS.
 
-- [ ] **Step 12: Commit**
+- [x] **Step 12: Commit**
 
 ```
 git add backend/app/schemas backend/app/services backend/app/api backend/app/main.py backend/tests
@@ -1305,7 +1305,7 @@ git commit -m "feat(recipes): CRUD service + REST API with validation"
 - Create: `backend/app/hardware/__init__.py`, `backend/app/hardware/base.py`
 - Test: `backend/tests/unit/test_hardware_base.py`
 
-- [ ] **Step 1: Write failing test `tests/unit/test_hardware_base.py`**
+- [x] **Step 1: Write failing test `tests/unit/test_hardware_base.py`**
 
 ```python
 import time
@@ -1330,14 +1330,14 @@ def test_plc_event_bit_edge():
     assert e.value is True
 ```
 
-- [ ] **Step 2: Run test, expect failure**
+- [x] **Step 2: Run test, expect failure**
 
 ```
 pytest tests/unit/test_hardware_base.py -v
 ```
 Expected: ModuleNotFoundError.
 
-- [ ] **Step 3: Implement `app/hardware/base.py`**
+- [x] **Step 3: Implement `app/hardware/base.py`**
 
 ```python
 from __future__ import annotations
@@ -1404,16 +1404,16 @@ class Esp32Client(Protocol):
     def disconnect(self) -> None: ...
 ```
 
-- [ ] **Step 4: Create `app/hardware/__init__.py`** (empty)
+- [x] **Step 4: Create `app/hardware/__init__.py`** (empty)
 
-- [ ] **Step 5: Run test, expect pass**
+- [x] **Step 5: Run test, expect pass**
 
 ```
 pytest tests/unit/test_hardware_base.py -v
 ```
 Expected: PASS (3 tests).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```
 git add backend/app/hardware/__init__.py backend/app/hardware/base.py backend/tests/unit/test_hardware_base.py
@@ -1428,7 +1428,7 @@ git commit -m "feat(hardware): base protocols + reading/event dataclasses"
 - Create: `backend/app/hardware/mock/__init__.py`, `backend/app/hardware/mock/mock_plc.py`
 - Test: `backend/tests/unit/test_mock_plc.py`
 
-- [ ] **Step 1: Write failing test `tests/unit/test_mock_plc.py`**
+- [x] **Step 1: Write failing test `tests/unit/test_mock_plc.py`**
 
 ```python
 import time
@@ -1465,14 +1465,14 @@ def test_mock_plc_script_emits_bits_in_order():
     assert (7, True) in bits
 ```
 
-- [ ] **Step 2: Run test, expect failure**
+- [x] **Step 2: Run test, expect failure**
 
 ```
 pytest tests/unit/test_mock_plc.py -v
 ```
 Expected: ModuleNotFoundError.
 
-- [ ] **Step 3: Implement `app/hardware/mock/mock_plc.py`**
+- [x] **Step 3: Implement `app/hardware/mock/mock_plc.py`**
 
 ```python
 from __future__ import annotations
@@ -1561,16 +1561,16 @@ class MockPlc:
             self.set_bit(7, True)
 ```
 
-- [ ] **Step 4: Create `app/hardware/mock/__init__.py`** (empty)
+- [x] **Step 4: Create `app/hardware/mock/__init__.py`** (empty)
 
-- [ ] **Step 5: Run test, expect pass**
+- [x] **Step 5: Run test, expect pass**
 
 ```
 pytest tests/unit/test_mock_plc.py -v
 ```
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```
 git add backend/app/hardware/mock backend/tests/unit/test_mock_plc.py
@@ -1585,7 +1585,7 @@ git commit -m "feat(hardware): mock PLC with scripted B3->B5->B6->B7 emission"
 - Create: `backend/app/hardware/mock/mock_imada.py`
 - Test: `backend/tests/unit/test_mock_imada.py`
 
-- [ ] **Step 1: Write failing test `tests/unit/test_mock_imada.py`**
+- [x] **Step 1: Write failing test `tests/unit/test_mock_imada.py`**
 
 ```python
 import time
@@ -1609,14 +1609,14 @@ def test_mock_imada_streams_at_target_rate():
     assert min(forces) >= -0.5
 ```
 
-- [ ] **Step 2: Run test, expect failure**
+- [x] **Step 2: Run test, expect failure**
 
 ```
 pytest tests/unit/test_mock_imada.py -v
 ```
 Expected: ModuleNotFoundError.
 
-- [ ] **Step 3: Implement `app/hardware/mock/mock_imada.py`**
+- [x] **Step 3: Implement `app/hardware/mock/mock_imada.py`**
 
 ```python
 from __future__ import annotations
@@ -1687,14 +1687,14 @@ class MockImada:
             time.sleep(interval)
 ```
 
-- [ ] **Step 4: Run test, expect pass**
+- [x] **Step 4: Run test, expect pass**
 
 ```
 pytest tests/unit/test_mock_imada.py -v
 ```
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```
 git add backend/app/hardware/mock/mock_imada.py backend/tests/unit/test_mock_imada.py
@@ -1709,7 +1709,7 @@ git commit -m "feat(hardware): mock Imada force gauge emitting sine wave"
 - Create: `backend/app/hardware/mock/mock_esp32.py`
 - Test: `backend/tests/unit/test_mock_esp32.py`
 
-- [ ] **Step 1: Write failing test `tests/unit/test_mock_esp32.py`**
+- [x] **Step 1: Write failing test `tests/unit/test_mock_esp32.py`**
 
 ```python
 import time
@@ -1732,14 +1732,14 @@ def test_mock_esp32_ramps_to_target():
     assert all(f >= 0 for f in forces)
 ```
 
-- [ ] **Step 2: Run test, expect failure**
+- [x] **Step 2: Run test, expect failure**
 
 ```
 pytest tests/unit/test_mock_esp32.py -v
 ```
 Expected: ModuleNotFoundError.
 
-- [ ] **Step 3: Implement `app/hardware/mock/mock_esp32.py`**
+- [x] **Step 3: Implement `app/hardware/mock/mock_esp32.py`**
 
 ```python
 from __future__ import annotations
@@ -1822,14 +1822,14 @@ class MockEsp32:
             time.sleep(interval)
 ```
 
-- [ ] **Step 4: Run test, expect pass**
+- [x] **Step 4: Run test, expect pass**
 
 ```
 pytest tests/unit/test_mock_esp32.py -v
 ```
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```
 git add backend/app/hardware/mock/mock_esp32.py backend/tests/unit/test_mock_esp32.py
@@ -1844,7 +1844,7 @@ git commit -m "feat(hardware): mock ESP32 sensor with linear ramp"
 - Create: `backend/app/services/event_bus.py`
 - Test: `backend/tests/unit/test_event_bus.py`
 
-- [ ] **Step 1: Write failing test `tests/unit/test_event_bus.py`**
+- [x] **Step 1: Write failing test `tests/unit/test_event_bus.py`**
 
 ```python
 import asyncio
@@ -1880,14 +1880,14 @@ async def test_unsubscribe_after_drop():
     assert q.empty()
 ```
 
-- [ ] **Step 2: Run test, expect failure**
+- [x] **Step 2: Run test, expect failure**
 
 ```
 pytest tests/unit/test_event_bus.py -v
 ```
 Expected: ModuleNotFoundError.
 
-- [ ] **Step 3: Implement `app/services/event_bus.py`**
+- [x] **Step 3: Implement `app/services/event_bus.py`**
 
 ```python
 from __future__ import annotations
@@ -1930,14 +1930,14 @@ class EventBus:
                     pass
 ```
 
-- [ ] **Step 4: Run test, expect pass**
+- [x] **Step 4: Run test, expect pass**
 
 ```
 pytest tests/unit/test_event_bus.py -v
 ```
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```
 git add backend/app/services/event_bus.py backend/tests/unit/test_event_bus.py
@@ -1952,7 +1952,7 @@ git commit -m "feat(services): async in-process event bus with backpressure drop
 - Create: `backend/app/services/state_machine.py`
 - Test: `backend/tests/unit/test_state_machine.py`
 
-- [ ] **Step 1: Write failing test `tests/unit/test_state_machine.py`**
+- [x] **Step 1: Write failing test `tests/unit/test_state_machine.py`**
 
 ```python
 from app.services.state_machine import Event, RunMode, State, StateMachine
@@ -2043,14 +2043,14 @@ def test_error_event_transitions_to_error():
     assert sm.state == State.ERROR
 ```
 
-- [ ] **Step 2: Run test, expect failure**
+- [x] **Step 2: Run test, expect failure**
 
 ```
 pytest tests/unit/test_state_machine.py -v
 ```
 Expected: ModuleNotFoundError.
 
-- [ ] **Step 3: Implement `app/services/state_machine.py`**
+- [x] **Step 3: Implement `app/services/state_machine.py`**
 
 ```python
 from __future__ import annotations
@@ -2159,14 +2159,14 @@ class StateMachine:
         return new_state
 ```
 
-- [ ] **Step 4: Run test, expect pass**
+- [x] **Step 4: Run test, expect pass**
 
 ```
 pytest tests/unit/test_state_machine.py -v
 ```
 Expected: PASS (5 tests).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```
 git add backend/app/services/state_machine.py backend/tests/unit/test_state_machine.py
@@ -2181,7 +2181,7 @@ git commit -m "feat(services): pure state machine for pinch test sequence"
 - Create: `backend/app/services/waveform.py`
 - Test: `backend/tests/unit/test_waveform.py`
 
-- [ ] **Step 1: Write failing test `tests/unit/test_waveform.py`**
+- [x] **Step 1: Write failing test `tests/unit/test_waveform.py`**
 
 ```python
 from pathlib import Path
@@ -2218,14 +2218,14 @@ def test_loop_summary(tmp_path: Path):
     assert summary.hold_time_ms >= 0
 ```
 
-- [ ] **Step 2: Run test, expect failure**
+- [x] **Step 2: Run test, expect failure**
 
 ```
 pytest tests/unit/test_waveform.py -v
 ```
 Expected: ModuleNotFoundError.
 
-- [ ] **Step 3: Implement `app/services/waveform.py`**
+- [x] **Step 3: Implement `app/services/waveform.py`**
 
 ```python
 from __future__ import annotations
@@ -2297,14 +2297,14 @@ class WaveformService:
         return LoopSummary(peak_force_n=peak, avg_force_n=avg, hold_time_ms=hold_ms)
 ```
 
-- [ ] **Step 4: Run test, expect pass**
+- [x] **Step 4: Run test, expect pass**
 
 ```
 pytest tests/unit/test_waveform.py -v
 ```
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```
 git add backend/app/services/waveform.py backend/tests/unit/test_waveform.py
@@ -2319,7 +2319,7 @@ git commit -m "feat(services): waveform service with parquet IO and loop summary
 - Create: `backend/app/hardware/manager.py`
 - Test: `backend/tests/unit/test_hardware_manager.py`
 
-- [ ] **Step 1: Write failing test `tests/unit/test_hardware_manager.py`**
+- [x] **Step 1: Write failing test `tests/unit/test_hardware_manager.py`**
 
 ```python
 import asyncio
@@ -2372,14 +2372,14 @@ async def test_manager_starts_mocks_and_streams(tmp_path):
         await mgr.shutdown()
 ```
 
-- [ ] **Step 2: Run test, expect failure**
+- [x] **Step 2: Run test, expect failure**
 
 ```
 pytest tests/unit/test_hardware_manager.py -v
 ```
 Expected: ModuleNotFoundError.
 
-- [ ] **Step 3: Implement `app/hardware/manager.py`**
+- [x] **Step 3: Implement `app/hardware/manager.py`**
 
 ```python
 from __future__ import annotations
@@ -2483,14 +2483,14 @@ class HardwareManager:
                 pass
 ```
 
-- [ ] **Step 4: Run test, expect pass**
+- [x] **Step 4: Run test, expect pass**
 
 ```
 pytest tests/unit/test_hardware_manager.py -v
 ```
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```
 git add backend/app/hardware/manager.py backend/tests/unit/test_hardware_manager.py
@@ -2505,7 +2505,7 @@ git commit -m "feat(hardware): HardwareManager composes mock drivers + asyncio b
 - Create: `backend/app/schemas/ws_messages.py`, `backend/app/services/ws_hub.py`, `backend/app/api/ws.py`
 - Test: `backend/tests/unit/test_ws_hub.py`
 
-- [ ] **Step 1: Implement `app/schemas/ws_messages.py`**
+- [x] **Step 1: Implement `app/schemas/ws_messages.py`**
 
 ```python
 from __future__ import annotations
@@ -2575,7 +2575,7 @@ class WsHwStatus(BaseModel):
     connected: bool
 ```
 
-- [ ] **Step 2: Write failing test `tests/unit/test_ws_hub.py`**
+- [x] **Step 2: Write failing test `tests/unit/test_ws_hub.py`**
 
 ```python
 import asyncio
@@ -2610,14 +2610,14 @@ async def test_hub_broadcasts_event_bus_messages():
     assert received_b == received_a
 ```
 
-- [ ] **Step 3: Run test, expect failure**
+- [x] **Step 3: Run test, expect failure**
 
 ```
 pytest tests/unit/test_ws_hub.py -v
 ```
 Expected: ModuleNotFoundError.
 
-- [ ] **Step 4: Implement `app/services/ws_hub.py`**
+- [x] **Step 4: Implement `app/services/ws_hub.py`**
 
 ```python
 from __future__ import annotations
@@ -2663,14 +2663,14 @@ class WsHub:
             await self.bus.unsubscribe(bus_q)
 ```
 
-- [ ] **Step 5: Run test, expect pass**
+- [x] **Step 5: Run test, expect pass**
 
 ```
 pytest tests/unit/test_ws_hub.py -v
 ```
 Expected: PASS.
 
-- [ ] **Step 6: Implement `app/api/ws.py`**
+- [x] **Step 6: Implement `app/api/ws.py`**
 
 ```python
 from __future__ import annotations
@@ -2697,7 +2697,7 @@ async def ws_endpoint(websocket: WebSocket):
         hub.unregister(q)
 ```
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```
 git add backend/app/schemas/ws_messages.py backend/app/services/ws_hub.py backend/app/api/ws.py backend/tests/unit/test_ws_hub.py
@@ -2711,7 +2711,7 @@ git commit -m "feat(ws): WebSocket hub + message schemas with bus pump"
 **Files:**
 - Create: `backend/app/deps.py`
 
-- [ ] **Step 1: Implement `app/deps.py`**
+- [x] **Step 1: Implement `app/deps.py`**
 
 ```python
 from __future__ import annotations
@@ -2798,7 +2798,7 @@ def get_runner():
     return _runner
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```
 git add backend/app/deps.py
@@ -2813,7 +2813,7 @@ git commit -m "feat(deps): module-level singletons for hardware/bus/hub/runner"
 - Create: `backend/app/services/test_runner.py`
 - Test: `backend/tests/integration/test_runner_e2e_mock.py`
 
-- [ ] **Step 1: Implement `app/services/test_runner.py`**
+- [x] **Step 1: Implement `app/services/test_runner.py`**
 
 ```python
 from __future__ import annotations
@@ -3168,7 +3168,7 @@ class TestRunner:
 
 > **Note (intentional for Plan 1):** the runner relies on the mock PLC's scripted timing — set_bit(3) triggers B5→B6→B7 emissions. Plan 3 replaces the mock with a real PLC; the runner contract stays the same.
 
-- [ ] **Step 2: Write E2E test `tests/integration/test_runner_e2e_mock.py`**
+- [x] **Step 2: Write E2E test `tests/integration/test_runner_e2e_mock.py`**
 
 ```python
 import asyncio
@@ -3268,7 +3268,7 @@ async def test_full_session_two_loops_pass(tmp_path):
         assert len(loops) == 2
 ```
 
-- [ ] **Step 3: Run test, expect failure first (because of MockPlc B5/B6 must not auto-fire BEFORE clamp reached — current mock fires on B3). Adjust mock script timing if needed.**
+- [x] **Step 3: Run test, expect failure first (because of MockPlc B5/B6 must not auto-fire BEFORE clamp reached — current mock fires on B3). Adjust mock script timing if needed.**
 
 ```
 pytest tests/integration/test_runner_e2e_mock.py -v
@@ -3280,14 +3280,14 @@ If it fails because of timing race (mock emits B5/B6 too early relative to ESP32
 self.plc = MockPlc(script=MockPlcScript(after_b3_to_b5_ms=600, after_b5_to_b6_ms=600, after_b6_to_b7_ms=100))
 ```
 
-- [ ] **Step 4: Re-run test, expect pass**
+- [x] **Step 4: Re-run test, expect pass**
 
 ```
 pytest tests/integration/test_runner_e2e_mock.py -v
 ```
 Expected: PASS within ~5 seconds.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```
 git add backend/app/services/test_runner.py backend/tests/integration/test_runner_e2e_mock.py backend/app/hardware/manager.py
@@ -3302,7 +3302,7 @@ git commit -m "feat(runner): full async test runner orchestrating mocks + persis
 - Create: `backend/app/schemas/session.py`, `backend/app/api/sessions.py`
 - Test: `backend/tests/integration/test_sessions_api.py`
 
-- [ ] **Step 1: Implement `app/schemas/session.py`**
+- [x] **Step 1: Implement `app/schemas/session.py`**
 
 ```python
 from __future__ import annotations
@@ -3324,7 +3324,7 @@ class SessionStartResponse(BaseModel):
     run_id: int
 ```
 
-- [ ] **Step 2: Implement `app/api/sessions.py`**
+- [x] **Step 2: Implement `app/api/sessions.py`**
 
 ```python
 from __future__ import annotations
@@ -3380,7 +3380,7 @@ async def reset(run_id: int):
     return {"ok": True}
 ```
 
-- [ ] **Step 3: Write integration test `tests/integration/test_sessions_api.py`**
+- [x] **Step 3: Write integration test `tests/integration/test_sessions_api.py`**
 
 ```python
 import asyncio
@@ -3432,7 +3432,7 @@ def test_start_and_stop_flow(client):
     assert r3.status_code == 200
 ```
 
-- [ ] **Step 4: Commit (impl + test)** — final state expected after Task 19 main.py wiring.
+- [x] **Step 4: Commit (impl + test)** — final state expected after Task 19 main.py wiring.
 
 ```
 git add backend/app/schemas/session.py backend/app/api/sessions.py backend/tests/integration/test_sessions_api.py
@@ -3447,7 +3447,7 @@ git commit -m "feat(sessions): start/clamp/stop/reset endpoints driving TestRunn
 - Modify: `backend/app/main.py`
 - Test: rerun all integration tests after this task
 
-- [ ] **Step 1: Replace `app/main.py` content**
+- [x] **Step 1: Replace `app/main.py` content**
 
 ```python
 from __future__ import annotations
@@ -3545,14 +3545,14 @@ def build_app(test_mode: bool = False, waveform_dir: Optional[Path] = None) -> F
 app = build_app()
 ```
 
-- [ ] **Step 2: Run all tests**
+- [x] **Step 2: Run all tests**
 
 ```
 pytest -v
 ```
 Expected: all green. If `test_start_and_stop_flow` fails due to lifespan not firing under TestClient, wrap with `with TestClient(app) as client:` — fix fixture by adding `with TestClient(app) as c: yield c` in `tests/integration/test_sessions_api.py`.
 
-- [ ] **Step 3: Patch fixture if needed**
+- [x] **Step 3: Patch fixture if needed**
 
 In `tests/integration/test_sessions_api.py`, change fixture to:
 
@@ -3567,14 +3567,14 @@ def client(tmp_path, monkeypatch):
         yield c
 ```
 
-- [ ] **Step 4: Re-run tests**
+- [x] **Step 4: Re-run tests**
 
 ```
 pytest -v
 ```
 Expected: all green.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```
 git add backend/app/main.py backend/tests/integration/test_sessions_api.py
@@ -3589,7 +3589,7 @@ git commit -m "feat(main): lifespan wires manager, bus, hub, runner; tests use l
 - Create: `backend/app/schemas/run.py`, `backend/app/api/runs.py`
 - Test: `backend/tests/integration/test_runs_api.py`
 
-- [ ] **Step 1: Implement `app/schemas/run.py`**
+- [x] **Step 1: Implement `app/schemas/run.py`**
 
 ```python
 from __future__ import annotations
@@ -3630,7 +3630,7 @@ class TestRunRead(BaseModel):
     model_config = {"from_attributes": True}
 ```
 
-- [ ] **Step 2: Implement `app/api/runs.py`**
+- [x] **Step 2: Implement `app/api/runs.py`**
 
 ```python
 from __future__ import annotations
@@ -3708,7 +3708,7 @@ def export_csv(run_id: int, session: Session = Depends(get_session)):
     return StreamingResponse(iter([buffer.getvalue()]), media_type="text/csv", headers={"Content-Disposition": f'attachment; filename="run_{run_id}.csv"'})
 ```
 
-- [ ] **Step 3: Wire router in `main.py`**
+- [x] **Step 3: Wire router in `main.py`**
 
 In `build_app`, add:
 ```python
@@ -3717,7 +3717,7 @@ from app.api import runs
 app.include_router(runs.router)
 ```
 
-- [ ] **Step 4: Write integration test `tests/integration/test_runs_api.py`**
+- [x] **Step 4: Write integration test `tests/integration/test_runs_api.py`**
 
 ```python
 import pytest
@@ -3769,14 +3769,14 @@ def test_export_csv(client):
     assert "loop_index" in r.text
 ```
 
-- [ ] **Step 5: Run tests**
+- [x] **Step 5: Run tests**
 
 ```
 pytest tests/integration/test_runs_api.py -v
 ```
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```
 git add backend/app/schemas/run.py backend/app/api/runs.py backend/app/main.py backend/tests/integration/test_runs_api.py
@@ -3791,7 +3791,7 @@ git commit -m "feat(runs): list/get/waveform/CSV endpoints"
 - Create: `backend/app/schemas/hardware.py`, `backend/app/api/hardware.py`, `backend/app/api/config.py`
 - Test: `backend/tests/integration/test_hardware_api.py`
 
-- [ ] **Step 1: Implement `app/schemas/hardware.py`**
+- [x] **Step 1: Implement `app/schemas/hardware.py`**
 
 ```python
 from __future__ import annotations
@@ -3817,7 +3817,7 @@ class CalibrateRequest(BaseModel):
     known_force_n: float
 ```
 
-- [ ] **Step 2: Implement `app/api/hardware.py`**
+- [x] **Step 2: Implement `app/api/hardware.py`**
 
 ```python
 from __future__ import annotations
@@ -3860,7 +3860,7 @@ def calibrate(req: CalibrateRequest):
     return {"slope": slope, "offset": offset}
 ```
 
-- [ ] **Step 3: Implement `app/api/config.py`**
+- [x] **Step 3: Implement `app/api/config.py`**
 
 ```python
 from __future__ import annotations
@@ -3889,7 +3889,7 @@ def update_config(body: dict):
     return {"ok": True, "note": "validation-only in Plan 1"}
 ```
 
-- [ ] **Step 4: Wire routers in `main.py`**
+- [x] **Step 4: Wire routers in `main.py`**
 
 In `build_app`, add:
 ```python
@@ -3899,7 +3899,7 @@ app.include_router(hardware_api.router)
 app.include_router(config_api.router)
 ```
 
-- [ ] **Step 5: Integration test `tests/integration/test_hardware_api.py`**
+- [x] **Step 5: Integration test `tests/integration/test_hardware_api.py`**
 
 ```python
 import pytest
@@ -3948,14 +3948,14 @@ def test_config_get(client):
     assert "hardware" in r.json()
 ```
 
-- [ ] **Step 6: Run tests**
+- [x] **Step 6: Run tests**
 
 ```
 pytest tests/integration/test_hardware_api.py -v
 ```
 Expected: PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```
 git add backend/app/schemas/hardware.py backend/app/api/hardware.py backend/app/api/config.py backend/app/main.py backend/tests/integration/test_hardware_api.py
@@ -3969,7 +3969,7 @@ git commit -m "feat(hardware,config): status/reconnect/calibrate + config endpoi
 **Files:**
 - Test: `backend/tests/integration/test_ws.py`
 
-- [ ] **Step 1: Write test `tests/integration/test_ws.py`**
+- [x] **Step 1: Write test `tests/integration/test_ws.py`**
 
 ```python
 import asyncio
@@ -4021,14 +4021,14 @@ def test_ws_emits_state_changes_and_finished(client):
         assert "run_finished" in seen_types
 ```
 
-- [ ] **Step 2: Run test**
+- [x] **Step 2: Run test**
 
 ```
 pytest tests/integration/test_ws.py -v
 ```
 Expected: PASS. If WS connection blocks before lifespan starts, ensure `with TestClient(app) as c:` is used (Starlette starts the lifespan once the context enters).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```
 git add backend/tests/integration/test_ws.py
@@ -4043,7 +4043,7 @@ git commit -m "test(ws): full session emits state_change + run_finished over Web
 - Modify: `README.md`
 - Run: full test suite
 
-- [ ] **Step 1: Update `README.md`** with development quickstart
+- [x] **Step 1: Update `README.md`** with development quickstart
 
 ```markdown
 # Pinch Test Machine
@@ -4081,7 +4081,7 @@ pytest -v
 - Plan 4 — History + Hardware + Settings + Calibration UI
 ```
 
-- [ ] **Step 2: Run all tests**
+- [x] **Step 2: Run all tests**
 
 ```
 cd backend
@@ -4089,7 +4089,7 @@ pytest -v
 ```
 Expected: all unit and integration tests PASS. Acceptance bar: state-machine + E2E + WS + recipes/runs/hardware/config all green.
 
-- [ ] **Step 3: Smoke-run the server**
+- [x] **Step 3: Smoke-run the server**
 
 ```
 cd backend
@@ -4108,7 +4108,7 @@ curl -X POST http://localhost:8000/api/sessions/start -H "Content-Type: applicat
 ```
 Expected: run completes (visible in logs); `GET /api/runs` shows the row.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```
 git add README.md

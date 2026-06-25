@@ -31,7 +31,6 @@ def test_start_and_stop_flow(client):
         "loop_count": 1,
         "min_force_n": 0.0,
         "max_force_n": 100.0,
-        "hold_time_ms": 0,
     }
     rid = client.post("/api/recipes", json=payload).json()["id"]
     r = client.post("/api/sessions/start", json={"recipe_id": rid, "mode": "auto"})

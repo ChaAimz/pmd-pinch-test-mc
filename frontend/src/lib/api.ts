@@ -1,6 +1,6 @@
 import type {
   Recipe, RecipeCreate, RecipeUpdate,
-  TestRun, HardwareStatus, WaveformPoint,
+  TestRun, HardwareStatus, WaveformPoint, UiSettings,
 } from './types'
 
 async function req<T>(method: string, path: string, body?: unknown): Promise<T> {
@@ -45,17 +45,44 @@ export const api = {
       return req<TestRun[]>('GET', `/runs${qs ? `?${qs}` : ''}`)
     },
     get: (id: number) => req<TestRun>('GET', `/runs/${id}`),
-    waveform: (runId: number, loopIdx: number) =>
-      req<WaveformPoint[]>('GET', `/runs/${runId}/loops/${loopIdx}/waveform`),
+    // Backend returns columnar { t_ms: [...], force_n: [...] } (matches the parquet
+    // layout). Normalize to a row array so chart code can map over points.
+    waveform: async (runId: number, loopIdx: number): Promise<WaveformPoint[]> => {
+      const res = await req<{ t_ms: number[]; force_n: number[] } | WaveformPoint[]>(
+        'GET', `/runs/${runId}/loops/${loopIdx}/waveform`,
+      )
+      if (Array.isArray(res)) return res
+      const { t_ms = [], force_n = [] } = res ?? {}
+      const len = Math.min(t_ms.length, force_n.length)
+      return Array.from({ length: len }, (_, i) => ({ t_ms: t_ms[i], force_n: force_n[i] }))
+    },
     exportCsvUrl: (runId: number) => `/api/runs/${runId}/export.csv`,
+    summaryCsvUrl: (runId: number) => `/api/runs/${runId}/summary.csv`,
+    delete: (id: number) => req<void>('DELETE', `/runs/${id}`),
+  },
+  settings: {
+    get: () => req<Partial<UiSettings>>('GET', '/settings'),
+    save: (data: UiSettings) => req<{ ok: boolean }>('PUT', '/settings', data),
   },
   hardware: {
     status: () => req<HardwareStatus>('GET', '/hardware/status'),
     reconnect: (device: 'plc' | 'imada' | 'esp32') =>
       req<{ ok: boolean }>('POST', '/hardware/reconnect', { device }),
-    calibrate: (raw_at_zero: number, raw_at_known: number, known_force_n: number) =>
-      req<{ slope: number; offset: number }>('POST', '/hardware/esp32/calibrate', {
-        raw_at_zero, raw_at_known, known_force_n,
-      }),
+    pulseBit: (addr: number, pulse_ms = 200) =>
+      req<{ ok: boolean }>('POST', '/hardware/plc/bit', { addr, value: true, pulse_ms }),
+    setWords: (words: Record<number, number>) =>
+      req<{ ok: boolean }>('POST', '/hardware/plc/words', { words }),
+    imadaTare: () =>
+      req<{ ok: boolean }>('POST', '/hardware/imada/tare'),
+    esp32Tare: () =>
+      req<{ ok: boolean }>('POST', '/hardware/esp32/tare'),
+    getForceLimit: () =>
+      req<{ limit_gf: number | null; active: boolean; config_limit_gf: number | null }>('GET', '/hardware/esp32/force-limit'),
+    setForceLimit: (limit_gf: number | null) =>
+      req<{ ok: boolean; limit_gf: number | null }>('POST', '/hardware/esp32/force-limit', { limit_gf }),
+    getClampOffset: () =>
+      req<{ offset_gf: number }>('GET', '/hardware/esp32/clamp-offset'),
+    setClampOffset: (offset_gf: number) =>
+      req<{ ok: boolean; offset_gf: number }>('POST', '/hardware/esp32/clamp-offset', { offset_gf }),
   },
 }

@@ -1,466 +1,772 @@
 {
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\config.py": {
-    "mtime": 1779185344.0262752,
-    "hash": "8b7dfb68697c6b120a5e5ee67a700d99"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\deps.py": {
-    "mtime": 1779250563.3565996,
-    "hash": "68d5f82959a8d0754791cb0eb15bc81c"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\logging_setup.py": {
-    "mtime": 1779185462.5549479,
-    "hash": "92c8459a358fc171edebccdbba5e14c1"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\main.py": {
-    "mtime": 1779251747.1667993,
-    "hash": "c46063eb1fcaeddbedcd8720ef0f4627"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\__init__.py": {
-    "mtime": 1779185332.4469814,
-    "hash": "d41d8cd98f00b204e9800998ecf8427e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\api\\config.py": {
-    "mtime": 1779251738.2021372,
-    "hash": "fe1473bde4d5190c70820f4a3ade27d5"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\api\\hardware.py": {
-    "mtime": 1779251732.8876064,
-    "hash": "e14d180dfd7748cf4a1a695dd41911b6"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\api\\recipes.py": {
-    "mtime": 1779237742.511408,
-    "hash": "8139efc5cf824a6e666c0c1c5f5e3c6b"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\api\\runs.py": {
-    "mtime": 1779251676.8297083,
-    "hash": "cd6bd35d3459946715318a798b6c8ff4"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\api\\sessions.py": {
-    "mtime": 1779251457.0207386,
-    "hash": "446e3b0670aafe290a4574896560bc5d"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\api\\ws.py": {
-    "mtime": 1779250386.8580937,
-    "hash": "2d51e7ce33323dc2720dfd3263e55b53"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\api\\__init__.py": {
-    "mtime": 1779237728.7621808,
-    "hash": "d41d8cd98f00b204e9800998ecf8427e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\db\\engine.py": {
-    "mtime": 1779185525.8067863,
-    "hash": "5252467e5798aec3e6d046c46115cbf1"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\db\\models.py": {
-    "mtime": 1779185518.4172654,
-    "hash": "7ab6636d13979dd04683472b6c273066"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\db\\__init__.py": {
-    "mtime": 1779185507.3640282,
-    "hash": "d41d8cd98f00b204e9800998ecf8427e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\db\\migrations\\env.py": {
-    "mtime": 1779185562.4954507,
-    "hash": "1df77bad649c397b290dd21621bc1bb3"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\db\\migrations\\versions\\0001_initial.py": {
-    "mtime": 1779185588.0925074,
-    "hash": "72ae5753480b3e0d89c9b73c415938bb"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\hardware\\base.py": {
-    "mtime": 1779237986.4577763,
-    "hash": "83c45546dd402a8c716d79a292faf50e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\hardware\\manager.py": {
-    "mtime": 1779238913.6992433,
-    "hash": "13af4ffda5c38b27abf9c987b15f06c8"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\hardware\\__init__.py": {
-    "mtime": 1779237975.634889,
-    "hash": "d41d8cd98f00b204e9800998ecf8427e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\hardware\\mock\\mock_esp32.py": {
-    "mtime": 1779238090.5915992,
-    "hash": "159635e6836603e82404a550d9a96249"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\hardware\\mock\\mock_imada.py": {
-    "mtime": 1779238062.144762,
-    "hash": "fa4a44a36c85b9513116a72406abcb8c"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\hardware\\mock\\mock_plc.py": {
-    "mtime": 1779238026.6532817,
-    "hash": "386444737b46256881a7de6feece7a41"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\hardware\\mock\\__init__.py": {
-    "mtime": 1779238012.7219026,
-    "hash": "d41d8cd98f00b204e9800998ecf8427e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\schemas\\hardware.py": {
-    "mtime": 1779251728.2318554,
-    "hash": "b8d5e962eab4552ab8ba67a3dcd6f376"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\schemas\\recipe.py": {
-    "mtime": 1779237693.363655,
-    "hash": "ca6bfb0dcf0df8cfb4c34b0d8ba99aa8"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\schemas\\run.py": {
-    "mtime": 1779251666.3898325,
-    "hash": "07614f506d3ca2e339569ee70fcdbaf0"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\schemas\\session.py": {
-    "mtime": 1779251451.7120922,
-    "hash": "cfe97526d02663b25231dd3b577fb630"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\schemas\\ws_messages.py": {
-    "mtime": 1779250338.59541,
-    "hash": "9e47a58eac513997ea9518ff93530a41"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\schemas\\__init__.py": {
-    "mtime": 1779237677.235801,
-    "hash": "d41d8cd98f00b204e9800998ecf8427e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\services\\event_bus.py": {
-    "mtime": 1779238407.738986,
-    "hash": "d189e26ff4b1ce374bf89f39d43acbcf"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\services\\recipe_service.py": {
-    "mtime": 1779237714.312018,
-    "hash": "ad6b95a0f6495e2475dcc283522b3fb2"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\services\\state_machine.py": {
-    "mtime": 1779238482.376372,
-    "hash": "3f7ff126440c2cd1c55898638fc2ce19"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\services\\test_runner.py": {
-    "mtime": 1779251140.5898888,
-    "hash": "7093b3ad510f90e50f425f98dca85c4e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\services\\waveform.py": {
-    "mtime": 1779238547.8163698,
-    "hash": "bfdd347cef6088b3ca531ab500261269"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\services\\ws_hub.py": {
-    "mtime": 1779250366.7051835,
-    "hash": "52b85363caf3f3b7f287c36ba686a23e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\app\\services\\__init__.py": {
-    "mtime": 1779237699.0755367,
-    "hash": "d41d8cd98f00b204e9800998ecf8427e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\conftest.py": {
-    "mtime": 1779185290.9071772,
-    "hash": "15f6010d0e7da5a44897bba0a1f9cf16"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\__init__.py": {
-    "mtime": 1779185283.5114634,
-    "hash": "d41d8cd98f00b204e9800998ecf8427e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_hardware_api.py": {
-    "mtime": 1779251761.6854315,
-    "hash": "86ffce50177bf73e3d79ff2be55bca78"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_recipes_api.py": {
-    "mtime": 1779237775.0493135,
-    "hash": "73c4b506de85887ac06702ac3e8eeea3"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_runner_e2e_mock.py": {
-    "mtime": 1779250856.4969783,
-    "hash": "4415d20a4a3af86ed55b1754a8d4f37a"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_runs_api.py": {
-    "mtime": 1779251700.2745125,
-    "hash": "9c9d5688d99c9fe1990d6a48d97854c7"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_sessions_api.py": {
-    "mtime": 1779251480.8064554,
-    "hash": "a09c3504b7ad705cae0a3bea422876a8"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_ws.py": {
-    "mtime": 1779252019.605158,
-    "hash": "930017da1d96cc07406ed72080e267fc"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\integration\\__init__.py": {
-    "mtime": 1779237764.1017656,
-    "hash": "d41d8cd98f00b204e9800998ecf8427e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_config.py": {
-    "mtime": 1779185317.3370402,
-    "hash": "2a6b0fc25310176e1869833f58414bbb"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_event_bus.py": {
-    "mtime": 1779238399.2272153,
-    "hash": "57dcca4f5c03d706a990657542f6caf1"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_hardware_base.py": {
-    "mtime": 1779237970.1145384,
-    "hash": "e1cb30a97127cf9cf3c92e6d84914f35"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_hardware_manager.py": {
-    "mtime": 1779238894.5982943,
-    "hash": "8c9e0236a345abdc195f0b2a112e589c"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_logging.py": {
-    "mtime": 1779185448.4231749,
-    "hash": "ae80d1ae94aed8a89bdad29336105a53"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_mock_esp32.py": {
-    "mtime": 1779238076.123215,
-    "hash": "c5743da65cca4bd8afe0353cc1a60387"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_mock_imada.py": {
-    "mtime": 1779238050.4563484,
-    "hash": "6d1eb67fe08e7b01efe1819d63831f10"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_mock_plc.py": {
-    "mtime": 1779238007.1749544,
-    "hash": "fcd9b63d16a518fc78431257082901a2"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_models.py": {
-    "mtime": 1779185492.8842266,
-    "hash": "19ba2cacb7a485d5c17f9d8553fbcc05"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_recipe_service.py": {
-    "mtime": 1779185629.668793,
-    "hash": "257b66a3d2c20f0951229caa30955af3"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_state_machine.py": {
-    "mtime": 1779238462.424722,
-    "hash": "a6ad319ed1bebe6f1e82faab1168bd64"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_waveform.py": {
-    "mtime": 1779238589.565208,
-    "hash": "fac544b52cd46a5ca40f0674015c3b81"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_ws_hub.py": {
-    "mtime": 1779250378.0940614,
-    "hash": "b5087f1d3309bde847c639fb7d2d616a"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\tests\\unit\\__init__.py": {
-    "mtime": 1779185296.9376972,
-    "hash": "d41d8cd98f00b204e9800998ecf8427e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\eslint.config.js": {
-    "mtime": 1779097813.572498,
-    "hash": "0355276bc79439afe3c53e3a2470ca1e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\playwright.config.ts": {
-    "mtime": 1779246001.2244217,
-    "hash": "2933a4cf7fccf7347e8d7b6dcb6da617"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\vite.config.ts": {
-    "mtime": 1779242611.9658914,
-    "hash": "1f4663c8d12581b99b5206129e790cb4"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\vitest.config.ts": {
-    "mtime": 1779242620.885159,
-    "hash": "fb94891ca7ad7e01981ba807f0022b8e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\App.tsx": {
-    "mtime": 1779253499.0122976,
-    "hash": "b718789c9135f9763acafc90a8b0e06a"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\main.tsx": {
-    "mtime": 1779243992.7009819,
-    "hash": "be03f8a4af9fc27234f956d08bcda70a"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\test-setup.ts": {
-    "mtime": 1779242623.8922937,
-    "hash": "994c5bf3f0f8742b450d0ab09b0d6bb9"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\vite-env.d.ts": {
-    "mtime": 1779242749.3175297,
-    "hash": "0352474ba2918efe13895edbc3780d94"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\HwStatusBar.tsx": {
-    "mtime": 1779245385.6794837,
-    "hash": "8bb274ea0b5544a95549e6afc7941daf"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\Layout.tsx": {
-    "mtime": 1779249903.6519408,
-    "hash": "de5b26e5e4d71b44ec3e3b8c08296048"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\StateBadge.tsx": {
-    "mtime": 1779250169.8865576,
-    "hash": "bf2eb347e1e2fff6443c28cc57e43837"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ThemeProvider.tsx": {
-    "mtime": 1779247107.5551033,
-    "hash": "4dfd7ce8f5c38f465730eb90709b5f28"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\TopBar.tsx": {
-    "mtime": 1779250475.1336396,
-    "hash": "8fcdd7e4afb397e285dec60e9c4d04ab"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\WaveformChart.tsx": {
-    "mtime": 1779245556.8727257,
-    "hash": "952a70c8f8dcbef019e24f384d5a8999"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\alert-dialog.tsx": {
-    "mtime": 1779243166.5321972,
-    "hash": "0537fd63434ed91ead33b23e8dd02d84"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\badge.tsx": {
-    "mtime": 1779243166.2329097,
-    "hash": "e4ec840217040d5630ee6ed7213a1d72"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\button.tsx": {
-    "mtime": 1779243142.032391,
-    "hash": "705bf3552a39e0c722665ccbecb30654"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\dialog.tsx": {
-    "mtime": 1779243166.4677417,
-    "hash": "d9618a63d34473ec512321cc12d43692"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\form.tsx": {
-    "mtime": 1779243678.351076,
-    "hash": "031df018d0f1d730a4adac2bcb0b95b1"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\input.tsx": {
-    "mtime": 1779243166.034375,
-    "hash": "0607b02d99a2e92f9509223f36ccc6ec"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\label.tsx": {
-    "mtime": 1779243166.1042325,
-    "hash": "92c6cf712c42f55463403a9241294aa0"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\select.tsx": {
-    "mtime": 1779243166.3291554,
-    "hash": "acf0a3b6eb0b0dc6e544b3d483d0f6ec"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\skeleton.tsx": {
-    "mtime": 1779247090.912583,
-    "hash": "0e6e825c43d858d98c9903f4da975382"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\sonner.tsx": {
-    "mtime": 1779243695.3046677,
-    "hash": "8bf4d2700f104cd7c40303921a156810"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\table.tsx": {
-    "mtime": 1779243166.1698165,
-    "hash": "44f87727e60080863edb00fdd2fcd8da"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\hooks\\useSessionControl.ts": {
-    "mtime": 1779252812.834873,
-    "hash": "a95b24ca9df19597588957d3feb05fbf"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\lib\\api.ts": {
-    "mtime": 1779253822.6236207,
-    "hash": "f3949a396f0ca4c41f46c5301b51d673"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\lib\\types.ts": {
-    "mtime": 1779252966.002723,
-    "hash": "affb2b95c15678717cfcce62af531082"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\lib\\utils.ts": {
-    "mtime": 1779243142.1041238,
-    "hash": "5a6fd53fdcf2be529e9cc0b718fde352"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\lib\\ws.ts": {
-    "mtime": 1779245067.0184073,
-    "hash": "ea90bfe901e386aab02eed951609fba8"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\pages\\Hardware.tsx": {
-    "mtime": 1779253842.255731,
-    "hash": "685ba5a1788cf7608809d6d449bb193d"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\pages\\History.tsx": {
-    "mtime": 1779253064.098734,
-    "hash": "bfcf5ab280faaa87726f0dda93b97364"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\pages\\HistoryDetail.tsx": {
-    "mtime": 1779253818.0958908,
-    "hash": "b5278c1a9f356310842015cee3b2d938"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\pages\\RecipeForm.tsx": {
-    "mtime": 1779245877.694383,
-    "hash": "ecceb85c51ed0b9445648f38931d437f"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\pages\\Recipes.tsx": {
-    "mtime": 1779247148.3725917,
-    "hash": "db2b5443590577752998e7d2f60c0b2c"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\pages\\Run.tsx": {
-    "mtime": 1779250157.0462694,
-    "hash": "3c8d147633afe838b1d30df294f3ec61"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\pages\\Settings.tsx": {
-    "mtime": 1779248090.4551141,
-    "hash": "6d121a193009a94b8997b63ad9e99fc0"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\store\\app.ts": {
-    "mtime": 1779245186.941367,
-    "hash": "16a0010ff20f58fe355c509cfe110d78"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\store\\chart.ts": {
-    "mtime": 1779245197.1733747,
-    "hash": "33b7c9dda0688e08031a6ce0936625d9"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\store\\settings.ts": {
-    "mtime": 1779247101.9168942,
-    "hash": "1bb69073b948ea17414ee312a06624b3"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\tests\\e2e\\recipes.spec.ts": {
-    "mtime": 1779246010.8508656,
-    "hash": "647d036740fccd2f1765ac0662e9b16e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\tests\\unit\\store-app.test.ts": {
-    "mtime": 1779245158.781021,
-    "hash": "ca4f1829e874a263c4fc66b717473551"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\tests\\unit\\store-chart.test.ts": {
-    "mtime": 1779245167.3954697,
-    "hash": "ee224f650c12a7882103e20eb264ef9c"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\tests\\unit\\ws.test.ts": {
-    "mtime": 1779244903.190729,
-    "hash": "6329fa475428ad5b6385519b981da3be"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\CLAUDE.md": {
-    "mtime": 1779254301.5441418,
-    "hash": "a639faa2b001fa2c4352ec1ec8861dc0"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\README.md": {
-    "mtime": 1779252176.1927133,
-    "hash": "0fadca3d1518e8264946e3834931a2e1"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\backend\\config.example.yaml": {
-    "mtime": 1779184093.4648595,
-    "hash": "c8c43e3ea262a109394845e7547df55e"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\docs\\superpowers\\plans\\2026-05-19-plan-1-backend-mock-e2e.md": {
-    "mtime": 1779183659.1268952,
-    "hash": "b99472da4bb646ffcf5cbd344bf93bee"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\docs\\superpowers\\plans\\2026-05-20-plan-2-frontend.md": {
-    "mtime": 1779241648.6819158,
-    "hash": "9419bd8d1b017129dc84e83569dd8914"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\docs\\superpowers\\plans\\2026-05-20-plan-4-frontend-history-hardware.md": {
-    "mtime": 1779252581.1268866,
-    "hash": "0c61c9d2cc08fc0363ce4da1fa4e8428"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\docs\\superpowers\\specs\\2026-05-19-pinch-test-machine-design.md": {
-    "mtime": 1779182934.6045034,
-    "hash": "450d003b07757d88e60975192ac9f9c6"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\index.html": {
-    "mtime": 1779242973.6152778,
-    "hash": "a96498a1d9250d18461eb75ba231ff17"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\README.md": {
-    "mtime": 1779097814.9478135,
-    "hash": "f6e3faf55d738cf2affe1b44195f27cf"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\public\\favicon.svg": {
-    "mtime": 1779097815.2095587,
-    "hash": "7e840862161341271697daa99a40d76b"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\public\\icons.svg": {
-    "mtime": 1779097815.2240627,
-    "hash": "3b4fcfcf393eca4d264dca4a4663bc37"
-  },
-  "C:\\Users\\Aimz\\source\\repos\\pmd-pinch-test-mc\\frontend\\src\\assets\\hero.png": {
-    "mtime": 1779097814.9603248,
-    "hash": "aead493361b27e7510691c5d7072dfc1"
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\settings.json": {
+    "mtime": 1779778142.730074,
+    "ast_hash": "5a6c4aa7596408ce668074f5d5c43b3b",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\settings.local.json": {
+    "mtime": 1779785484.4548743,
+    "ast_hash": "2df01ebf902c0f70835dc8944b452c15",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\plc_bridge.py": {
+    "mtime": 1779783353.7836828,
+    "ast_hash": "d405daad1a9a998e4d59b58da03b1b8a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\config.py": {
+    "mtime": 1779783585.9356713,
+    "ast_hash": "94336097348d59d5f52fb8191a20ee52",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\deps.py": {
+    "mtime": 1779269406.5721316,
+    "ast_hash": "2cc854f4e9207cb1891063e51833fea3",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\logging_setup.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "9956ddd89b12c758eec41e07fe1e2d35",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\main.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "8306cb8d27add17e7cef1b0e3c8c8130",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\__init__.py": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\api\\config.py": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "ab7a0b5ddf7d690c696bcb9ae23d0257",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\api\\hardware.py": {
+    "mtime": 1779778720.5141568,
+    "ast_hash": "bf8ac4bf41034c64feb090e1eb417fe5",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\api\\recipes.py": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "e7dccc7f61bbc619ee3563dbd3b35c4f",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\api\\runs.py": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "70904e0c9023dff14bd40189adfe5a8f",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\api\\sessions.py": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "a81bd95a50fcbebfef4095bd8828502d",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\api\\ws.py": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "3aa19647c37c102943b8969e3b322ab2",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\api\\__init__.py": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\db\\engine.py": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "b4ef9e65a902542e9e371097069f0adf",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\db\\models.py": {
+    "mtime": 1779269406.5711255,
+    "ast_hash": "52456b61bc02d2f0f56779f64561a44b",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\db\\__init__.py": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\db\\migrations\\env.py": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "4265623f9458f080dbd7e197c28b9061",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\db\\migrations\\versions\\0001_initial.py": {
+    "mtime": 1779269406.5711255,
+    "ast_hash": "70b9371bc9ed6206e4acd8a49bda2719",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\hardware\\base.py": {
+    "mtime": 1779269406.5721316,
+    "ast_hash": "add554bba0cfce5046ddae55ae7dd9b6",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\hardware\\esp32.py": {
+    "mtime": 1779269897.8984637,
+    "ast_hash": "3d9dc33576f3e4fc48992964b876aa3a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\hardware\\imada.py": {
+    "mtime": 1779269880.730861,
+    "ast_hash": "96499a90cd99c7b199835c73d074e871",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\hardware\\manager.py": {
+    "mtime": 1779779452.8280208,
+    "ast_hash": "35716efbb7fed56e772f6c4230996e00",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\hardware\\plc.py": {
+    "mtime": 1779779810.5159144,
+    "ast_hash": "cf49dea65d509464beb7fb1533ee6b79",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\hardware\\__init__.py": {
+    "mtime": 1779269406.5721316,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\hardware\\mock\\mock_esp32.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "b59d46b426dabb5fdc48efd454a597e8",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\hardware\\mock\\mock_imada.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "10f64360f47a376e6d72aef472591587",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\hardware\\mock\\mock_plc.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "78f742e2fe8aaa12c6155348841fd755",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\hardware\\mock\\__init__.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\schemas\\hardware.py": {
+    "mtime": 1779778705.7283714,
+    "ast_hash": "5cf4d3172f7280fd461d690738733c0a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\schemas\\recipe.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "2a35f05fccd91b89c49f16e35aed3c87",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\schemas\\run.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "7350aa2805c48e2ca461c79d2a3ff24a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\schemas\\session.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "157c61a7b697f9769db64bee1ac09591",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\schemas\\ws_messages.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "9f01c5954741b16b10be056a05d11cca",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\schemas\\__init__.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\services\\event_bus.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "3bb94b999c8a0129c476ca9edf5e82b3",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\services\\recipe_service.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "1c0a0d0f838dc8fb459d453f87196979",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\services\\state_machine.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "2180b1d90951ec9f88d305f92823634c",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\services\\test_runner.py": {
+    "mtime": 1779778690.2438803,
+    "ast_hash": "77435139131983aafc9b21c336c34639",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\services\\waveform.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "def4361953ed954be28cded9f3eaba57",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\services\\ws_hub.py": {
+    "mtime": 1779778658.727427,
+    "ast_hash": "04cd21bebad4965976574dd45948129a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\app\\services\\__init__.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\scripts\\benchmark_plc_usb.py": {
+    "mtime": 1779778125.0932496,
+    "ast_hash": "6c10397fe3ac9bcd0b1b9795c1e0f7cb",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\scripts\\bridge_minimal.py": {
+    "mtime": 1779782446.883023,
+    "ast_hash": "a32cfef2cd580b9989fa38222426aac5",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\scripts\\check_mr807.py": {
+    "mtime": 1779783396.5656505,
+    "ast_hash": "3eda1f3877cd3233550b7c8311b00b60",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\scripts\\plc_minimal.py": {
+    "mtime": 1779782595.9755516,
+    "ast_hash": "a22b87c42cbf161ed0dffbdcfcc158e1",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\scripts\\read_all_bits.py": {
+    "mtime": 1779781500.4829886,
+    "ast_hash": "948731bad82a0bcde38762d4de54c4d0",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\scripts\\smoke_test_plc.py": {
+    "mtime": 1779778106.4148428,
+    "ast_hash": "7caa266f1c217d03eceb0ff7d77dbbde",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\conftest.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "e37248b2679fab585cf313b47f3f286a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\__init__.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_hardware_api.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "66c7ffc4348598baae7451416598e774",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_plc_bit_api.py": {
+    "mtime": 1779778741.3826575,
+    "ast_hash": "cc70351e27d56f8f54aafa01f94c2b9a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_recipes_api.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "aba76c85f54cd49bb56737e5c7dace92",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_runner_e2e_mock.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "a34d1a09c1a1f744943dc6c28884d457",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_runs_api.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "b2ef992237f9c0204cac4ae6791c85b8",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_sessions_api.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "4e79e4e4de9fd7d147c94f0fdf91b891",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\integration\\test_ws.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "4c9659d42dce37ca9f146771957a8dd3",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\integration\\__init__.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_config.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "9d35e4d4bc41d856ea394d837bd1979b",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_event_bus.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "b6826a050cb88e9c5a749a10d8775a88",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_hardware_base.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "2cb8cc47865b46673be3376dba60cdec",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_hardware_manager.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "35aed0409149f28da39adb5f776eaac0",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_logging.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "4620007f5695ee9fa4f576af2474b46d",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_mock_esp32.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "bf7ef8f513c52e33451a5113af26d580",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_mock_imada.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "c11a813c5bc994f4e03da251125b4d12",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_mock_plc.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "a0eea6f582720c5a690761f3cafd7806",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_models.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "c6c0819972c2504ed1e0e592753e4600",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_recipe_service.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "4a8c4d542bc4e8a0f0ef539d959b4c5c",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_state_machine.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "09c0ee34d6552d1199ee1349cfe25314",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_waveform.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "a9db202d36800654ed8629869b969a3d",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\test_ws_hub.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "c76c30f96202704ac40544a09332dbf9",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\tests\\unit\\__init__.py": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\components.json": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "41a73129811d098fec1e6189f4d6a392",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\eslint.config.js": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "75a0286de267d5393020e4439ed72f6a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\package.json": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "020ef8e361d56fd602bb8806c7ec3dae",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\playwright.config.ts": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "c76467b2bd8877ce2a5513b40c3e406a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\tsconfig.json": {
+    "mtime": 1779269406.6097093,
+    "ast_hash": "46cec8327258067480898ba1bcca3b5f",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\vite.config.ts": {
+    "mtime": 1779269406.6097093,
+    "ast_hash": "ab43ae8198cf5965368e57be45789f7d",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\vitest.config.ts": {
+    "mtime": 1779269406.6097093,
+    "ast_hash": "1595e450c2b0eaeca1e1e4c9a45f736f",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\App.tsx": {
+    "mtime": 1779783796.710016,
+    "ast_hash": "e33ff575c0061a7681ba0a6f56f74182",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\main.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "c9e695466aead51d799b5ccf4c077649",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\test-setup.ts": {
+    "mtime": 1779269406.607706,
+    "ast_hash": "dc972af1d2b80e79814a7e1999178b15",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\vite-env.d.ts": {
+    "mtime": 1779269406.607706,
+    "ast_hash": "8f68c27c3fc38817b2726b20e2d4f1ee",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\EmergencyStopOverlay.tsx": {
+    "mtime": 1779783772.927108,
+    "ast_hash": "416533a45a7c2689ccab0cef20275936",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\HwStatusBar.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "4df6deac17c09dc7728c830d96e96a51",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\Layout.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "d9e3611d590d28e0866f301bbb122274",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\PlcBitMonitor.tsx": {
+    "mtime": 1779783674.5309832,
+    "ast_hash": "1434310afd2c86d03786a7b4463c13dc",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\StateBadge.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "a8f30cf9527a31ede00fc91ec8e4157c",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ThemeProvider.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "284db02354f80ca20a203ac030e14690",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\TopBar.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "b703c0a3df9d4ae0cc75108ed5b5c005",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\WaveformChart.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "f0cd85743708ee07d422e568b4a7b3c5",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\alert-dialog.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "7f8e5fa278a3f34754d58f1e2c3b2d2b",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\badge.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "1ff3e04a7fd408f9bd7520187dce5d19",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\button.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "fa7dc9bec92a2ea0344e2a5c4738514f",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\dialog.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "89fd7888d5bbc59f2eae651ffc05fc70",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\form.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "75cc8229f8de8153d0cbcb5f1611f10f",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\input.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "da33823853390b57ac04230a67657585",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\label.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "ac67abcdb7c8f4505ac98e722f180fe0",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\select.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "603dc2203f50915d6a45d394df5aa2c5",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\skeleton.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "58a45c5aceb0b4cb1c16d06758ea16d6",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\sonner.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "37bb7f252ba38fcc0f57f78c763bd38b",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\components\\ui\\table.tsx": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "7424f42ca135637e99ac19646cbb6625",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\hooks\\useSessionControl.ts": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "c4eb20fbdda2a5358fddaed28a86eab9",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\lib\\api.ts": {
+    "mtime": 1779778703.1740685,
+    "ast_hash": "649fbd04bc411ae70b5a8b7285bb8726",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\lib\\types.ts": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "88e0a8bc79c6c644d711a5a06885db95",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\lib\\utils.ts": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "1d8011eb18769078bf77502b220daa5e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\lib\\ws.ts": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "8834257cfb937487266aa3c0ec762454",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\pages\\Hardware.tsx": {
+    "mtime": 1779780386.7684724,
+    "ast_hash": "10a5dbe19e13fe1c24963991b94d8463",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\pages\\History.tsx": {
+    "mtime": 1779269406.6044838,
+    "ast_hash": "bc59ac70d5f4a6aa6986240687073ff2",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\pages\\HistoryDetail.tsx": {
+    "mtime": 1779269406.6044838,
+    "ast_hash": "6339db4d0f3b5127633820d55a84205e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\pages\\RecipeForm.tsx": {
+    "mtime": 1779269406.6057787,
+    "ast_hash": "804baebc66ff0a7c464a033c21b2bf4a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\pages\\Recipes.tsx": {
+    "mtime": 1779269406.6057787,
+    "ast_hash": "80cd22707b95ff19135591a6f49135d8",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\pages\\Run.tsx": {
+    "mtime": 1779778799.532175,
+    "ast_hash": "1c02921b3bcee4f23bc70eaf3581dcd4",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\pages\\Settings.tsx": {
+    "mtime": 1779269406.6067863,
+    "ast_hash": "16038297dd33b8c5b4ecfef42865b4bc",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\store\\app.ts": {
+    "mtime": 1779783842.5046914,
+    "ast_hash": "04f0fbc6a4f6d680a76262b9b7d787d9",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\store\\chart.ts": {
+    "mtime": 1779269406.607706,
+    "ast_hash": "c8c6db3c7b5023bf1913513b581a354b",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\store\\settings.ts": {
+    "mtime": 1779269406.607706,
+    "ast_hash": "9db2be8a7d30166d0eabfd7e378b77ea",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\tests\\e2e\\recipes.spec.ts": {
+    "mtime": 1779269406.607706,
+    "ast_hash": "c9afbfd25d5df82d8bb506717aa89135",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\tests\\unit\\store-app.test.ts": {
+    "mtime": 1779269406.6097093,
+    "ast_hash": "9af864b47cda8558139f54123d2d8375",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\tests\\unit\\store-chart.test.ts": {
+    "mtime": 1779269406.6097093,
+    "ast_hash": "106709b3b58ba0eb70378f25aacd16d9",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\tests\\unit\\ws.test.ts": {
+    "mtime": 1779269406.6097093,
+    "ast_hash": "dc4eda7e05cf72e35599313ea215d46c",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\CLAUDE.md": {
+    "mtime": 1779778242.7422547,
+    "ast_hash": "3afcc0a67b229988ae8d665af0003607",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\README.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "d6ef52c0f0df4c5c98993c20011834db",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\agents\\black.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "abef97d5ea3da0a39de39a4543e5dc6a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\agents\\database.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "7c447310cffbca4377816f543aef98ee",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\agents\\devops.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "38c6c7bb872fdc2ba947f6c514a83754",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\agents\\docs.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "25fef564e49a6822f44fced1356921bd",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\agents\\george.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "0aa42b605be72cf70848fb3f78a990c0",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\agents\\pi-front.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "25dd82e3aecef36a7671d84a471b80c8",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\agents\\qa.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "dc81564eee7a0414d0a06f8612d49645",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\commands\\migrate.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "f46e4c48a139a15932a0897edd5a9802",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\commands\\README.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "f4fe743e7b875bee3702522b91da6d73",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\commands\\start-dev.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "18cd32da930c2f895a5c033b3dd456f5",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\commands\\test.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "ec2b3b2ed0e4b3bfade2ec694b24b56e",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\hooks\\README.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "31b8eaeac89583f2443f6f7b67f08f21",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\memory\\README.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "66a5a6b5dd6ba33b5d10f6a4b0d64e63",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\skills\\README.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "17bdbbca03467f32b0ec0aa031ceaed5",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\.claude\\workflows\\README.md": {
+    "mtime": 1779269406.5579467,
+    "ast_hash": "c34683194d56c7b349afac4f8f9be9bd",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\config.example.yaml": {
+    "mtime": 1779269406.572977,
+    "ast_hash": "eebb04ebfef0138f78ca2a81b2bf69e4",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\config.yaml": {
+    "mtime": 1779783563.1382697,
+    "ast_hash": "40b7d6f52f7a065985eabac1f2c89b26",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\kvm.txt": {
+    "mtime": 1779781581.242684,
+    "ast_hash": "933b9d1691e4d64ede950e0bd1c951d9",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\.pytest_tmp\\test_load_settings_from_yaml0\\config.yaml": {
+    "mtime": 1779783884.2942724,
+    "ast_hash": "97527619cba46ab2d247548997e5f1f3",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\py32\\LICENSE.txt": {
+    "mtime": 1727780568.0,
+    "ast_hash": "b52c821c7750804295e23b9e94525085",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\backend\\scripts\\README.md": {
+    "mtime": 1779778186.1726682,
+    "ast_hash": "5c89d743c166fb02dba2b095cf310dca",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\docs\\superpowers\\plans\\2026-05-19-plan-1-backend-mock-e2e.md": {
+    "mtime": 1779269406.587775,
+    "ast_hash": "b61b8fda3a15230140e1f2969faef7cc",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\docs\\superpowers\\plans\\2026-05-20-plan-2-frontend.md": {
+    "mtime": 1779269406.5894375,
+    "ast_hash": "f4073faf2eb0189abbae491386adde97",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\docs\\superpowers\\plans\\2026-05-20-plan-4-frontend-history-hardware.md": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "731ca48d13b7ba4015af1436eb692f10",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\docs\\superpowers\\specs\\2026-05-19-pinch-test-machine-design.md": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "514d0b571467f66d54092d9127b985df",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\index.html": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "b5158bbbd54eed9408a51a0987c7b699",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\README.md": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "1fd1975c826313d9af82af3562df872f",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\public\\favicon.svg": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "7e840862161341271697daa99a40d76b",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\public\\icons.svg": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "21c7473c592c67dc87223d49892c8f0a",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\pmd\\source\\repo\\pmd-pinch-test-mc\\frontend\\src\\assets\\hero.png": {
+    "mtime": 1779269406.5901718,
+    "ast_hash": "aead493361b27e7510691c5d7072dfc1",
+    "semantic_hash": ""
   }
 }

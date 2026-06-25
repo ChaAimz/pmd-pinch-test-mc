@@ -1,6 +1,19 @@
 import time
 
 from app.hardware.mock.mock_imada import MockImada
+from app.hardware.base import ImadaClient
+
+
+def test_mock_imada_satisfies_protocol():
+    """MockImada must satisfy the full ImadaClient Protocol including tare()."""
+    imada = MockImada()
+    assert isinstance(imada, ImadaClient)
+
+
+def test_mock_imada_tare_is_callable():
+    imada = MockImada()
+    imada.connect()
+    imada.tare()  # should not raise
 
 
 def test_mock_imada_streams_at_target_rate():

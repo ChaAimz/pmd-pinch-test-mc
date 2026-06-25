@@ -27,6 +27,10 @@ Thumbs.db
 
 # Project
 backend/config.yaml
+# 32-bit Python embedded distribution for the KVComPlus bridge subprocess
+backend/py32/
+# Local-dev artifact; real waveform artifacts live under data/waveforms/
+backend/waveforms/
 
 # Graphify
 **/graphify-out/cache/

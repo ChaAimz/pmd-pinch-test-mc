@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Optional
 
 from app.config import Settings
@@ -9,6 +10,7 @@ from app.services.waveform import WaveformService
 from app.services.ws_hub import WsHub
 
 _settings: Optional[Settings] = None
+_config_path: Optional[Path] = None
 _manager: Optional[HardwareManager] = None
 _event_bus: Optional[EventBus] = None
 _ws_hub: Optional[WsHub] = None
@@ -25,6 +27,15 @@ def get_settings() -> Settings:
     if _settings is None:
         raise RuntimeError("Settings not initialized")
     return _settings
+
+
+def set_config_path(p: Path) -> None:
+    global _config_path
+    _config_path = p
+
+
+def get_config_path() -> Optional[Path]:
+    return _config_path
 
 
 def set_manager(m: HardwareManager) -> None:

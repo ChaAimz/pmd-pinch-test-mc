@@ -20,6 +20,28 @@ class WsHub:
         if q in self._clients:
             self._clients.remove(q)
 
+    def _enqueue_to_clients(self, msg: dict) -> None:
+        """Push *msg* into every connected client queue. Must run on the event-loop thread."""
+        for client in list(self._clients):
+            try:
+                client.put_nowait(msg)
+            except asyncio.QueueFull:
+                try:
+                    client.get_nowait()
+                except Exception:
+                    pass
+                try:
+                    client.put_nowait(msg)
+                except Exception:
+                    pass
+
+    def broadcast_threadsafe(self, msg: dict, loop: asyncio.AbstractEventLoop) -> None:
+        """Schedule *msg* delivery to all WS clients from any thread.
+
+        Caller supplies the running event loop (the manager stores it after start()).
+        """
+        loop.call_soon_threadsafe(self._enqueue_to_clients, msg)
+
     async def pump(self) -> None:
         bus_q = await self.bus.subscribe()
         try:

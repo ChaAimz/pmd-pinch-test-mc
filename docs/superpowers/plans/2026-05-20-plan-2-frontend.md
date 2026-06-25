@@ -1,6 +1,6 @@
 # Plan 2 — Frontend: Vite + React + ShadcnUI + uPlot
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Build the operator-facing React SPA — Recipes CRUD and a real-time Run page with uPlot force waveform — connected to the FastAPI backend via REST and WebSocket.
 
@@ -70,7 +70,7 @@ frontend/
 - Create: `frontend/src/test-setup.ts`
 - Create: `frontend/src/index.css`
 
-- [ ] **Step 1: Create Vite scaffold**
+- [x] **Step 1: Create Vite scaffold**
 
 From repo root:
 ```bash
@@ -79,7 +79,7 @@ cd frontend
 npm install
 ```
 
-- [ ] **Step 2: Install all runtime + dev dependencies**
+- [x] **Step 2: Install all runtime + dev dependencies**
 
 ```bash
 npm install react-router-dom @tanstack/react-query zustand uplot react-hook-form
@@ -87,7 +87,7 @@ npm install tailwindcss @tailwindcss/vite
 npm install -D vitest @vitest/ui @testing-library/react @testing-library/user-event @testing-library/jest-dom jsdom @playwright/test
 ```
 
-- [ ] **Step 3: Replace `frontend/vite.config.ts`**
+- [x] **Step 3: Replace `frontend/vite.config.ts`**
 
 ```typescript
 import { defineConfig } from 'vite'
@@ -109,7 +109,7 @@ export default defineConfig({
 })
 ```
 
-- [ ] **Step 4: Replace `frontend/tsconfig.json`**
+- [x] **Step 4: Replace `frontend/tsconfig.json`**
 
 ```json
 {
@@ -132,7 +132,7 @@ export default defineConfig({
 }
 ```
 
-- [ ] **Step 5: Create `frontend/vitest.config.ts`**
+- [x] **Step 5: Create `frontend/vitest.config.ts`**
 
 ```typescript
 import { defineConfig } from 'vitest/config'
@@ -146,13 +146,13 @@ export default defineConfig({
 })
 ```
 
-- [ ] **Step 6: Create `frontend/src/test-setup.ts`**
+- [x] **Step 6: Create `frontend/src/test-setup.ts`**
 
 ```typescript
 import '@testing-library/jest-dom'
 ```
 
-- [ ] **Step 7: Replace `frontend/src/index.css`**
+- [x] **Step 7: Replace `frontend/src/index.css`**
 
 ```css
 @import "tailwindcss";
@@ -200,7 +200,7 @@ import '@testing-library/jest-dom'
 }
 ```
 
-- [ ] **Step 8: Verify dev server**
+- [x] **Step 8: Verify dev server**
 
 ```bash
 npm run dev
@@ -208,7 +208,7 @@ npm run dev
 
 Expected: Vite starts on `http://localhost:5173`, default React page visible, no errors.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 cd ..
@@ -225,7 +225,7 @@ git commit -m "feat(frontend): scaffold Vite 6 + React 19 + TypeScript + Tailwin
 - Create: `frontend/src/lib/utils.ts` (auto-generated)
 - Create: `frontend/src/components/ui/` (auto-generated)
 
-- [ ] **Step 1: Run shadcn init**
+- [x] **Step 1: Run shadcn init**
 
 ```bash
 cd frontend
@@ -241,13 +241,13 @@ Prompts → answer:
 - TypeScript: **Yes**
 - React Server Components: **No**
 
-- [ ] **Step 2: Add required ShadcnUI components**
+- [x] **Step 2: Add required ShadcnUI components**
 
 ```bash
 npx shadcn@latest add button input label dialog alert-dialog table badge select form toast
 ```
 
-- [ ] **Step 3: Verify `src/lib/utils.ts` has `cn()`**
+- [x] **Step 3: Verify `src/lib/utils.ts` has `cn()`**
 
 ```typescript
 import { clsx, type ClassValue } from "clsx"
@@ -263,7 +263,7 @@ If missing, create it and install:
 npm install clsx tailwind-merge
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add frontend/
@@ -281,7 +281,7 @@ git commit -m "feat(frontend): ShadcnUI init + button/input/dialog/table/badge/s
 - Create: `frontend/src/pages/Run.tsx` (stub)
 - Create: `frontend/src/pages/Recipes.tsx` (stub)
 
-- [ ] **Step 1: Replace `frontend/src/main.tsx`**
+- [x] **Step 1: Replace `frontend/src/main.tsx`**
 
 ```typescript
 import { StrictMode } from 'react'
@@ -306,7 +306,7 @@ createRoot(document.getElementById('root')!).render(
 )
 ```
 
-- [ ] **Step 2: Create `frontend/src/components/Layout.tsx`**
+- [x] **Step 2: Create `frontend/src/components/Layout.tsx`**
 
 ```typescript
 import { NavLink, Outlet } from 'react-router-dom'
@@ -350,7 +350,7 @@ export default function Layout() {
 }
 ```
 
-- [ ] **Step 3: Replace `frontend/src/App.tsx`**
+- [x] **Step 3: Replace `frontend/src/App.tsx`**
 
 ```typescript
 import { useEffect } from 'react'
@@ -384,7 +384,7 @@ export default function App() {
 }
 ```
 
-- [ ] **Step 4: Create stub pages**
+- [x] **Step 4: Create stub pages**
 
 `frontend/src/pages/Run.tsx`:
 ```typescript
@@ -400,7 +400,7 @@ export default function Recipes() {
 }
 ```
 
-- [ ] **Step 5: Verify routing**
+- [x] **Step 5: Verify routing**
 
 ```bash
 npm run dev
@@ -408,7 +408,7 @@ npm run dev
 
 Open `http://localhost:5173`. Sidebar with 5 links visible. Navigate to each — stub content appears.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add frontend/src/
@@ -424,7 +424,7 @@ git commit -m "feat(frontend): App shell + React Router + Layout sidebar"
 - Create: `frontend/src/lib/types.ts`
 - Create: `frontend/tests/unit/ws.test.ts`
 
-- [ ] **Step 1: Create `frontend/src/lib/types.ts`**
+- [x] **Step 1: Create `frontend/src/lib/types.ts`**
 
 ```typescript
 export interface Recipe {
@@ -453,7 +453,7 @@ export interface WsEsp32Batch { type: 'esp32_batch'; samples: WsSample[] }
 export interface WsError { type: 'error'; message: string }
 ```
 
-- [ ] **Step 2: Write failing test**
+- [x] **Step 2: Write failing test**
 
 `frontend/tests/unit/ws.test.ts`:
 ```typescript
@@ -512,14 +512,14 @@ describe('WsClient', () => {
 })
 ```
 
-- [ ] **Step 3: Run test — verify FAIL**
+- [x] **Step 3: Run test — verify FAIL**
 
 ```bash
 npx vitest run tests/unit/ws.test.ts
 ```
 Expected: FAIL — `WsClient` not found.
 
-- [ ] **Step 4: Create `frontend/src/lib/ws.ts`**
+- [x] **Step 4: Create `frontend/src/lib/ws.ts`**
 
 ```typescript
 type Handler<T = unknown> = (msg: T) => void
@@ -624,14 +624,14 @@ import { useChartStore } from '@/store/chart'
 ```
 Replace the `await_import_*` calls with direct store references. Use this if the require() approach causes issues.
 
-- [ ] **Step 5: Run test — verify PASS**
+- [x] **Step 5: Run test — verify PASS**
 
 ```bash
 npx vitest run tests/unit/ws.test.ts
 ```
 Expected: 4 tests PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add frontend/src/lib/ frontend/tests/unit/ws.test.ts
@@ -648,7 +648,7 @@ git commit -m "feat(frontend): WsClient singleton with auto-reconnect + typed di
 - Create: `frontend/tests/unit/store-app.test.ts`
 - Create: `frontend/tests/unit/store-chart.test.ts`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 `frontend/tests/unit/store-app.test.ts`:
 ```typescript
@@ -718,14 +718,14 @@ describe('useChartStore', () => {
 })
 ```
 
-- [ ] **Step 2: Run tests — verify FAIL**
+- [x] **Step 2: Run tests — verify FAIL**
 
 ```bash
 npx vitest run tests/unit/store-app.test.ts tests/unit/store-chart.test.ts
 ```
 Expected: FAIL — modules not found.
 
-- [ ] **Step 3: Create `frontend/src/store/app.ts`**
+- [x] **Step 3: Create `frontend/src/store/app.ts`**
 
 ```typescript
 import { create } from 'zustand'
@@ -776,7 +776,7 @@ export const useAppStore = create<AppState>((set) => ({
 }))
 ```
 
-- [ ] **Step 4: Create `frontend/src/store/chart.ts`**
+- [x] **Step 4: Create `frontend/src/store/chart.ts`**
 
 ```typescript
 import { create } from 'zustand'
@@ -844,14 +844,14 @@ export const useChartStore = create<ChartState>((set) => ({
 }))
 ```
 
-- [ ] **Step 5: Run tests — verify PASS**
+- [x] **Step 5: Run tests — verify PASS**
 
 ```bash
 npx vitest run tests/unit/store-app.test.ts tests/unit/store-chart.test.ts
 ```
 Expected: 9 tests PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add frontend/src/store/ frontend/tests/unit/store-*.test.ts
@@ -865,7 +865,7 @@ git commit -m "feat(frontend): Zustand stores — app state + chart ring buffers
 **Files:**
 - Create: `frontend/src/lib/api.ts`
 
-- [ ] **Step 1: Create `frontend/src/lib/api.ts`**
+- [x] **Step 1: Create `frontend/src/lib/api.ts`**
 
 ```typescript
 import type { Recipe, RecipeCreate, RecipeUpdate } from './types'
@@ -902,7 +902,7 @@ export const api = {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add frontend/src/lib/api.ts
@@ -917,7 +917,7 @@ git commit -m "feat(frontend): REST API client with recipes + sessions + runs"
 - Create: `frontend/src/components/StateBadge.tsx`
 - Create: `frontend/src/components/HwStatusBar.tsx`
 
-- [ ] **Step 1: Create `frontend/src/components/StateBadge.tsx`**
+- [x] **Step 1: Create `frontend/src/components/StateBadge.tsx`**
 
 ```typescript
 import { Badge } from '@/components/ui/badge'
@@ -947,7 +947,7 @@ export function StateBadge({ state }: { state: string }) {
 }
 ```
 
-- [ ] **Step 2: Create `frontend/src/components/HwStatusBar.tsx`**
+- [x] **Step 2: Create `frontend/src/components/HwStatusBar.tsx`**
 
 ```typescript
 import { cn } from '@/lib/utils'
@@ -973,7 +973,7 @@ export function HwStatusBar({ status }: { status: HwStatus }) {
 }
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add frontend/src/components/StateBadge.tsx frontend/src/components/HwStatusBar.tsx
@@ -989,7 +989,7 @@ git commit -m "feat(frontend): StateBadge + HwStatusBar display components"
 
 Imada and ESP32 have independent sample times — rendered as two stacked uPlot instances sharing a container. 20 FPS via `setInterval(50ms)`. Ring buffer linearized before each render.
 
-- [ ] **Step 1: Create `frontend/src/components/WaveformChart.tsx`**
+- [x] **Step 1: Create `frontend/src/components/WaveformChart.tsx`**
 
 ```typescript
 import { useEffect, useRef } from 'react'
@@ -1072,7 +1072,7 @@ export function WaveformChart() {
 
 **Note:** Export `ChannelState` type from `store/chart.ts` (add `export interface ChannelState` or `export type ChannelState`).
 
-- [ ] **Step 2: Add `ChannelState` export to `store/chart.ts`**
+- [x] **Step 2: Add `ChannelState` export to `store/chart.ts`**
 
 Open `frontend/src/store/chart.ts` and ensure the interface is exported:
 ```typescript
@@ -1084,14 +1084,14 @@ export interface ChannelState {
 }
 ```
 
-- [ ] **Step 3: Verify TypeScript**
+- [x] **Step 3: Verify TypeScript**
 
 ```bash
 npx tsc --noEmit
 ```
 Expected: no errors (fix any that appear — most likely missing type exports).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add frontend/src/components/WaveformChart.tsx frontend/src/store/chart.ts
@@ -1108,7 +1108,7 @@ git commit -m "feat(frontend): WaveformChart — two uPlot instances at 20 FPS f
 
 Works against existing `/api/recipes` — backend must be running.
 
-- [ ] **Step 1: Replace `frontend/src/pages/Recipes.tsx`**
+- [x] **Step 1: Replace `frontend/src/pages/Recipes.tsx`**
 
 ```typescript
 import { useState } from 'react'
@@ -1210,7 +1210,7 @@ export default function Recipes() {
 }
 ```
 
-- [ ] **Step 2: Create `frontend/src/pages/RecipeForm.tsx`**
+- [x] **Step 2: Create `frontend/src/pages/RecipeForm.tsx`**
 
 ```typescript
 import { useForm } from 'react-hook-form'
@@ -1296,7 +1296,7 @@ export function RecipeForm({ recipe: r, onSaved }: Props) {
 }
 ```
 
-- [ ] **Step 3: Start servers and verify Recipes page**
+- [x] **Step 3: Start servers and verify Recipes page**
 
 Backend (from `backend/`):
 ```bash
@@ -1313,7 +1313,7 @@ Open `http://localhost:5173/recipes`. Verify:
 - Edit prefills and saves correctly
 - Delete shows confirm dialog, removes row
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add frontend/src/pages/
@@ -1330,7 +1330,7 @@ git commit -m "feat(frontend): Recipes CRUD page — list, create, edit, delete"
 - Modify: `frontend/src/pages/Run.tsx`
 - Create: `frontend/src/hooks/useSessionControl.ts`
 
-- [ ] **Step 1: Create `frontend/src/hooks/useSessionControl.ts`**
+- [x] **Step 1: Create `frontend/src/hooks/useSessionControl.ts`**
 
 ```typescript
 import { useMutation } from '@tanstack/react-query'
@@ -1366,7 +1366,7 @@ export function useSessionControl() {
 }
 ```
 
-- [ ] **Step 2: Replace `frontend/src/pages/Run.tsx`**
+- [x] **Step 2: Replace `frontend/src/pages/Run.tsx`**
 
 ```typescript
 import { useEffect, useState } from 'react'
@@ -1493,14 +1493,14 @@ export default function Run() {
 }
 ```
 
-- [ ] **Step 3: Type-check**
+- [x] **Step 3: Type-check**
 
 ```bash
 npx tsc --noEmit
 ```
 Expected: no errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add frontend/src/pages/Run.tsx frontend/src/hooks/useSessionControl.ts
@@ -1515,13 +1515,13 @@ git commit -m "feat(frontend): Run page — chart + state badge + hw status + co
 - Create: `frontend/playwright.config.ts`
 - Create: `frontend/tests/e2e/recipes.spec.ts`
 
-- [ ] **Step 1: Install Playwright chromium**
+- [x] **Step 1: Install Playwright chromium**
 
 ```bash
 npx playwright install chromium
 ```
 
-- [ ] **Step 2: Create `frontend/playwright.config.ts`**
+- [x] **Step 2: Create `frontend/playwright.config.ts`**
 
 ```typescript
 import { defineConfig } from '@playwright/test'
@@ -1544,7 +1544,7 @@ export default defineConfig({
 })
 ```
 
-- [ ] **Step 3: Create `frontend/tests/e2e/recipes.spec.ts`**
+- [x] **Step 3: Create `frontend/tests/e2e/recipes.spec.ts`**
 
 ```typescript
 import { test, expect } from '@playwright/test'
@@ -1593,21 +1593,21 @@ test.describe('Recipes CRUD', () => {
 })
 ```
 
-- [ ] **Step 4: Run E2E tests (requires both servers running)**
+- [x] **Step 4: Run E2E tests (requires both servers running)**
 
 ```bash
 npx playwright test tests/e2e/recipes.spec.ts
 ```
 Expected: 3–4 tests PASS.
 
-- [ ] **Step 5: Run all unit tests**
+- [x] **Step 5: Run all unit tests**
 
 ```bash
 npx vitest run
 ```
 Expected: All PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add frontend/playwright.config.ts frontend/tests/e2e/
@@ -1621,7 +1621,7 @@ git commit -m "test(frontend): Playwright E2E smoke — Recipes CRUD"
 **Files:**
 - Modify: `CLAUDE.md`
 
-- [ ] **Step 1: Add frontend commands to Commands section in CLAUDE.md**
+- [x] **Step 1: Add frontend commands to Commands section in CLAUDE.md**
 
 After the existing backend commands block, add:
 
@@ -1639,7 +1639,7 @@ npx playwright test          # E2E (both servers must be running)
 ```
 ```
 
-- [ ] **Step 2: Update status in CLAUDE.md**
+- [x] **Step 2: Update status in CLAUDE.md**
 
 Change:
 ```
@@ -1650,7 +1650,7 @@ To:
 - ✅ **Plan 2** — Frontend committed. Vite + React + ShadcnUI + uPlot. Recipes CRUD done. Run page done (requires Phase C for live WS).
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add CLAUDE.md

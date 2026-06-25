@@ -17,8 +17,9 @@ class Recipe(SQLModel, table=True):
     loop_count: int
     min_force_n: Optional[float] = None
     max_force_n: Optional[float] = None
-    hold_time_ms: Optional[int] = None
     sampling_hz: int = 50
+    diameter_mm: float = 0.0
+    prepare_timer_s: int = 0
     created_at: str
     updated_at: str
 
@@ -48,7 +49,18 @@ class TestLoop(SQLModel, table=True):
     started_at: str
     finished_at: Optional[str] = None
     peak_force_n: Optional[float] = None
+    min_force_n: Optional[float] = None
     avg_force_n: Optional[float] = None
     hold_time_ms: Optional[int] = None
+    tension_end_ms: Optional[int] = None  # ms from B5 when B6 (end tension check) fired
+    peak_clamp_n: Optional[float] = None  # ESP32 force (N) at the moment MR804 was fired
+    avg_clamp_n: Optional[float] = None   # mean ESP32 clamp force (N) during B5→B6 window
     judgment: Optional[str] = None
     waveform_file: Optional[str] = None
+
+
+class AppSettings(SQLModel, table=True):
+    __tablename__ = "app_settings"
+
+    id: Optional[int] = Field(default=1, primary_key=True)
+    data: str = "{}"  # JSON-encoded UI settings blob (camelCase keys, opaque to backend)

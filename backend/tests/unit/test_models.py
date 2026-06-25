@@ -19,7 +19,6 @@ def test_models_persist_and_query():
             loop_count=3,
             min_force_n=1.0,
             max_force_n=10.0,
-            hold_time_ms=200,
             sampling_hz=50,
             created_at=datetime.utcnow().isoformat(),
             updated_at=datetime.utcnow().isoformat(),

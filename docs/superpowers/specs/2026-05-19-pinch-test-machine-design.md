@@ -24,8 +24,8 @@ A web-based control and data-acquisition application for a pinch test machine. T
 | B0 | Web → PLC | Start session (after writing W100/W102/W0) |
 | B1 | Web → PLC | Stop / abort (E-Stop) |
 | B2 | Web → PLC | Reset state |
-| B3 | Web → PLC | Press Clamp (operator-initiated or auto) |
-| B4 | Web → PLC | Stop clamp actuator (when ESP32 force ≥ threshold) |
+| B3 | PLC → Web | Press Clamp — **driven by the PLC ladder**; backend polls MR803 and waits for it before watching clamp force (changed 2026-06-17, was Web→PLC) |
+| B4 | Web → PLC | Stop clamp actuator. Two triggers: (1) ESP32 force ≥ **recipe clamp force limit** (normal stop, in-cycle), (2) ESP32 force ≥ **hardware limit** `force_limit_gf` (always-on safety → also M/C Stop + Reset + "Clamp Force Sensor Alarm" dialog → run goes to ERROR) |
 | B5 | PLC → Web | Start tension check (Imada read begins) |
 | B6 | PLC → Web | End tension check (Imada read ends) |
 | B7 | PLC → Web | Finish process (all loops complete) |
@@ -88,9 +88,12 @@ WRITE_PLC_PARAMS
 LOOP_BEGIN (loop_index = 1)
   → manual: wait for operator "Clamp" button; auto: auto-trigger immediately
 CLAMP_PRESSED
-  → set B3; ESP32 stream starts plotting
+  → wait for PLC to drive B3 (Press Clamp) HIGH (timeout: wait_clamp_press_ms, default 30s);
+    once HIGH, ESP32 stream starts plotting
 WAIT_CLAMP_FORCE
-  → loop reads ESP32 samples; if force_n ≥ recipe.clamp_threshold_n → set B4
+  → loop reads ESP32 samples; if force_n ≥ recipe.clamp_threshold_n (recipe clamp force limit) → set B4.
+    The hardware-limit safety (force_limit_gf) is always-on and independent — if it trips it
+    forces this state to ERROR (see B4 in §2.1).
 WAIT_B5
   → wait for PLC bit B5 = ON (timeout: configurable, default 30s)
 TENSION_CHECK
@@ -106,7 +109,8 @@ EVALUATE
       else 'fail'
   → persist test_loops row + write parquet to data/waveforms/<run_id>/loop_NNN.parquet
 UNCLAMP
-  → reset B3, B4; PLC ladder drives unclamp
+  → reset B4 (backend-owned); B3/B5/B6/B7 are PLC-owned — the PLC ladder de-asserts them
+    and re-presses B3 for the next loop. PLC ladder drives unclamp
   → if loop_index < recipe.loop_count → LOOP_BEGIN (loop_index += 1); else → DONE_B7
 DONE_B7
   → wait for PLC bit B7 = ON (timeout: 30s)
@@ -254,7 +258,7 @@ Written with PyArrow at loop end (after B6); buffered in memory during TENSION_C
 | PUT | `/api/recipes/{id}` | update |
 | DELETE | `/api/recipes/{id}` | delete |
 | POST | `/api/sessions/start` | `{recipe_id, operator, batch_id, shift, mode: 'manual'|'auto'}` → `{run_id}` |
-| POST | `/api/sessions/{id}/clamp` | manual mode: trigger B3 |
+| POST | `/api/sessions/{id}/clamp` | manual mode: operator gate to advance LOOP_BEGIN → CLAMP_PRESSED (the PLC still drives B3 itself) |
 | POST | `/api/sessions/{id}/stop` | E-Stop: sets B1 |
 | POST | `/api/sessions/{id}/reset` | sets B2 |
 | GET | `/api/runs` | paginated list (filter: recipe, status, operator, date range) |

@@ -13,7 +13,7 @@ Web-based control & data-acquisition application for a **pinch test machine**. T
 Always read these before changing architecture, protocols, or data shapes — they are the source of truth, not the code:
 
 - Design spec: [docs/superpowers/specs/2026-05-19-pinch-test-machine-design.md](docs/superpowers/specs/2026-05-19-pinch-test-machine-design.md) — PLC bit/word map, state machine, hardware abstraction, DB schema, REST + WebSocket protocol, safety invariants.
-- Implementation plan (Phase A): [docs/superpowers/plans/2026-05-19-plan-1-backend-mock-e2e.md](docs/superpowers/plans/2026-05-19-plan-1-backend-mock-e2e.md) — 23 TDD tasks. Phase A (Tasks 1–6) is done; Phase B (7–14) and Phase C (15–23) remain.
+- Implementation plan: [docs/superpowers/plans/2026-05-19-plan-1-backend-mock-e2e.md](docs/superpowers/plans/2026-05-19-plan-1-backend-mock-e2e.md) — 23 TDD tasks, all done (Phases A–C complete).
 
 If you change a contract (PLC bit, REST payload, WS message shape), update the spec first, then the plan, then code.
 
@@ -36,16 +36,16 @@ Browser  ──HTTP REST + WebSocket──▶  FastAPI (single process, :8000)
         ┌──────────────────────────────┼──────────────────────────────┐
         ▼                              ▼                              ▼
    PLC thread                    Imada thread                  ESP32 thread
-   (pyserial,                    (pyserial,                    (pyserial,
-    KV-Link ASCII)                send-only stream)             send-only int)
+   (KVComPlus USB                (pyserial,                    (pyserial,
+    32-bit bridge)                polled RS232)                 continuous RS232)
         │                              │                              │
-     [COM3]                         [COM5]                         [COM7]
+     [USB]                          [COM4]                         [COM5]
 ```
 
 **Key invariant — read this before adding any I/O:**
 
 - **pyserial is blocking. asyncio loop must never call it directly.** Each serial device runs in a worker thread; data crosses to asyncio via `asyncio.Queue` + `loop.call_soon_threadsafe`. Don't use `pyserial-asyncio` (unstable on Windows).
-- Mock drivers (in `backend/app/hardware/mock/`) implement the same Protocol as real drivers — they swap in when `config.yaml: mock_mode: true`. Develop and run tests without hardware by keeping mock mode on. Plan 3 (future) adds real drivers.
+- Mock drivers (in `backend/app/hardware/mock/`) implement the same Protocol as real drivers — they swap in when `config.yaml: mock_mode: true`. Develop and run tests without hardware by keeping mock mode on. Plan 3 (partial) adds real drivers; PLC done, Imada/ESP32 pending.
 - **WebSocket payloads use raw dicts**, not Pydantic dumps. State change messages use keys `from` and `to` (not `from_state`/`to_state`) — `from` is a Python keyword, so Pydantic schemas use `Field(alias="from")`.
 
 ## Commands
@@ -138,21 +138,23 @@ Source of truth: spec §2. Quick reference:
 
 | Bit | Direction | Meaning |
 |---|---|---|
-| B0 | Web → PLC | Start session (after writing W100/W102/W0) |
+| B0 | Web → PLC | Start session (after writing DM28/DM30/DM32) |
 | B1 | Web → PLC | Stop / E-Stop (top priority — bypasses queue) |
 | B2 | Web → PLC | Reset |
-| B3 | Web → PLC | Press Clamp |
-| B4 | Web → PLC | Stop clamp actuator (when ESP32 force ≥ threshold) |
+| B3 (MR803) | PLC → Web | Press Clamp — PLC-driven; backend polls & waits for it (changed 2026-06-17) |
+| B4 (MR804) | Web → PLC | Stop clamp actuator. Fires on recipe clamp force limit (normal) OR hardware limit `force_limit_gf` (always-on safety → M/C Stop + Reset + "Clamp Force Sensor Alarm" dialog → ERROR) |
 | B5 | PLC → Web | Start tension check |
 | B6 | PLC → Web | End tension check |
 | B7 | PLC → Web | Finish process |
+| MR811 | PLC → Web | Max Stroke of Clamp — safety warning; shows "Max Stroke of Clamp Reached" dialog when HIGH, auto-clears when LOW |
+| MR812 | PLC → Web | Tare Imada (force gauge) — when HIGH, backend sends zero/tare command to Imada; separate from MR808 (ESP32 clamp tare) |
 
-| Word | Direction | Meaning |
+| DM register | Direction | Meaning |
 |---|---|---|
-| W0 | Web → PLC | Loop count |
-| W100 | Web → PLC | Actuator 1 position (mm × 100) |
-| W102 | Web → PLC | Actuator 1 speed (mm/s × 100) |
-| W10 | Web → PLC | Heartbeat (Plan 3) — Python increments every 200 ms |
+| DM28 | Web → PLC | Loop count |
+| DM30 | Web → PLC | Actuator 1 position (mm × 100) |
+| DM32 | Web → PLC | Actuator 1 speed (mm/s × 100) |
+| DM10 | Web → PLC | Heartbeat — Python increments every 200 ms |
 
 ## Conventions & gotchas
 
@@ -216,22 +218,44 @@ The `graphify` skill (global: `~/.claude/skills/graphify/SKILL.md`) turns any in
 - **Good fits in this repo:** mapping the state machine + event flow, visualising the dependency tree of `app/services/`, or comparing the spec's stated contracts against the implemented code.
 - Do not pre-invoke graphify for unrelated tasks. It's user-triggered only.
 
-## Current status (2026-05-20)
+## Current status (2026-05-29)
 
 - ✅ **Plan 1, Phase A (Tasks 1–6)** — Skeleton, config, logging, DB models, alembic migrations, recipe CRUD + REST.
 - ✅ **Plan 1, Phase B (Tasks 7–14)** — Hardware base + 3 mock drivers + async event bus + state machine + waveform (parquet) + HardwareManager.
 - ✅ **Plan 1, Phase C (Tasks 15–23)** — WS hub, deps, TestRunner, sessions/runs/hardware/config APIs, README. `pytest` 39/39 passing.
 - ✅ **Plan 2** — Frontend: Vite + React + ShadcnUI + uPlot. Recipes CRUD, Run page, TopBar (clock + device status), sidebar dark mode. Live WS connected.
-- ⏳ **Plan 3** — Real PLC / Imada / ESP32 drivers (replace mocks; add heartbeat W10 + 20 ms multi-bit poll). **NOT STARTED.**
-- ✅ **Plan 4** — History list + detail (uPlot per-loop waveform + CSV export), Hardware page (live status + reconnect + ESP32 calibration wizard), fixed session API endpoints, App routes wired. HEAD `e128dce`.
+- 🟡 **Plan 3** — Real PLC driver done via **KVComPlus over USB** (32-bit bridge subprocess + 64-bit RealPlc client). Imada (COM4) + ESP32 drivers still pending hardware.
+- ✅ **Plan 4** — History list + detail (uPlot per-loop waveform + CSV export), Hardware page (live status + reconnect + ESP32 calibration wizard), fixed session API endpoints, App routes wired.
+
+## PLC architecture (Plan 3 — DO NOT REVERT)
+
+After extensive testing on 2026-05-22, the KV-3000 CPU's built-in RS-232C port was confirmed to speak only Keyence's proprietary HMI protocol (binary BSC, no public spec). **We switched to USB + KVComPlus** (`C:\Program Files (x86)\KEYENCE\KVComPlusLB\bin\DataBuilder.dll`).
+
+```
+Main FastAPI (64-bit)
+   │   HTTP localhost:8765 (writes/reads/control)
+   │   long-poll /events (bit-change events from PLC)
+   ▼
+plc_bridge.py (32-bit Python embedded in backend/py32/)
+   - ctypes → DataBuilder.dll
+   - polling thread: DBKvReadMonitorDataBit  ← ~0.51 ms/call, 1900+ polls/sec
+   - heartbeat thread: DBWrite DM10 every 200 ms
+   ▼
+USB → KV-3000
+```
+
+Why the 32-bit subprocess: `DataBuilder.dll` is 32-bit only, but our backend Python is 64-bit. The bridge is the smallest possible 32-bit boundary.
+
+Device mapping (configurable in `config.yaml: hardware.plc.device_map`):
+- B0–B4 (Web→PLC) → MR0–MR4 (direct write)
+- B5–B7 (PLC→Web) → MR5/MR6/MR7 (batch polled, contiguous for one DBKvReadMonitorDataBit call)
+- DM28 (loop count), DM30 (position), DM32 (speed), DM10 (heartbeat)
 
 ## What to work on next
 
-**Plan 3 — Real hardware drivers** (`docs/superpowers/specs/2026-05-19-pinch-test-machine-design.md` §2–3):
-- `backend/app/hardware/plc.py` — KV-Link ASCII over RS232, `pyserial` thread, 20 ms multi-bit poll, heartbeat W10
-- `backend/app/hardware/imada.py` — RS232 stream parser, unit=N filter
-- `backend/app/hardware/esp32.py` — RS232 int stream, calibration formula from config.yaml
-- `backend/app/hardware/manager.py` — swap mock → real based on `config.yaml: mock_mode: false`
-- COM ports configured in `config.yaml: hardware.plc.port / imada.port / esp32.port`
+**Plan 3 remaining — Imada + ESP32 real drivers:**
+- `backend/app/hardware/imada.py` — already drafted; needs hardware-in-loop test on COM4
+- `backend/app/hardware/esp32.py` — already drafted; needs hardware
+- Once both pass `smoke_test_*` style sanity, set `config.yaml: mock_mode: false`
 
-Before starting Plan 3: read spec §2 (PLC bit/word map), §3 (hardware threading model), and the existing mock implementations in `backend/app/hardware/mock/` to understand the Protocol contracts.
+Diagnostic scripts live in [backend/scripts/](backend/scripts/README.md) — `benchmark_plc_usb.py` for raw DLL latency, `smoke_test_plc.py` for end-to-end RealPlc check.

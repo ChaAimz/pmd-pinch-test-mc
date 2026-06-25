@@ -4,6 +4,8 @@ import threading
 import time
 from typing import Callable, List, Optional
 
+from loguru import logger
+
 from app.hardware.base import Esp32Reading
 
 
@@ -56,6 +58,9 @@ class MockEsp32:
             self._thread.join(timeout=1)
             self._thread = None
             self._stop_event = None
+
+    def tare(self) -> None:
+        logger.info("MockEsp32 tare command (no-op in mock mode)")
 
     def _run(self) -> None:
         ramp_s = self.ramp_ms / 1000.0
