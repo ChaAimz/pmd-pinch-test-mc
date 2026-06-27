@@ -21,11 +21,15 @@ import { useSessionControl } from '@/hooks/useSessionControl'
 import { api } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import type { Recipe, WaveformPoint } from '@/lib/types'
-import { dropPreRoll, activeEndIdx } from '@/lib/waveform'
+import { dropPreRoll, activeEndIdx, decimate } from '@/lib/waveform'
 import { RecipeForm } from './RecipeForm'
 import { KeyboardSheet } from '@/components/ui/keyboard-input'
 
 const GF_PER_N = 101.97162129779283
+// Points kept per cycle in the stitched "All cycles" view. Each cycle occupies ~1/N of
+// the chart width, so a few hundred peak-preserving points per cycle is visually lossless
+// while keeping the stitched array bounded no matter how many cycles ran.
+const PER_LOOP_MAX_POINTS = 300
 function fmtClamp(n: number, unit: 'gf' | 'N') {
   return unit === 'gf' ? (n * GF_PER_N).toFixed(1) : n.toFixed(4)
 }
@@ -102,9 +106,14 @@ export default function Run() {
     enabled: typeof selectedCycle === 'number' && currentRunId !== null,
   })
 
-  // Pre-fetch every completed loop so the "All cycles" view stitches instantly.
+  // Fetch every completed loop's waveform ONLY while an "All cycles / All CoF" view is
+  // open. During a normal live run the operator stays on the Live view, so eagerly
+  // pulling + retaining all loops' full-resolution waveforms (active queries are never
+  // GC'd) was pure heap growth that scaled with cycle count. Gating keeps the live run
+  // allocation-free; opening an All view fetches on demand (and gcTime evicts after).
+  const needAllWaveforms = selectedCycle === 'all' || selectedCycle === 'allcof'
   const allLoopResults = useQueries({
-    queries: (currentRunId !== null ? loopResults : []).map((r) => ({
+    queries: (needAllWaveforms && currentRunId !== null ? loopResults : []).map((r) => ({
       queryKey: ['waveform', currentRunId, r.loop],
       queryFn: () => api.runs.waveform(currentRunId!, r.loop),
     })),
@@ -147,12 +156,15 @@ export default function Run() {
       if (active.length === 0) return
       const t0 = active[0].t_ms
       const duration = (active[active.length - 1].t_ms - t0) || 1
+      // Peak-preserving thin per cycle so the stitched array stays bounded regardless of
+      // cycle count. decimate() keeps the endpoints, so t0/duration above are unaffected.
+      const slim = decimate(active, PER_LOOP_MAX_POINTS, (p) => p.force_n)
       const clamp = r.avg_clamp_n
       const cofValid = clamp != null && clamp !== 0
       boundaries.push(cycleIdx)
       let maxF = -Infinity, maxFx = cycleIdx
       let maxC = -Infinity, maxCx = cycleIdx
-      for (const p of active) {
+      for (const p of slim) {
         const x = cycleIdx + (p.t_ms - t0) / duration
         const cofv = cofValid ? p.force_n / clamp : NaN
         out.push([x, p.force_n])
