@@ -119,6 +119,12 @@ const jp = {
     toastBulkFailed: '一括削除に失敗しました',
     runCount: '{{count}}件',
     runLabel: '実行 #{{id}}',
+    compareCoF: 'CoF比較',
+  },
+  compare: {
+    title: 'CoF比較',
+    subtitle: '{{count}}件の実行',
+    noData: '比較できるCoFデータがありません',
   },
   hardware: {
     plcSignals: 'PLC信号',

@@ -55,6 +55,28 @@ function exportLiveImadaCsv() {
   downloadCsvBlob(rows, `imada_live_${new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')}.csv`)
 }
 
+function buildChartFilename(
+  recipeName: string | undefined,
+  runId: number | null | undefined,
+  positionMm: number | undefined,
+  speedMms: number | undefined,
+  loopCount: number | undefined,
+  suffix: string,
+  ext: 'csv' | 'png',
+): string {
+  const now = new Date()
+  const date = now.toISOString().slice(0, 10).replace(/-/g, '')
+  const time = `${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`
+  const safe = (s?: string | null) => (s ?? '').replace(/[^a-zA-Z0-9_-]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
+  const parts: string[] = [safe(recipeName) || 'chart']
+  if (runId != null) parts.push(`run${runId}`)
+  parts.push(date, time)
+  if (positionMm != null) parts.push(`${positionMm}mm`)
+  if (speedMms != null) parts.push(`${speedMms}mms`)
+  if (loopCount != null) parts.push(`${loopCount}x`)
+  return parts.join('_') + suffix + '.' + ext
+}
+
 // Error reason strings are now resolved via t() inside the component
 
 const ALARM_BITS = [
@@ -96,8 +118,8 @@ export default function Run() {
   const [selectedCycle, setSelectedCycle] = useState<number | 'all' | 'allmax' | 'allcof' | null>(null)
   const currentRunId = useAppStore((s) => s.currentRunId)
 
-  const waveformExportRef = useRef<(() => void) | null>(null)
-  const maxCycleExportRef = useRef<(() => void) | null>(null)
+  const waveformExportRef = useRef<((filename: string) => void) | null>(null)
+  const maxCycleExportRef = useRef<((filename: string) => void) | null>(null)
 
   const { data: cycleWaveform } = useQuery({
     queryKey: ['waveform', currentRunId, selectedCycle],
@@ -604,6 +626,7 @@ export default function Run() {
             >
               {t('run.allCycles')}
             </button>
+            {/* Max Function hidden — uncomment to restore
             <button
               type="button"
               disabled={loopResults.length <= 1}
@@ -617,6 +640,7 @@ export default function Run() {
             >
               {t('run.allMax')}
             </button>
+            */}
           </div>
           <div className="flex-1 min-h-0 overflow-y-auto">
           <Table>
@@ -666,14 +690,14 @@ export default function Run() {
               className="flex-1 gap-1"
               onClick={() => {
                 if (staticData) {
-                  const label = selectedCycle === 'all'
-                    ? `run${currentRunId}_all_cycles`
-                    : selectedCycle === 'allcof'
-                      ? `run${currentRunId}_all_cof`
-                      : `run${currentRunId}_cycle${selectedCycle}`
+                  const csvSuffix = selectedCycle === 'all' ? '_all_cycles'
+                    : selectedCycle === 'allcof' ? '_all_cof'
+                    : selectedCycle === 'allmax' ? '_all_max'
+                    : `_cycle${selectedCycle}`
+                  const filename = buildChartFilename(activeRecipe?.name, currentRunId, activeRecipe?.position_mm, activeRecipe?.speed_mms, activeRecipe?.loop_count, csvSuffix, 'csv')
                   const header = selectedCycle === 'allcof' ? 'cycle,cof' : 'time_s,force_n'
                   const rows = [header, ...staticData.map(([tv, fv]) => `${tv.toFixed(4)},${fv.toFixed(4)}`)]
-                  downloadCsvBlob(rows, `${label}.csv`)
+                  downloadCsvBlob(rows, filename)
                 } else {
                   exportLiveImadaCsv()
                 }
@@ -687,10 +711,15 @@ export default function Run() {
               size="sm"
               className="flex-1 gap-1"
               onClick={() => {
+                const pngSuffix = selectedCycle === 'all' ? '_all_cycles'
+                  : selectedCycle === 'allcof' ? '_all_cof'
+                  : selectedCycle === 'allmax' ? '_all_max'
+                  : selectedCycle != null ? `_cycle${selectedCycle}` : ''
+                const filename = buildChartFilename(activeRecipe?.name, currentRunId, activeRecipe?.position_mm, activeRecipe?.speed_mms, activeRecipe?.loop_count, pngSuffix, 'png')
                 if (selectedCycle === 'allmax') {
-                  maxCycleExportRef.current?.()
+                  maxCycleExportRef.current?.(filename)
                 } else {
-                  waveformExportRef.current?.()
+                  waveformExportRef.current?.(filename)
                 }
               }}
               title="Export chart as PNG"
@@ -794,11 +823,13 @@ export default function Run() {
                 exportRef={waveformExportRef}
               />
             </div>
+            {/* allmax hidden — MaxCycleChart removed
             {selectedCycle === 'allmax' && (
               <div className="absolute inset-0">
                 <MaxCycleChart loopResults={loopResults} exportRef={maxCycleExportRef} />
               </div>
             )}
+            */}
             {(selectedCycle === 'all' || selectedCycle === 'allcof') && (
               <button
                 type="button"

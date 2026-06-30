@@ -30,6 +30,28 @@ function downloadRows(filename: string, rows: string[]) {
   URL.revokeObjectURL(url)
 }
 
+function buildChartFilename(
+  recipeName: string | undefined,
+  runId: number | null | undefined,
+  positionMm: number | undefined,
+  speedMms: number | undefined,
+  loopCount: number | undefined,
+  suffix: string,
+  ext: 'csv' | 'png',
+): string {
+  const now = new Date()
+  const date = now.toISOString().slice(0, 10).replace(/-/g, '')
+  const time = `${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`
+  const safe = (s?: string | null) => (s ?? '').replace(/[^a-zA-Z0-9_-]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
+  const parts: string[] = [safe(recipeName) || 'chart']
+  if (runId != null) parts.push(`run${runId}`)
+  parts.push(date, time)
+  if (positionMm != null) parts.push(`${positionMm}mm`)
+  if (speedMms != null) parts.push(`${speedMms}mms`)
+  if (loopCount != null) parts.push(`${loopCount}x`)
+  return parts.join('_') + suffix + '.' + ext
+}
+
 type View = number | 'all' | 'allmax' | 'allcof'
 
 export default function HistoryDetail() {
@@ -53,8 +75,8 @@ export default function HistoryDetail() {
 
   const esp32Unit = useSettingsStore((s) => s.esp32Unit)
 
-  const waveformExportRef = useRef<(() => void) | null>(null)
-  const maxCycleExportRef = useRef<(() => void) | null>(null)
+  const waveformExportRef = useRef<((filename: string) => void) | null>(null)
+  const maxCycleExportRef = useRef<((filename: string) => void) | null>(null)
 
   // --- Data layer (hooks must run before any early return) ---
   // Fetch every loop's waveform once. The same fetch set feeds the stitched
@@ -236,6 +258,7 @@ export default function HistoryDetail() {
               >
                 {t('run.allCycles')}
               </button>
+              {/* Max Function hidden — uncomment to restore
               <button
                 type="button"
                 disabled={run.loops.length <= 1}
@@ -249,6 +272,7 @@ export default function HistoryDetail() {
               >
                 {t('run.allMax')}
               </button>
+              */}
             </div>
             {view !== 'all' && (
               <button
@@ -300,8 +324,13 @@ export default function HistoryDetail() {
                 size="sm"
                 className="flex-1 gap-1"
                 onClick={() => {
+                  const csvSuffix = view === 'allmax' ? '_all_max'
+                    : view === 'allcof' ? '_all_cof'
+                    : view === 'all' ? '_all_cycles'
+                    : `_cycle${view}`
+                  const csvFilename = buildChartFilename(recipe?.name, run.id, recipe?.position_mm, recipe?.speed_mms, recipe?.loop_count, csvSuffix, 'csv')
                   if (view === 'allmax') {
-                    downloadRows(`run${run.id}_all_max.csv`, [
+                    downloadRows(csvFilename, [
                       'cycle,max_force_n,avg_clamp_n,cof,judgment',
                       ...run.loops.filter((l) => l.peak_force_n != null).map((l) => {
                         const cof = l.avg_clamp_n != null && l.avg_clamp_n !== 0
@@ -313,7 +342,6 @@ export default function HistoryDetail() {
                   }
                   if (view === 'all' || view === 'allcof') {
                     if (!combinedStaticData || !combinedCofData || !combinedClampData) return
-                    const label = view === 'allcof' ? `run${run.id}_all_cof` : `run${run.id}_all_cycles`
                     const rows = ['cycle_x,tension_n,cof,clamp_n']
                     for (let i = 0; i < combinedStaticData.length; i++) {
                       const [x, force_n] = combinedStaticData[i]
@@ -321,7 +349,7 @@ export default function HistoryDetail() {
                       const [, clamp] = combinedClampData[i]
                       rows.push(`${x.toFixed(4)},${force_n.toFixed(4)},${Number.isFinite(cof) ? cof.toFixed(4) : ''},${clamp != null ? clamp.toFixed(4) : ''}`)
                     }
-                    downloadRows(`${label}.csv`, rows)
+                    downloadRows(csvFilename, rows)
                     return
                   }
                   if (!singleData) return
@@ -332,7 +360,7 @@ export default function HistoryDetail() {
                     const cof = clamp_n != null && clamp_n !== 0 ? force_n / clamp_n : NaN
                     rows.push(`${time_s.toFixed(4)},${force_n.toFixed(4)},${Number.isFinite(cof) ? cof.toFixed(4) : ''},${clamp_n?.toFixed(4) ?? ''}`)
                   }
-                  downloadRows(`run${run.id}_cycle${view}.csv`, rows)
+                  downloadRows(csvFilename, rows)
                 }}
                 title={t('historyDetail.exportCsvTitle')}
               >
@@ -350,10 +378,15 @@ export default function HistoryDetail() {
                 size="sm"
                 className="flex-1 gap-1"
                 onClick={() => {
+                  const pngSuffix = view === 'allmax' ? '_all_max'
+                    : view === 'allcof' ? '_all_cof'
+                    : view === 'all' ? '_all_cycles'
+                    : `_cycle${view}`
+                  const filename = buildChartFilename(recipe?.name, run.id, recipe?.position_mm, recipe?.speed_mms, recipe?.loop_count, pngSuffix, 'png')
                   if (view === 'allmax') {
-                    maxCycleExportRef.current?.()
+                    maxCycleExportRef.current?.(filename)
                   } else {
-                    waveformExportRef.current?.()
+                    waveformExportRef.current?.(filename)
                   }
                 }}
                 title="Export chart as PNG"
@@ -441,6 +474,7 @@ export default function HistoryDetail() {
                   exportRef={waveformExportRef}
                 />
               </div>
+              {/* allmax hidden — MaxCycleChart removed
               {view === 'allmax' && (
                 <div className="absolute inset-0">
                   <MaxCycleChart
@@ -459,6 +493,7 @@ export default function HistoryDetail() {
                   />
                 </div>
               )}
+              */}
               {waveformsLoading && !hasChartData && view !== 'allmax' && (
                 <div className="absolute inset-0 flex items-center justify-center text-sm text-muted-foreground pointer-events-none">
                   {t('history.loadingWaveform')}

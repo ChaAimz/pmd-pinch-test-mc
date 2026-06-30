@@ -2,7 +2,7 @@ import { useState, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { Download, Search, Trash2, X } from 'lucide-react'
+import { BarChart2, Download, Search, Trash2, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
@@ -109,8 +109,7 @@ export default function History() {
     }
   }
 
-  function toggleRow(id: number, e: React.MouseEvent) {
-    e.stopPropagation()
+  function toggleRow(id: number) {
     setSelectedIds((prev) => {
       const next = new Set(prev)
       next.has(id) ? next.delete(id) : next.add(id)
@@ -230,6 +229,20 @@ export default function History() {
             <Badge className="shrink-0 tabular-nums px-3 py-1 text-sm font-medium bg-primary/10 text-primary">
               {t('history.selected', { count: visibleSelected.length })}
             </Badge>
+            {visibleSelected.length >= 2 && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="shrink-0 gap-1.5"
+                onClick={() => {
+                  const ids = visibleSelected.map((r) => r.id).join(',')
+                  navigate(`/history/compare?ids=${ids}`)
+                }}
+              >
+                <BarChart2 size={13} />
+                {t('history.compareCoF')}
+              </Button>
+            )}
             <Button
               variant="destructive"
               size="sm"
@@ -303,8 +316,11 @@ export default function History() {
                         : 'hover:bg-muted/30'
                     }`}
                   >
-                    <TableCell className="w-10 px-4 py-3" onClick={(e) => toggleRow(run.id, e)}>
-                      <Checkbox checked={isSelected} />
+                    <TableCell className="w-10 px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                      <Checkbox
+                        checked={isSelected}
+                        onCheckedChange={() => toggleRow(run.id)}
+                      />
                     </TableCell>
                     <TableCell className="px-4 py-3 font-mono text-primary font-semibold">
                       #{run.id}

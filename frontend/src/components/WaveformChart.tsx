@@ -154,7 +154,7 @@ export function WaveformChart({
   maxForceN?: number | null
   /** Optional 2nd line (e.g. peak value per test cycle); empty/undefined = hidden. */
   overlay?: Array<[number, number]>
-  exportRef?: MutableRefObject<(() => void) | null>
+  exportRef?: MutableRefObject<((filename: string) => void) | null>
 } = {}) {
   const chartRef = useRef<ReactECharts>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -307,19 +307,22 @@ export function WaveformChart({
   // Expose a PNG export callback to the parent via exportRef.
   useEffect(() => {
     if (!exportRef) return
-    exportRef.current = () => {
+    exportRef.current = (filename: string) => {
       const inst = chartRef.current?.getEchartsInstance()
       if (!inst) return
       const url = inst.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: isDark ? '#0f172a' : '#ffffff' })
       const a = document.createElement('a')
       a.href = url
-      a.download = 'waveform.png'
+      a.download = filename
       a.click()
     }
   }, [exportRef, isDark])
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: '100%' }}>
+    // touchAction:'none' overrides the global `html { touch-action: pan-y }` (index.css)
+    // so the browser stops swallowing pinch/pan gestures and ECharts' inside dataZoom
+    // receives them. Without this, touch zoom/pan silently does nothing.
+    <div ref={containerRef} style={{ width: '100%', height: '100%', touchAction: 'none' }}>
       <ReactECharts
         ref={chartRef}
         option={option}

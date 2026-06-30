@@ -119,6 +119,12 @@ const th = {
     toastBulkFailed: 'ลบหลายรายการไม่สำเร็จ',
     runCount: '{{count}} รายการ',
     runLabel: 'การทดสอบ #{{id}}',
+    compareCoF: 'เปรียบเทียบ CoF',
+  },
+  compare: {
+    title: 'เปรียบเทียบ CoF',
+    subtitle: '{{count}} การทดสอบ',
+    noData: 'ไม่มีข้อมูล CoF สำหรับการเปรียบเทียบ',
   },
   hardware: {
     plcSignals: 'สัญญาณ PLC',

@@ -119,6 +119,12 @@ const en = {
     toastBulkFailed: 'Bulk delete failed',
     runCount: '{{count}} run(s)',
     runLabel: 'Run #{{id}}',
+    compareCoF: 'Compare CoF',
+  },
+  compare: {
+    title: 'Compare CoF',
+    subtitle: '{{count}} runs',
+    noData: 'No CoF data available for comparison.',
   },
   hardware: {
     plcSignals: 'PLC Signals',

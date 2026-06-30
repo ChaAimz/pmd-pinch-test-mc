@@ -2,13 +2,25 @@ import { useMemo, useRef, useEffect, type MutableRefObject } from 'react'
 import ReactECharts from 'echarts-for-react'
 import type { EChartsOption } from 'echarts'
 import { useSettingsStore } from '@/store/settings'
-import type { LoopResult } from '@/store/app'
 
-export function MaxCycleChart({
-  loopResults,
+export interface RunCofSeries {
+  runId: number
+  label: string
+  cofPerCycle: (number | null)[]
+}
+
+const SERIES_COLORS = [
+  '#3b82f6', '#ef4444', '#22c55e', '#f59e0b',
+  '#8b5cf6', '#ec4899', '#06b6d4', '#f97316',
+]
+
+export function CompareCofChart({
+  series,
+  maxCycles,
   exportRef,
 }: {
-  loopResults: LoopResult[]
+  series: RunCofSeries[]
+  maxCycles: number
   exportRef?: MutableRefObject<((filename: string) => void) | null>
 }) {
   const chartRef = useRef<ReactECharts>(null)
@@ -24,38 +36,50 @@ export function MaxCycleChart({
     const axisLabel = isDark ? '#94a3b8' : '#475569'
     const axisLine = isDark ? '#334155' : '#cbd5e1'
     const splitLine = isDark ? 'rgba(148,163,184,0.12)' : 'rgba(148,163,184,0.25)'
+    const legendText = isDark ? '#e2e8f0' : '#0f172a'
 
-    const categories = loopResults.map((r) => `C${r.loop}`)
-
-    // CoF per cycle = peak_force_n / avg_clamp_n (null if clamp unavailable)
-    const cofValues = loopResults.map((r) => {
-      const clamp = r.avg_clamp_n
-      return clamp != null && clamp !== 0 ? r.peak_force_n / clamp : null
-    })
+    const categories = Array.from({ length: maxCycles }, (_, i) => `C${i + 1}`)
 
     return {
       animation: false,
       backgroundColor: 'transparent',
-      grid: { left: 60, right: 32, top: 24, bottom: 48 },
-      // Touch pinch-zoom + one-finger pan, plus mouse-wheel zoom. Double-tap / dblclick
-      // resets to the full range (see the reset effect below). filterMode 'none' keeps
-      // the line continuous (clip, don't drop, points outside the zoom window).
+      grid: { left: 64, right: 24, top: 56, bottom: 48 },
+      legend: {
+        type: 'scroll',
+        top: 0,
+        textStyle: { color: legendText, fontSize: 11 },
+        pageTextStyle: { color: axisLabel },
+        pageIconColor: axisLabel,
+        data: series.map((s) => s.label),
+      },
       dataZoom: [
         { type: 'inside', xAxisIndex: 0, filterMode: 'none' },
         { type: 'inside', yAxisIndex: 0, filterMode: 'none' },
       ],
       tooltip: {
-        trigger: 'item',
+        trigger: 'axis',
         backgroundColor: isDark ? 'rgba(15,23,42,0.92)' : 'rgba(255,255,255,0.95)',
         borderColor: isDark ? '#334155' : '#e2e8f0',
-        textStyle: { color: isDark ? '#e2e8f0' : '#0f172a', fontFamily: 'ui-monospace, monospace', fontSize: 12 },
+        textStyle: {
+          color: isDark ? '#e2e8f0' : '#0f172a',
+          fontFamily: 'ui-monospace, monospace',
+          fontSize: 12,
+        },
         formatter: (params: unknown) => {
-          const p = params as { dataIndex: number }
-          const r = loopResults[p.dataIndex]
-          if (!r) return ''
-          const cof = cofValues[p.dataIndex]
-          const jcolor = r.judgment === 'pass' ? '#22c55e' : '#ef4444'
-          return `Test Cycle ${r.loop}<br/><b>${cof != null ? cof.toFixed(4) : '—'} CoF</b><br/><span style="color:${jcolor};font-weight:bold">${r.judgment.toUpperCase()}</span>`
+          const list = params as Array<{
+            seriesName: string
+            dataIndex: number
+            value: number | null | undefined
+            color: string
+          }>
+          if (!list.length) return ''
+          const cycle = list[0].dataIndex + 1
+          const lines = [`<b>C${cycle}</b>`]
+          for (const p of list) {
+            const val = p.value != null ? Number(p.value).toFixed(4) : '—'
+            lines.push(`<span style="color:${p.color}">■</span> ${p.seriesName}: <b>${val}</b>`)
+          }
+          return lines.join('<br/>')
         },
       },
       xAxis: {
@@ -65,7 +89,11 @@ export function MaxCycleChart({
         nameLocation: 'middle',
         nameGap: 30,
         nameTextStyle: { color: axisLabel, fontSize: 12, fontWeight: 'bold' },
-        axisLabel: { color: axisLabel, fontFamily: 'ui-monospace, monospace' },
+        axisLabel: {
+          color: axisLabel,
+          fontFamily: 'ui-monospace, monospace',
+          interval: maxCycles > 30 ? 'auto' : 0,
+        },
         axisLine: { lineStyle: { color: axisLine } },
         splitLine: { show: false },
       },
@@ -80,31 +108,18 @@ export function MaxCycleChart({
         splitLine: { show: true, lineStyle: { color: splitLine, type: 'dashed' } },
         scale: true,
       },
-      series: [
-        {
-          type: 'line',
-          data: loopResults.map((r, i) => ({
-            value: cofValues[i],
-            itemStyle: { color: r.judgment === 'pass' ? '#22c55e' : '#ef4444' },
-          })),
-          showSymbol: true,
-          symbolSize: 8,
-          lineStyle: { color: '#3b82f6', width: 2 },
-          areaStyle: {
-            color: {
-              type: 'linear' as const,
-              x: 0, y: 0, x2: 0, y2: 1,
-              colorStops: [
-                { offset: 0, color: 'rgba(59,130,246,0.25)' },
-                { offset: 1, color: 'rgba(59,130,246,0.02)' },
-              ],
-            },
-          },
-          markLine: { data: [] },
-        },
-      ],
+      series: series.map((s, i) => ({
+        type: 'line',
+        name: s.label,
+        data: s.cofPerCycle,
+        showSymbol: true,
+        symbolSize: 7,
+        connectNulls: false,
+        lineStyle: { color: SERIES_COLORS[i % SERIES_COLORS.length], width: 2 },
+        itemStyle: { color: SERIES_COLORS[i % SERIES_COLORS.length] },
+      })),
     }
-  }, [loopResults, isDark])
+  }, [series, maxCycles, isDark])
 
   useEffect(() => {
     const el = containerRef.current
@@ -116,7 +131,6 @@ export function MaxCycleChart({
     return () => ro.disconnect()
   }, [])
 
-  // Double-tap / double-click resets the pinch-zoom/pan back to the full range.
   useEffect(() => {
     const inst = chartRef.current?.getEchartsInstance()
     if (!inst) return
@@ -126,13 +140,16 @@ export function MaxCycleChart({
     return () => zr.off('dblclick', reset)
   }, [])
 
-  // Expose a PNG export callback to the parent via exportRef.
   useEffect(() => {
     if (!exportRef) return
     exportRef.current = (filename: string) => {
       const inst = chartRef.current?.getEchartsInstance()
       if (!inst) return
-      const url = inst.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: isDark ? '#0f172a' : '#ffffff' })
+      const url = inst.getDataURL({
+        type: 'png',
+        pixelRatio: 2,
+        backgroundColor: isDark ? '#0f172a' : '#ffffff',
+      })
       const a = document.createElement('a')
       a.href = url
       a.download = filename
@@ -141,9 +158,6 @@ export function MaxCycleChart({
   }, [exportRef, isDark])
 
   return (
-    // touchAction:'none' overrides the global `html { touch-action: pan-y }` (index.css)
-    // so the browser stops swallowing pinch/pan gestures and ECharts' inside dataZoom
-    // receives them. Without this, touch zoom/pan silently does nothing.
     <div ref={containerRef} style={{ width: '100%', height: '100%', touchAction: 'none' }}>
       <ReactECharts
         ref={chartRef}
