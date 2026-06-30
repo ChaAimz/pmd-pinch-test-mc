@@ -11,7 +11,7 @@ from typing import Optional
 from fastapi import FastAPI
 
 from app import deps
-from app.api import config as config_api, hardware as hardware_api, recipes, runs, sessions, ws
+from app.api import comparisons, config as config_api, hardware as hardware_api, recipes, runs, sessions, ws
 from app.api import settings as settings_api
 from app.config import Settings, load_settings
 from app.db.engine import init_engine
@@ -91,6 +91,7 @@ def build_app(test_mode: bool = False, waveform_dir: Optional[Path] = None) -> F
 
     app = FastAPI(title="Pinch Test MC", lifespan=lifespan)
     app.include_router(recipes.router)
+    app.include_router(comparisons.router)
     app.include_router(sessions.router)
     app.include_router(runs.router)
     app.include_router(hardware_api.router)
