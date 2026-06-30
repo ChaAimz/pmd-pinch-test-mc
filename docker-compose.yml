@@ -1,0 +1,20 @@
+# Frontend-only compose. The backend runs NATIVELY on the Windows host (it needs COM
+# ports, the USB PLC, and a 32-bit Windows DLL bridge that a Linux container can't access),
+# so it is not a service here — the frontend proxies to it via host.docker.internal:8000.
+#
+#   Build + start:   docker compose up -d --build frontend
+#   Kiosk Edge URL:  http://localhost:8080
+#
+# Auto-start on Windows boot: enable "Start Docker Desktop when you log in" in Docker
+# Desktop settings; restart:always brings this container back up with the daemon.
+services:
+  frontend:
+    build:
+      context: ./frontend
+    image: pinch-frontend:latest
+    container_name: pinch-frontend
+    ports:
+      - "8080:80"                                  # kiosk Edge -> http://localhost:8080
+    extra_hosts:
+      - "host.docker.internal:host-gateway"        # reach the Windows-host backend
+    restart: always
