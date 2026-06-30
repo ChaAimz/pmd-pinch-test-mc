@@ -86,9 +86,17 @@ if not exist "%MSEDGE%" (
 )
 
 echo Launching Edge kiosk at http://127.0.0.1:5173 ...
+REM Defensive kiosk touch hygiene (NOT the chart-pinch fix — that lives in
+REM   frontend/src/lib/echarts-touch-fix.ts). --disable-pinch blocks accidental
+REM   browser viewport-zoom of the whole UI; --overscroll-history-navigation=0 stops a
+REM   horizontal swipe from triggering back/forward nav. Verified the browser was NOT
+REM   eating the chart pinch as viewport zoom (visualViewport.scale stayed at 1), so
+REM   these only harden the kiosk shell; they are safe to drop if unwanted.
 start "" "%MSEDGE%" ^
   --kiosk http://127.0.0.1:5173 ^
   --edge-kiosk-type=fullscreen ^
+  --disable-pinch ^
+  --overscroll-history-navigation=0 ^
   --no-first-run ^
   --no-default-browser-check ^
   --disable-session-crashed-bubble ^

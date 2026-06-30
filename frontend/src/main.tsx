@@ -1,3 +1,6 @@
+// Must be first: patches zrender's Edge-Chromium touch misdetection before any
+// ECharts chart initialises. See lib/echarts-touch-fix.ts for the full rationale.
+import './lib/echarts-touch-fix'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'

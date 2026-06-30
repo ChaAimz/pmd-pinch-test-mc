@@ -48,6 +48,14 @@ function makeOption(
   xMode: 'time' | 'cycle' = 'time',
   yLabel = 'Friction Force (N)',
   valueUnit = 'N',
+  cfg: {
+    lineWidth: number
+    showSymbol: boolean
+    symbolSize: number
+    smooth: boolean
+    showGrid: boolean
+    decimals: number
+  } = { lineWidth: 2, showSymbol: false, symbolSize: 7, smooth: false, showGrid: true, decimals: 4 },
 ): EChartsOption {
   const axisLabel = isDark ? '#94a3b8' : '#475569'
   const axisLine = isDark ? '#334155' : '#cbd5e1'
@@ -60,12 +68,13 @@ function makeOption(
     animation: false,
     backgroundColor: 'transparent',
     grid: { left: 74, right: 28, top: 36, bottom: 54 },
-    // Touch pinch-zoom + one-finger pan, plus mouse-wheel zoom. Double-tap / dblclick
-    // resets to the full range (see the reset effect below). filterMode 'none' keeps
-    // the line continuous (clip, don't drop, samples outside the zoom window).
+    // Pinch / one-finger pan / mouse-wheel zoom the X (time) axis ONLY — the time-series
+    // convention. The Y (force) axis is left to auto-scale (yAxis.scale) so the waveform
+    // always fills the height. Double-tap / dblclick resets to the full range (see the
+    // reset effect below). filterMode 'none' keeps the line continuous (clip, don't drop,
+    // samples outside the zoom window).
     dataZoom: [
       { type: 'inside', xAxisIndex: 0, filterMode: 'none' },
-      { type: 'inside', yAxisIndex: 0, filterMode: 'none' },
     ],
     tooltip: {
       trigger: 'axis',
@@ -81,7 +90,7 @@ function makeOption(
         const xStr = xMode === 'cycle'
           ? `<span style="color:${axisLabel};font-size:11px">Cycle ${Math.floor(t) + 1}</span>`
           : `<span style="color:${axisLabel};font-size:11px">t = ${t.toFixed(3)} s</span>`
-        return `${xStr}<br/><span style="font-size:15px;font-weight:700;color:${accent}">${f.toFixed(4)}${unitSuffix}</span>`
+        return `${xStr}<br/><span style="font-size:15px;font-weight:700;color:${accent}">${f.toFixed(cfg.decimals)}${unitSuffix}</span>`
       },
     },
     xAxis: {
@@ -92,7 +101,7 @@ function makeOption(
       nameTextStyle: { color: axisLabel, fontSize: 13, fontWeight: 'bold' },
       axisLabel: { color: axisLabel, fontFamily: 'ui-monospace, monospace', fontSize: 11 },
       axisLine: { lineStyle: { color: axisLine } },
-      splitLine: { show: true, lineStyle: { color: splitLine, type: 'dashed' } },
+      splitLine: { show: cfg.showGrid, lineStyle: { color: splitLine, type: 'dashed' } },
       min: 0,
     },
     yAxis: {
@@ -103,7 +112,7 @@ function makeOption(
       nameTextStyle: { color: axisLabel, fontSize: 13, fontWeight: 'bold' },
       axisLabel: { color: axisLabel, fontFamily: 'ui-monospace, monospace', fontSize: 11 },
       axisLine: { lineStyle: { color: axisLine } },
-      splitLine: { show: true, lineStyle: { color: splitLine, type: 'dashed' } },
+      splitLine: { show: cfg.showGrid, lineStyle: { color: splitLine, type: 'dashed' } },
       scale: true,
     },
     series: [
@@ -112,10 +121,11 @@ function makeOption(
         // No `data` field — data is patched by effects via getEchartsInstance().setOption().
         // Including data:[] here would wipe the chart whenever xMode/isDark re-renders the
         // option (because setOption merges the empty array over the existing data).
-        showSymbol: false,
+        showSymbol: cfg.showSymbol,
+        symbolSize: cfg.symbolSize,
         sampling: 'lttb',
-        smooth: false,
-        lineStyle: { color: accent, width: 2 },
+        smooth: cfg.smooth,
+        lineStyle: { color: accent, width: cfg.lineWidth },
         areaStyle: {
           color: {
             type: 'linear',
@@ -169,6 +179,7 @@ export function WaveformChart({
   maxForceN,
   overlay,
   exportRef,
+  resampleWindow,
 }: {
   staticData?: Array<[number, number]>
   cycleBoundaries?: number[]
@@ -180,6 +191,13 @@ export function WaveformChart({
   /** Optional 2nd line (e.g. peak value per test cycle); empty/undefined = hidden. */
   overlay?: Array<[number, number]>
   exportRef?: MutableRefObject<((filename: string) => void) | null>
+  /**
+   * Optional progressive-detail resampler for static data. Given the visible X window
+   * (axis units), returns higher-resolution points for that window (or the overview when
+   * zoomed out). Called on every zoom so deep zoom reveals full detail instead of the
+   * once-decimated overview. Omit for full-resolution single-loop / live charts.
+   */
+  resampleWindow?: (loX: number, hiX: number) => Array<[number, number]> | null
 } = {}) {
   const chartRef = useRef<ReactECharts>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -189,7 +207,28 @@ export function WaveformChart({
     if (theme === 'light') return false
     return typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
   }, [theme])
-  const option = useMemo(() => makeOption(isDark, xMode, yLabel, valueUnit), [isDark, xMode, yLabel, valueUnit])
+
+  // Global chart-display preferences (Settings page → app_settings). Read straight from
+  // the store so Run/HistoryDetail don't need to thread them through as props.
+  const chartLineWidth = useSettingsStore((s) => s.chartLineWidth)
+  const chartShowSymbol = useSettingsStore((s) => s.chartShowSymbol)
+  const chartSymbolSize = useSettingsStore((s) => s.chartSymbolSize)
+  const chartSmooth = useSettingsStore((s) => s.chartSmooth)
+  const chartShowGrid = useSettingsStore((s) => s.chartShowGrid)
+  const chartDecimals = useSettingsStore((s) => s.chartDecimals)
+  const chartShowThresholds = useSettingsStore((s) => s.chartShowThresholds)
+
+  const option = useMemo(
+    () => makeOption(isDark, xMode, yLabel, valueUnit, {
+      lineWidth: chartLineWidth,
+      showSymbol: chartShowSymbol,
+      symbolSize: chartSymbolSize,
+      smooth: chartSmooth,
+      showGrid: chartShowGrid,
+      decimals: chartDecimals,
+    }),
+    [isDark, xMode, yLabel, valueUnit, chartLineWidth, chartShowSymbol, chartSymbolSize, chartSmooth, chartShowGrid, chartDecimals],
+  )
 
   // Live polling — only runs when no static data is provided.
   // Immediately clears any leftover static data on mode switch.
@@ -275,7 +314,7 @@ export function WaveformChart({
 
     // Recipe threshold reference lines
     const thresholdLines: Array<{ yAxis: number; name: string; lineStyle: { color: string; type: 'dashed'; width: number }; label: { show: true; formatter: string; position: 'insideEndTop'; fontSize: number; color: string } }> = []
-    if (minForceN != null) {
+    if (chartShowThresholds && minForceN != null) {
       thresholdLines.push({
         yAxis: minForceN,
         name: `Min ${minForceN.toFixed(2)}${unitSuffix}`,
@@ -283,7 +322,7 @@ export function WaveformChart({
         label: { show: true, formatter: `Min ${minForceN.toFixed(2)}${unitSuffix}`, position: 'insideEndTop', fontSize: 11, color: '#22c55e' },
       })
     }
-    if (maxForceN != null) {
+    if (chartShowThresholds && maxForceN != null) {
       thresholdLines.push({
         yAxis: maxForceN,
         name: `Max ${maxForceN.toFixed(2)}${unitSuffix}`,
@@ -316,7 +355,47 @@ export function WaveformChart({
       : { data: [] }
 
     inst.setOption({ series: [{ data: staticData, markLine, markPoint, markArea }, { data: overlay ?? [] }] }, { notMerge: false })
-  }, [staticData, cycleBoundaries, minForceN, maxForceN, valueUnit, overlay, isDark])
+  }, [staticData, cycleBoundaries, minForceN, maxForceN, valueUnit, overlay, isDark, chartShowThresholds])
+
+  // Progressive detail-on-zoom for static data. When the parent supplies a resampler,
+  // re-derive a higher-resolution slice of the visible window on every zoom — the same
+  // idea as live mode pulling detail from the ring buffer. Without this the static chart
+  // only ever shows the once-decimated overview, which looks coarse/sawtoothed zoomed in.
+  // rAF-throttled so a pinch doesn't trigger a resample storm; read through a ref so the
+  // listener binds once per static dataset, not on every parent re-render.
+  const resampleRef = useRef(resampleWindow)
+  resampleRef.current = resampleWindow
+  useEffect(() => {
+    if (staticData === undefined || !resampleWindow) return
+    const inst = chartRef.current?.getEchartsInstance()
+    if (!inst) return
+    let last = 0
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const refine = () => {
+      last = Date.now()
+      const fn = resampleRef.current
+      if (!fn) return
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const ext = (inst as any).getModel?.().getComponent('xAxis', 0)?.axis?.scale?.getExtent?.()
+        if (!ext || !Number.isFinite(ext[0]) || !Number.isFinite(ext[1]) || ext[1] <= ext[0]) return
+        const data = fn(ext[0], ext[1])
+        if (data) inst.setOption({ series: [{ data }] }, { notMerge: false })
+      } catch { /* keep current data on any ECharts internals change */ }
+    }
+    // Leading + trailing throttle (~120 ms, matching live mode's proven cadence) so a
+    // pinch doesn't fire a 6000-point setOption every frame on the kiosk PC.
+    const onZoom = () => {
+      const wait = 120 - (Date.now() - last)
+      if (wait <= 0) { if (timer) { clearTimeout(timer); timer = undefined } refine() }
+      else if (!timer) timer = setTimeout(() => { timer = undefined; refine() }, wait)
+    }
+    inst.on('dataZoom', onZoom)
+    onZoom() // sync once (e.g. switching view while already zoomed in)
+    return () => { inst.off('dataZoom', onZoom); if (timer) clearTimeout(timer) }
+    // resampleWindow is read via ref; only re-bind when the static dataset itself changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [staticData])
 
   // Resize ECharts canvas whenever the container changes size (e.g. when the
   // loop results table appears below the chart, shifting the flex-1 height).
@@ -330,14 +409,28 @@ export function WaveformChart({
     return () => ro.disconnect()
   }, [])
 
-  // Double-tap / double-click resets the pinch-zoom/pan back to the full range.
+  // Reset pinch-zoom/pan to the full range on double-tap (touch) or double-click (mouse).
+  // zrender's 'dblclick' fires only for a REAL mouse double-click — on touch, touchend
+  // synthesises 'click' but never 'dblclick' (HandlerProxy.js), so the kiosk operator had
+  // no way to reset after pinching in. Detect two DOM 'click's within 300 ms on the
+  // container instead: that fires for both finger taps and mouse clicks. Reading the
+  // instance lazily inside the handler also sidesteps the first-mount race where
+  // getEchartsInstance() isn't ready when a `[]` effect runs.
   useEffect(() => {
-    const inst = chartRef.current?.getEchartsInstance()
-    if (!inst) return
-    const zr = inst.getZr()
-    const reset = () => inst.dispatchAction({ type: 'dataZoom', start: 0, end: 100 })
-    zr.on('dblclick', reset)
-    return () => zr.off('dblclick', reset)
+    const el = containerRef.current
+    if (!el) return
+    let lastTap = 0
+    const onClick = () => {
+      const now = Date.now()
+      if (now - lastTap < 300) {
+        chartRef.current?.getEchartsInstance()?.dispatchAction({ type: 'dataZoom', start: 0, end: 100 })
+        lastTap = 0
+      } else {
+        lastTap = now
+      }
+    }
+    el.addEventListener('click', onClick)
+    return () => el.removeEventListener('click', onClick)
   }, [])
 
   // Expose a PNG export callback to the parent via exportRef.
@@ -352,6 +445,9 @@ export function WaveformChart({
       a.download = filename
       a.click()
     }
+    // Null the callback on unmount so a parent that retained exportRef can't invoke a
+    // closure bound to a disposed chart instance after navigating away.
+    return () => { exportRef.current = null }
   }, [exportRef, isDark])
 
   return (

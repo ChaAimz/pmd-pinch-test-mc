@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react'
+import { useState, useMemo, useRef, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useQuery, useQueries } from '@tanstack/react-query'
 import { ArrowLeft, Download, FileText, ImageDown, Ruler, Zap, Repeat, Grip, Circle, Timer, Radio } from 'lucide-react'
@@ -101,13 +101,17 @@ export default function HistoryDetail() {
   // Stitched all-cycles force + CoF on one Test-Cycle axis. `combinedCofData`
   // mirrors `combinedStaticData` point-for-point but each cycle's force is divided
   // by that cycle's avg clamp force → coefficient of friction (NaN = gap).
-  const { combinedStaticData, combinedCofData, combinedClampData, combinedBoundaries, combinedForceMax, combinedCofMax } = useMemo(() => {
+  const { combinedStaticData, combinedCofData, combinedClampData, combinedBoundaries, combinedForceMax, combinedCofMax, cycleMeta } = useMemo(() => {
     const out: Array<[number, number]> = []
     const cofOut: Array<[number, number]> = []
     const clampOut: Array<[number, number | null]> = []
     const boundaries: number[] = []
     const forceMax: Array<[number, number]> = []
     const cofMax: Array<[number, number]> = []
+    // Per stitched cycle: enough to re-derive its full-resolution points from the cached
+    // raw waveform on demand (zoom). `i` indexes waveformResults; t0/duration map a sample's
+    // t_ms back to the cycle-band X used in the stitched view.
+    const meta: Array<{ i: number; t0: number; duration: number; endMs: number | null; clamp: number | null }> = []
     let cycleIdx = 0
     loops.forEach((l, i) => {
       // dropPreRoll removes the t_ms=0 pre-tension baseline block whose negative
@@ -127,6 +131,7 @@ export default function HistoryDetail() {
       const clamp = l.avg_clamp_n
       const cofValid = clamp != null && clamp !== 0
       boundaries.push(cycleIdx)
+      meta.push({ i, t0, duration, endMs, clamp: cofValid ? clamp : null })
       // Track each cycle's peak (force + CoF) and the X where it occurs → the
       // optional "Max / cycle" trend line overlaid on the stitched views.
       let maxF = -Infinity, maxFx = cycleIdx
@@ -151,6 +156,7 @@ export default function HistoryDetail() {
       combinedBoundaries: boundaries.length > 0 ? boundaries : undefined,
       combinedForceMax: forceMax.length > 0 ? forceMax : undefined,
       combinedCofMax: cofMax.length > 0 ? cofMax : undefined,
+      cycleMeta: meta,
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stamp, loops])
@@ -173,6 +179,40 @@ export default function HistoryDetail() {
     return active.map((p) => [(p.t_ms - t0) / 1000, p.force_n] as [number, number])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stamp, view, loops])
+
+  // Progressive detail-on-zoom for the stitched views. The once-decimated overview
+  // (combinedStaticData, ~PER_LOOP_MAX_POINTS/cycle) looks coarse / sawtoothed when you
+  // zoom in. Given a visible X window (cycle units), re-derive the FULL-resolution points
+  // of only the visible cycles from the cached raw waveforms, capped at DETAIL_BUDGET.
+  // The raw per-loop data already lives in the react-query cache, so this materialises
+  // only the visible window — no extra retained heap. Wide views keep the rich overview
+  // (resampling the whole run to a flat budget would be coarser than per-cycle).
+  const resampleWindow = useCallback((loX: number, hiX: number): Array<[number, number]> | null => {
+    const meta = cycleMeta
+    if (!meta || meta.length === 0) return null
+    const isCof = view === 'allcof'
+    const overview = isCof ? combinedCofData : combinedStaticData
+    const DETAIL_SPAN_CYCLES = 18  // breakeven: DETAIL_BUDGET / this ≈ PER_LOOP_MAX_POINTS
+    const DETAIL_BUDGET = 6000
+    if (hiX - loX >= DETAIL_SPAN_CYCLES) return overview ?? null
+    const lo = Math.max(0, Math.floor(loX))
+    const hi = Math.min(meta.length, Math.ceil(hiX))
+    if (hi <= lo) return overview ?? null
+    const pts: Array<[number, number]> = []
+    for (let c = lo; c < hi; c++) {
+      const m = meta[c]
+      const raw = dropPreRoll((waveformResults[m.i]?.data ?? []) as WaveformPoint[])
+      const active = m.endMs != null
+        ? raw.filter((p) => p.t_ms <= m.endMs!)
+        : raw.slice(0, activeEndIdx(raw))
+      for (const p of active) {
+        const y = isCof ? (m.clamp != null ? p.force_n / m.clamp : NaN) : p.force_n
+        pts.push([c + (p.t_ms - m.t0) / m.duration, y])
+      }
+    }
+    return pts.length > 0 ? decimate(pts, DETAIL_BUDGET, (p) => p[1]) : (overview ?? null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stamp, view, cycleMeta, combinedStaticData, combinedCofData])
 
   if (isLoading) {
     return (
@@ -472,6 +512,7 @@ export default function HistoryDetail() {
               <div className={cn('w-full h-full', view === 'allmax' && 'invisible pointer-events-none')}>
                 <WaveformChart
                   staticData={chartData}
+                  resampleWindow={isStitch ? resampleWindow : undefined}
                   cycleBoundaries={isStitch ? combinedBoundaries : undefined}
                   xMode={isStitch ? 'cycle' : 'time'}
                   yLabel={view === 'allcof' ? t('run.cof') : undefined}

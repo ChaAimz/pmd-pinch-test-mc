@@ -7,7 +7,7 @@ export type Theme = 'light' | 'dark' | 'system'
 export type ChartMode = 'continuous' | 'gated'
 export type Language = 'en' | 'th' | 'jp'
 
-// The 9 data fields we persist (excludes setter functions).
+// The 16 data fields we persist (excludes setter functions).
 const DATA_KEYS: Array<keyof UiSettings> = [
   'theme',
   'accentHue',
@@ -18,6 +18,13 @@ const DATA_KEYS: Array<keyof UiSettings> = [
   'minimalView',
   'language',
   'clampOffsetGf',
+  'chartLineWidth',
+  'chartShowSymbol',
+  'chartSymbolSize',
+  'chartSmooth',
+  'chartShowGrid',
+  'chartDecimals',
+  'chartShowThresholds',
 ]
 
 interface SettingsState extends UiSettings {
@@ -33,6 +40,13 @@ interface SettingsState extends UiSettings {
   setMinimalView: (v: boolean) => void
   setLanguage: (l: Language) => void
   setClampOffsetGf: (v: number) => void
+  setChartLineWidth: (v: number) => void
+  setChartShowSymbol: (v: boolean) => void
+  setChartSymbolSize: (v: number) => void
+  setChartSmooth: (v: boolean) => void
+  setChartShowGrid: (v: boolean) => void
+  setChartDecimals: (v: number) => void
+  setChartShowThresholds: (v: boolean) => void
 }
 
 // Internal flag: skip write-back while we're applying server data to avoid
@@ -46,7 +60,7 @@ let _writeTimer: ReturnType<typeof setTimeout> | null = null
 // the payload from it keeps the write-through in lockstep with the store shape so a
 // newly added setting can't be silently dropped from the save.
 function extractData(state: SettingsState): UiSettings {
-  return Object.fromEntries(DATA_KEYS.map((k) => [k, state[k]])) as UiSettings
+  return Object.fromEntries(DATA_KEYS.map((k) => [k, state[k]])) as unknown as UiSettings
 }
 
 export const useSettingsStore = create<SettingsState>()(
@@ -62,6 +76,13 @@ export const useSettingsStore = create<SettingsState>()(
       minimalView: false,
       language: 'en' as Language,
       clampOffsetGf: 0,
+      chartLineWidth: 2,
+      chartShowSymbol: false,
+      chartSymbolSize: 7,
+      chartSmooth: false,
+      chartShowGrid: true,
+      chartDecimals: 4,
+      chartShowThresholds: true,
 
       // --- async hydration ---
       hydrateFromServer: async () => {
@@ -92,6 +113,13 @@ export const useSettingsStore = create<SettingsState>()(
       setMinimalView: (v) => set({ minimalView: v }),
       setLanguage: (l) => set({ language: l }),
       setClampOffsetGf: (v) => set({ clampOffsetGf: v }),
+      setChartLineWidth: (chartLineWidth) => set({ chartLineWidth }),
+      setChartShowSymbol: (chartShowSymbol) => set({ chartShowSymbol }),
+      setChartSymbolSize: (chartSymbolSize) => set({ chartSymbolSize }),
+      setChartSmooth: (chartSmooth) => set({ chartSmooth }),
+      setChartShowGrid: (chartShowGrid) => set({ chartShowGrid }),
+      setChartDecimals: (chartDecimals) => set({ chartDecimals }),
+      setChartShowThresholds: (chartShowThresholds) => set({ chartShowThresholds }),
     }),
     { name: 'pmd-settings' }
   )
