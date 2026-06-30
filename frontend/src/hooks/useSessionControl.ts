@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAppStore } from '@/store/app'
 import { useChartStore, DEFAULT_MAX_SAMPLES } from '@/store/chart'
 import { useSettingsStore } from '@/store/settings'
@@ -25,6 +25,7 @@ function computeBufferSize(recipe?: Recipe): number {
 }
 
 export function useSessionControl() {
+  const qc = useQueryClient()
   const machineState = useAppStore((s) => s.machineState)
   const currentRunId = useAppStore((s) => s.currentRunId)
   const isRunning = !['IDLE', 'ABORTED', 'ERROR', 'DONE_B7'].includes(machineState)
@@ -34,6 +35,9 @@ export function useSessionControl() {
     onMutate: ({ recipe }: StartArgs) => {
       useChartStore.getState().resizeBuffer(computeBufferSize(recipe))  // also resets counts + recording
       useAppStore.getState().resetRun()
+      // Drop the previous run's cached per-loop waveforms so back-to-back runs (e.g. 100
+      // cycles x3) don't stack hundreds of full-resolution waveforms in the JS heap.
+      qc.removeQueries({ queryKey: ['waveform'] })
       getWsClient()
     },
   })

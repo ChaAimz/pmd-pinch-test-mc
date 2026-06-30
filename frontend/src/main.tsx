@@ -7,7 +7,11 @@ import './i18n'
 import './index.css'
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: 1, staleTime: 10_000 } },
+  // gcTime bounds how long INACTIVE queries (e.g. a previous run's per-loop waveforms,
+  // or History detail waveforms after navigating away) linger before eviction. Without
+  // it, TanStack's 5-min default let back-to-back runs stack hundreds of cached
+  // full-resolution waveforms in the heap. 60 s is ample for normal navigation.
+  defaultOptions: { queries: { retry: 1, staleTime: 10_000, gcTime: 60_000 } },
 })
 
 createRoot(document.getElementById('root')!).render(

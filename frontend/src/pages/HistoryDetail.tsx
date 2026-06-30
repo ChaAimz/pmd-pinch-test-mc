@@ -13,9 +13,13 @@ import { useSettingsStore } from '@/store/settings'
 import type { TestLoop, WaveformPoint, Recipe } from '@/lib/types'
 import { MaxCycleChart } from '@/components/MaxCycleChart'
 import { WaveformChart } from '@/components/WaveformChart'
-import { dropPreRoll, activeEndIdx } from '@/lib/waveform'
+import { dropPreRoll, activeEndIdx, decimate } from '@/lib/waveform'
 
 const GF_PER_N = 101.97162129779283
+// Peak-preserving points kept per cycle in the stitched all-cycles view — bounds the
+// stitched array (and its retained heap) for runs with many loops. Single-loop view
+// below stays full-resolution for close inspection.
+const PER_LOOP_MAX_POINTS = 300
 function fmtClamp(n: number, unit: 'gf' | 'N') {
   return unit === 'gf' ? (n * GF_PER_N).toFixed(1) : n.toFixed(4)
 }
@@ -118,6 +122,8 @@ export default function HistoryDetail() {
       if (active.length === 0) return
       const t0 = active[0].t_ms
       const duration = (active[active.length - 1].t_ms - t0) || 1
+      // Peak-preserving thin per cycle; decimate() keeps endpoints so t0/duration hold.
+      const slim = decimate(active, PER_LOOP_MAX_POINTS, (p) => p.force_n)
       const clamp = l.avg_clamp_n
       const cofValid = clamp != null && clamp !== 0
       boundaries.push(cycleIdx)
@@ -125,7 +131,7 @@ export default function HistoryDetail() {
       // optional "Max / cycle" trend line overlaid on the stitched views.
       let maxF = -Infinity, maxFx = cycleIdx
       let maxC = -Infinity, maxCx = cycleIdx
-      for (const p of active) {
+      for (const p of slim) {
         const x = cycleIdx + (p.t_ms - t0) / duration
         const cofv = cofValid ? p.force_n / clamp : NaN
         out.push([x, p.force_n])

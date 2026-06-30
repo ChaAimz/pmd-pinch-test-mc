@@ -4,17 +4,42 @@ import type { EChartsOption } from 'echarts'
 import { useChartStore } from '@/store/chart'
 import type { ChannelState } from '@/store/chart'
 import { useSettingsStore } from '@/store/settings'
+import { decimateIndices, lowerBoundIndex } from '@/lib/waveform'
 
-function linearize(ch: ChannelState, maxSamples: number): Array<[number, number]> {
+// Max points handed to ECharts per live tick. The panel is FHD (~1920 device px at
+// 150% scale), so ~2000 points is visually lossless. Decimating straight off the ring
+// buffer means each tick allocates only ~LIVE_MAX_POINTS pairs instead of the whole
+// buffer (up to 500k in continuous mode) — feeding the full buffer to setOption 20x/sec
+// was the dominant allocation churn that exhausted the renderer heap over a long run.
+const LIVE_MAX_POINTS = 2000
+
+// Build the live series straight off the ring buffer, peak-preserving, capped at
+// `maxOut` points so each tick allocates only the output — not the whole buffer (up to
+// 500k in continuous mode). When `view` (the chart's currently-visible time window, in
+// seconds) is given, only that index range is decimated, so zooming in reveals full local
+// detail from the ring while a zoomed-out view stays light. timestamps increase with i,
+// so the window maps to a contiguous index range via binary search.
+function linearizeLive(
+  ch: ChannelState,
+  maxSamples: number,
+  maxOut = LIVE_MAX_POINTS,
+  view?: { lo: number; hi: number },
+): Array<[number, number]> {
   const { timestamps, force, count, head } = ch
   if (count === 0) return []
   const start = count < maxSamples ? 0 : head
   const t0 = timestamps[start]
-  const out: Array<[number, number]> = []
-  for (let i = 0; i < count; i++) {
-    const idx = (start + i) % maxSamples
-    out.push([(timestamps[idx] - t0) / 1000, force[idx]])
+  const getX = (i: number) => (timestamps[(start + i) % maxSamples] - t0) / 1000
+  const getY = (i: number) => force[(start + i) % maxSamples]
+  let a = 0, b = count
+  if (view && view.hi > view.lo) {
+    // One sample of padding each side so the line still reaches the chart edges.
+    a = Math.max(0, lowerBoundIndex(count, getX, view.lo) - 1)
+    b = Math.min(count, lowerBoundIndex(count, getX, view.hi) + 1)
   }
+  const idx = decimateIndices(getY, a, b, maxOut)
+  const out: Array<[number, number]> = new Array(idx.length)
+  for (let k = 0; k < idx.length; k++) out[k] = [getX(idx[k]), getY(idx[k])]
   return out
 }
 
@@ -177,9 +202,20 @@ export function WaveformChart({
       const inst = chartRef.current?.getEchartsInstance()
       if (!inst) return
       const s = useChartStore.getState()
-      const data = linearize(s.imada, s.maxSamples)
+      // Current visible x-window (seconds) so zooming in pulls full-resolution detail from
+      // the ring buffer for that span. Read from the axis scale (reflects pinch/wheel zoom);
+      // try/catch so an ECharts internals change just degrades to whole-buffer rendering.
+      let view: { lo: number; hi: number } | undefined
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const ext = (inst as any).getModel?.().getComponent('xAxis', 0)?.axis?.scale?.getExtent?.()
+        if (ext && Number.isFinite(ext[0]) && Number.isFinite(ext[1]) && ext[1] > ext[0]) {
+          view = { lo: ext[0], hi: ext[1] }
+        }
+      } catch { /* whole-buffer fallback */ }
+      const data = linearizeLive(s.imada, s.maxSamples, LIVE_MAX_POINTS, view)
       inst.setOption({ series: [{ data }] }, { notMerge: false })
-    }, 50)
+    }, 120)
     return () => clearInterval(timer)
   }, [staticData])
 
