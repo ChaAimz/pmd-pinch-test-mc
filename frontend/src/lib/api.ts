@@ -1,6 +1,7 @@
 import type {
   Recipe, RecipeCreate, RecipeUpdate,
   TestRun, HardwareStatus, WaveformPoint, UiSettings,
+  Comparison, ComparisonCreate, ComparisonUpdate,
 } from './types'
 
 async function req<T>(method: string, path: string, body?: unknown): Promise<T> {
@@ -59,6 +60,13 @@ export const api = {
     exportCsvUrl: (runId: number) => `/api/runs/${runId}/export.csv`,
     summaryCsvUrl: (runId: number) => `/api/runs/${runId}/summary.csv`,
     delete: (id: number) => req<void>('DELETE', `/runs/${id}`),
+  },
+  comparisons: {
+    list: () => req<Comparison[]>('GET', '/comparisons'),
+    get: (id: number) => req<Comparison>('GET', `/comparisons/${id}`),
+    create: (data: ComparisonCreate) => req<Comparison>('POST', '/comparisons', data),
+    update: (id: number, data: ComparisonUpdate) => req<Comparison>('PUT', `/comparisons/${id}`, data),
+    delete: (id: number) => req<void>('DELETE', `/comparisons/${id}`),
   },
   settings: {
     get: () => req<Partial<UiSettings>>('GET', '/settings'),

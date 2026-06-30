@@ -11,6 +11,13 @@ export interface UiSettings {
   minimalView: boolean
   language: 'en' | 'th' | 'jp'
   clampOffsetGf: number
+  chartLineWidth: number
+  chartShowSymbol: boolean
+  chartSymbolSize: number
+  chartSmooth: boolean
+  chartShowGrid: boolean
+  chartDecimals: number
+  chartShowThresholds: boolean
 }
 
 // Field names mirror backend/app/schemas/recipe.py. Do NOT rename without
@@ -95,3 +102,45 @@ export interface WaveformPoint {
   t_ms: number
   force_n: number
 }
+
+// --- Comparisons ---
+
+export interface Annotation {
+  id: string
+  cycleIndex: number  // 0-based index (maps to category C1 = index 0)
+  yValue: number      // Y axis value at the clicked point (CoF)
+  text: string
+  color: string       // one of ANNOTATION_COLORS
+}
+
+export interface ChartConfig {
+  yMin: number | null            // null = auto
+  yMax: number | null            // null = auto
+  showYGrid: boolean             // horizontal split lines
+  yNameGap: number               // gap between Y axis label and its title
+  xLabelInterval: number | null  // null = adaptive (auto), 0 = every label, N = every (N+1)th
+  lineWidth: number
+  symbolSize: number             // size of the round dots on each line
+  showSymbol: boolean            // show/hide the round dots
+  smooth: boolean                // curved vs straight line
+  connectNulls: boolean          // bridge gaps where a cycle has no data
+  showValueLabels: boolean       // print the CoF number on each point
+  decimals: number               // decimal places in tooltip + value labels
+  annotationSymbolSize: number   // arrow marker size
+  annotationFontSize: number     // annotation label font size
+  showAnnotationLabels: boolean  // show/hide annotation text labels
+}
+
+export interface Comparison {
+  id: number
+  name: string
+  description: string | null
+  run_ids: number[]
+  labels: Record<string, string>   // run-id string -> label
+  annotations: Annotation[]
+  chart_config: ChartConfig | null
+  created_at: string
+  updated_at: string
+}
+export type ComparisonCreate = Omit<Comparison, 'id' | 'created_at' | 'updated_at'>
+export type ComparisonUpdate = Partial<ComparisonCreate>
