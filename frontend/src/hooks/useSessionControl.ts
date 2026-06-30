@@ -33,7 +33,11 @@ export function useSessionControl() {
   const startM = useMutation({
     mutationFn: ({ recipeId }: StartArgs) => api.sessions.start(recipeId),
     onMutate: ({ recipe }: StartArgs) => {
-      useChartStore.getState().resizeBuffer(computeBufferSize(recipe))  // also resets counts + recording
+      useChartStore.getState().resizeBuffer(computeBufferSize(recipe))  // resets counts + recording
+      // Gated mode: wait for MR805 before recording — chart should only show MR805→MR806 window.
+      // Continuous mode: start recording immediately so every sample from session start is captured.
+      const mode = useSettingsStore.getState().chartMode
+      useChartStore.getState().setRecording(mode !== 'gated')
       useAppStore.getState().resetRun()
       // Drop the previous run's cached per-loop waveforms so back-to-back runs (e.g. 100
       // cycles x3) don't stack hundreds of full-resolution waveforms in the JS heap.

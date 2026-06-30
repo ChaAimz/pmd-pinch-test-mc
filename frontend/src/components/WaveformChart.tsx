@@ -4,7 +4,7 @@ import type { EChartsOption } from 'echarts'
 import { useChartStore } from '@/store/chart'
 import type { ChannelState } from '@/store/chart'
 import { useSettingsStore } from '@/store/settings'
-import { decimateIndices, lowerBoundIndex } from '@/lib/waveform'
+import { decimateIndices } from '@/lib/waveform'
 
 // Max points handed to ECharts per live tick. The panel is FHD (~1920 device px at
 // 150% scale), so ~2000 points is visually lossless. Decimating straight off the ring
@@ -13,17 +13,16 @@ import { decimateIndices, lowerBoundIndex } from '@/lib/waveform'
 // was the dominant allocation churn that exhausted the renderer heap over a long run.
 const LIVE_MAX_POINTS = 2000
 
-// Build the live series straight off the ring buffer, peak-preserving, capped at
-// `maxOut` points so each tick allocates only the output — not the whole buffer (up to
-// 500k in continuous mode). When `view` (the chart's currently-visible time window, in
-// seconds) is given, only that index range is decimated, so zooming in reveals full local
-// detail from the ring while a zoomed-out view stays light. timestamps increase with i,
-// so the window maps to a contiguous index range via binary search.
+// Build the live series straight off the ring buffer, peak-preserving, capped at `maxOut`
+// points so each tick decimates the whole buffer to a fixed budget regardless of how many
+// samples it holds (up to 500k in continuous mode). The 'inside' dataZoom handles the
+// visible window natively, so we always emit the FULL decimated line and never clip it to
+// the axis extent — doing that fed the axis back into itself and froze the live line
+// mid-window. timestamps increase with i.
 function linearizeLive(
   ch: ChannelState,
   maxSamples: number,
   maxOut = LIVE_MAX_POINTS,
-  view?: { lo: number; hi: number },
 ): Array<[number, number]> {
   const { timestamps, force, count, head } = ch
   if (count === 0) return []
@@ -31,13 +30,14 @@ function linearizeLive(
   const t0 = timestamps[start]
   const getX = (i: number) => (timestamps[(start + i) % maxSamples] - t0) / 1000
   const getY = (i: number) => force[(start + i) % maxSamples]
-  let a = 0, b = count
-  if (view && view.hi > view.lo) {
-    // One sample of padding each side so the line still reaches the chart edges.
-    a = Math.max(0, lowerBoundIndex(count, getX, view.lo) - 1)
-    b = Math.min(count, lowerBoundIndex(count, getX, view.hi) + 1)
-  }
-  const idx = decimateIndices(getY, a, b, maxOut)
+  const idx = decimateIndices(getY, 0, count, maxOut)
+  // Allocate a FRESH pair object per point every tick. Do NOT pool/reuse these objects:
+  // the line series uses `sampling: 'lttb'`, and ECharts keys its downsample cache on the
+  // data items' object identity. Reusing pooled pairs (stable identities, only the values
+  // mutated) makes ECharts serve the STALE sampled frame — the live chart paints once then
+  // freezes mid-stream even though new samples keep arriving. Fresh objects each tick
+  // invalidate that cache so the line keeps moving. (≤2000 short-lived pairs/tick is cheap;
+  // the heavy memory work — the in-place ring buffer — lives in store/chart.ts, not here.)
   const out: Array<[number, number]> = new Array(idx.length)
   for (let k = 0; k < idx.length; k++) out[k] = [getX(idx[k]), getY(idx[k])]
   return out
@@ -237,22 +237,26 @@ export function WaveformChart({
     chartRef.current?.getEchartsInstance()?.setOption({
       series: [{ data: [], markLine: { data: [] }, markPoint: { data: [] }, markArea: { data: [] } }, { data: [] }],
     }, { notMerge: false })
+    // Re-feed only when the ring buffer actually advanced. `head` (the write pointer) moves
+    // on every pushed sample and stops when recording pauses (between MR806 and the next
+    // MR805 in gated mode), so a held/idle chart skips the redundant pass — no per-tick GC
+    // churn while nothing is streaming.
+    let lastHead = -1
     const timer = setInterval(() => {
       const inst = chartRef.current?.getEchartsInstance()
       if (!inst) return
       const s = useChartStore.getState()
-      // Current visible x-window (seconds) so zooming in pulls full-resolution detail from
-      // the ring buffer for that span. Read from the axis scale (reflects pinch/wheel zoom);
-      // try/catch so an ECharts internals change just degrades to whole-buffer rendering.
-      let view: { lo: number; hi: number } | undefined
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const ext = (inst as any).getModel?.().getComponent('xAxis', 0)?.axis?.scale?.getExtent?.()
-        if (ext && Number.isFinite(ext[0]) && Number.isFinite(ext[1]) && ext[1] > ext[0]) {
-          view = { lo: ext[0], hi: ext[1] }
-        }
-      } catch { /* whole-buffer fallback */ }
-      const data = linearizeLive(s.imada, s.maxSamples, LIVE_MAX_POINTS, view)
+      const head = s.imada.head
+      if (head === lastHead) return
+      lastHead = head
+      // Render the WHOLE buffer (decimated to LIVE_MAX_POINTS). We deliberately do NOT clip
+      // the series to the chart's current x-axis extent. The 'inside' dataZoom pins that
+      // extent to the data we last fed, so clipping new samples to it created a feedback
+      // loop: the live line could only advance ~1 sample per tick and appeared to FREEZE
+      // mid-window even while Imada kept streaming (intermittent, depending on where the
+      // axis "nice" max landed). Zooming still works — the inside dataZoom (filterMode
+      // 'none') clips the already-rendered full line to the visible window.
+      const data = linearizeLive(s.imada, s.maxSamples, LIVE_MAX_POINTS)
       inst.setOption({ series: [{ data }] }, { notMerge: false })
     }, 120)
     return () => clearInterval(timer)

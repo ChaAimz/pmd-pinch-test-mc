@@ -26,3 +26,19 @@ createRoot(document.getElementById('root')!).render(
     </QueryClientProvider>
   </StrictMode>
 )
+
+// DEV-only heap/leak probe (window.__leak). Tree-shaken from production builds.
+if (import.meta.env.DEV) {
+  void import('./lib/leakProbe').then((m) => m.installLeakProbe(queryClient)).catch(() => {})
+}
+
+// Kiosk heap guard. React 19's DEVELOPMENT build (which the kiosk runs via `npm run dev`,
+// see start-pinch.bat) emits a performance.measure() for every render/commit to feed the
+// DevTools "⚛️ React" performance track. Those measure entries are NEVER auto-evicted
+// (unlike resource timing, capped at 250), so during a test loop they accumulate at
+// ~27k/loop → ~0.65 MB/loop of unreclaimable heap that grows until the kiosk browser
+// bogs down. Periodically dropping them bounds the buffer to a few MB. Production builds
+// emit none, so this is a cheap no-op there. (Proper fix: serve a production build.)
+if (typeof performance !== 'undefined' && typeof performance.clearMeasures === 'function') {
+  setInterval(() => performance.clearMeasures(), 15_000)
+}

@@ -23,9 +23,13 @@ interface ChartState {
   imada: ChannelState
   imadaCount: number
   recording: boolean
+  /** Gated mode: a clear has been requested (at MR805) but is deferred until the next
+   * pushed batch, so the previous tension window stays on screen until the new one draws. */
+  pendingClear: boolean
   pushImadaBatch: (samples: WsSample[]) => void
   setRecording: (v: boolean) => void
   clear: () => void
+  armClear: () => void
   resizeBuffer: (n: number) => void
 }
 
@@ -39,6 +43,7 @@ export function initialChartState(n = DEFAULT_MAX_SAMPLES) {
     imada: makeChannel(n),
     imadaCount: 0,
     recording: false,
+    pendingClear: false,
   }
 }
 
@@ -86,9 +91,32 @@ export type ChartStoreType = typeof useChartStore
 export const useChartStore = create<ChartState>((set) => ({
   ...initialChartState(),
   pushImadaBatch: (samples) =>
-    set((s) => ({ imadaCount: pushSamples(s.imada, samples, s.maxSamples) })),
+    set((s) => {
+      // Gated mode arms a clear at MR805 (armClear). We honour it on the FIRST batch of the
+      // new tension window — not at the MR805 edge — so the previous window stays on screen
+      // until the new window actually starts drawing. Without this deferral, clear()-at-MR805
+      // blanked the chart for one frame between loops, which read as "chart stopped".
+      if (s.pendingClear) {
+        s.imada.count = 0
+        s.imada.head = 0
+      }
+      return {
+        imadaCount: pushSamples(s.imada, samples, s.maxSamples),
+        pendingClear: false,
+      }
+    }),
   setRecording: (v) => set({ recording: v }),
-  // Preserve the sized buffer — gated mode calls clear() on every loop boundary.
-  clear: () => set((s) => initialChartState(s.maxSamples)),
+  // Gated mode calls this on every MR805 loop boundary to wipe old tension data
+  // without stopping the live feed. Zero ring-buffer pointers in-place — avoids
+  // reallocating the typed arrays each loop (~360 KB new Float64/Float32Array × 100
+  // loops = 36 MB of GC churn that makes the heap grow visibly during a long run).
+  clear: () => set((s) => {
+    s.imada.count = 0
+    s.imada.head = 0
+    return { imadaCount: 0, pendingClear: false }
+  }),
+  // Gated mode: defer the per-window wipe to the next pushed batch (see pushImadaBatch) so
+  // the previous tension window stays visible until the new one begins — no blank frame.
+  armClear: () => set({ pendingClear: true }),
   resizeBuffer: (n) => set(initialChartState(clampBufferSize(n))),
 }))
