@@ -198,6 +198,7 @@ const jp = {
       tensionStart: '引張開始',
       endLoop: 'ループ終了',
       allLoopsDone: '全ループ完了',
+      loopsComplete: 'ループ完了',
     },
     atRest: '静止中',
     nonZero: 'ゼロ以外',
@@ -352,6 +353,14 @@ const jp = {
       title: 'クランプが最大ストロークに達しました',
       body1: 'PLCがクランプの最大機械ストロークに達したことを通知しました（MR811 ON）。',
       body2: 'クランプの故障または損傷リスクを示す可能性があります。テストを停止し、クランプアクチュエーターを点検し、機構が確認されるまで再開しないでください。',
+    },
+    completeLoops: {
+      subtitle: 'テスト完了',
+      title: 'ループ完了',
+      loopsLabel: '完了ループ数',
+      body1: 'PLCがすべてのテストループが完了したことを通知しました（MR814 ON）。',
+      body2: '確認を押して承認してください。PLCのMR814をOFFに書き込み、機械を待機状態に戻します。',
+      confirm: '確認',
     },
     estop: {
       title: '緊急停止',

@@ -198,6 +198,7 @@ const en = {
       tensionStart: 'Tension Start',
       endLoop: 'End Loop',
       allLoopsDone: 'All Loops Done',
+      loopsComplete: 'Loops Complete',
     },
     atRest: 'At rest',
     nonZero: 'Non-zero',
@@ -352,6 +353,14 @@ const en = {
       title: 'Max Stroke of Clamp Reached',
       body1: 'The PLC has signalled that the clamp has reached its maximum mechanical stroke (MR811 ON).',
       body2: 'This may indicate a clamp failure or damage risk. Stop the test, inspect the clamp actuator, and do not resume until the mechanism has been checked.',
+    },
+    completeLoops: {
+      subtitle: 'Test Complete',
+      title: 'Complete Loops',
+      loopsLabel: 'Loops completed',
+      body1: 'The PLC has signalled that all test loops are finished (MR814 ON).',
+      body2: 'Press Confirm to acknowledge. This writes MR814 OFF on the PLC so the machine can return to its ready state.',
+      confirm: 'Confirm',
     },
     estop: {
       title: 'EMERGENCY STOP',

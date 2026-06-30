@@ -9,6 +9,7 @@ import { ThemeProvider } from '@/components/ThemeProvider'
 import { EmergencyStopOverlay } from '@/components/EmergencyStopOverlay'
 import { ClampForceAlarmDialog } from '@/components/ClampForceAlarmDialog'
 import { MaxStrokeAlarmDialog } from '@/components/MaxStrokeAlarmDialog'
+import { CompleteLoopsDialog } from '@/components/CompleteLoopsDialog'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useWsHandlers } from '@/hooks/useWsHandlers'
 import { api } from '@/lib/api'
@@ -44,6 +45,7 @@ export default function App() {
       <EmergencyStopOverlay />
       <ClampForceAlarmDialog />
       <MaxStrokeAlarmDialog />
+      <CompleteLoopsDialog />
       <ErrorBoundary>
         <Routes>
           <Route path="/" element={<Layout />}>

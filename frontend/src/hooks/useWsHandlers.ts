@@ -51,6 +51,7 @@ export function useWsHandlers() {
       setPlcBit,
       setClampForceAlarm,
       setMaxStrokeAlarm,
+      setLoopsCompleteAck,
     } = useAppStore.getState()
 
     const offs = [
@@ -74,23 +75,39 @@ export function useWsHandlers() {
       ws.on<WsHwStatus>('hw_status', (msg) => setHwStatus(msg)),
       ws.on<WsLoopResult>('loop_result', (msg) => addLoopResult(msg)),
       ws.on<WsRunFinished>('run_finished', (msg) => {
+        // Guard on run_id like addLoopResult: a late / duplicate run_finished from a
+        // PREVIOUS run (e.g. one that arrives just after the operator starts the next run)
+        // must not stop recording and freeze the new run's live chart.
+        const cur = useAppStore.getState().currentRunId
+        if (msg.run_id != null && cur != null && msg.run_id !== cur) return
         setRecording(false)
         setRunFinished(msg)
       }),
       // plc_bit: fired by HardwareManager whenever a polled bit changes.
-      // Both modes start recording on MR805 (first tension check).
-      // 'continuous' (Realtime Plot): records across all loops, stops at MR807.
-      // 'gated' (Realtime Chart): stops at MR806 (per-loop window), MR807 is a safety fallback.
+      // Recording starts at session start (useSessionControl) and stops at MR807 / run_finished.
+      // 'gated' mode: clears the buffer on each MR805 so the chart shows one tension window at a time.
+      // 'continuous' mode: accumulates all data from session start across all loops.
       ws.on<WsPlcBit>('plc_bit', (msg) => {
         setPlcBit(msg)
+        // MR814 (Loops Complete ack) tracks the bit on BOTH edges: HIGH raises the
+        // Complete-Loops confirm dialog; LOW (PLC- or confirm-driven) dismisses it.
+        if (msg.addr === 814) setLoopsCompleteAck(msg.value)
         if (msg.value) {
           if (msg.addr === 805) {
-            // Gated mode: clear old data so chart shows only the current loop's tension check
-            if (useSettingsStore.getState().chartMode === 'gated') useChartStore.getState().clear()
-            setRecording(true)
+            // Gated mode: arm a deferred clear (applied on the new window's first sample so
+            // the previous window stays on screen until the new one starts drawing — no blank
+            // flash) and (re)start recording. The window draws live MR805→MR806.
+            if (useSettingsStore.getState().chartMode === 'gated') {
+              useChartStore.getState().armClear()
+              setRecording(true)
+            }
           }
-          if (msg.addr === 806 && useSettingsStore.getState().chartMode === 'gated') setRecording(false)
-          if (msg.addr === 807) setRecording(false) // Both modes: stop when all loops done
+          if (msg.addr === 806) {
+            // Gated mode: freeze at end of tension check — stop accumulating so the completed
+            // window HOLDS on screen until the next MR805 replaces it (operator's chosen mode).
+            if (useSettingsStore.getState().chartMode === 'gated') setRecording(false)
+          }
+          if (msg.addr === 807) setRecording(false) // Both modes: freeze chart when all loops done
           if (msg.addr === 811) setMaxStrokeAlarm(true)  // Max Stroke → show warning dialog
           // MR811 going LOW does NOT auto-dismiss the dialog — operator must acknowledge
         }

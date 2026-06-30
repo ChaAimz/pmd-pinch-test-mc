@@ -42,6 +42,7 @@ export const BIT_META: BitMeta[] = [
   { addr: 805, label: 'Tension Start',     labelKey: 'hardware.bits.tensionStart', dir: 'plc-to-web', group: 'operation' },
   { addr: 806, label: 'End Loop',          labelKey: 'hardware.bits.endLoop',      dir: 'plc-to-web', group: 'operation' },
   { addr: 807, label: 'All Loops Done',    labelKey: 'hardware.bits.allLoopsDone', dir: 'plc-to-web', group: 'operation' },
+  { addr: 814, label: 'Loops Complete',    labelKey: 'hardware.bits.loopsComplete', dir: 'plc-to-web', group: 'operation' },
 ]
 
 // ─── usePlcBitPulse ────────────────────────────────────────────────────────

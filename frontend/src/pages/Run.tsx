@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { Pencil, Loader2, Play, Square, RotateCcw, ChevronsUpDown, Check, AlertTriangle, Download, ImageDown, Radio, Activity, Grip, Ruler, Zap, Repeat, Keyboard } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useQuery, useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -124,6 +124,13 @@ export default function Run() {
 
   const waveformExportRef = useRef<((filename: string) => void) | null>(null)
   const maxCycleExportRef = useRef<((filename: string) => void) | null>(null)
+  const loopListRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (loopListRef.current) {
+      loopListRef.current.scrollTop = loopListRef.current.scrollHeight
+    }
+  }, [loopResults.length])
 
   const { data: cycleWaveform } = useQuery({
     queryKey: ['waveform', currentRunId, selectedCycle],
@@ -156,18 +163,23 @@ export default function Run() {
   // `combinedForceMax` / `combinedCofMax` are the peak force / peak CoF of each
   // cycle, placed at the X where that peak occurs → an optional "Max / cycle"
   // trend line overlaid on the All-Tensions / All-CoF views.
-  const { combinedStaticData, combinedCofData, combinedBoundaries, combinedForceMax, combinedCofMax } = useMemo<{
+  const { combinedStaticData, combinedCofData, combinedBoundaries, combinedForceMax, combinedCofMax, cycleMeta } = useMemo<{
     combinedStaticData: Array<[number, number]> | undefined
     combinedCofData: Array<[number, number]> | undefined
     combinedBoundaries: number[] | undefined
     combinedForceMax: Array<[number, number]> | undefined
     combinedCofMax: Array<[number, number]> | undefined
+    cycleMeta: Array<{ i: number; t0: number; duration: number; endMs: number | null; clamp: number | null }>
   }>(() => {
     const out: Array<[number, number]> = []
     const cof: Array<[number, number]> = []
     const boundaries: number[] = []
     const forceMax: Array<[number, number]> = []
     const cofMax: Array<[number, number]> = []
+    // Per stitched cycle: enough to re-derive its full-resolution points from the cached
+    // raw waveform on demand (zoom). `i` indexes allLoopResults; t0/duration map a sample's
+    // t_ms back to the cycle-band X used in the stitched view.
+    const meta: Array<{ i: number; t0: number; duration: number; endMs: number | null; clamp: number | null }> = []
     let cycleIdx = 0
     loopResults.forEach((r, i) => {
       // dropPreRoll strips the t_ms=0 pre-tension baseline block (incl. its negative
@@ -187,6 +199,7 @@ export default function Run() {
       const clamp = r.avg_clamp_n
       const cofValid = clamp != null && clamp !== 0
       boundaries.push(cycleIdx)
+      meta.push({ i, t0, duration, endMs, clamp: cofValid ? clamp : null })
       let maxF = -Infinity, maxFx = cycleIdx
       let maxC = -Infinity, maxCx = cycleIdx
       for (const p of slim) {
@@ -201,16 +214,50 @@ export default function Run() {
       if (cofValid && maxC > -Infinity) cofMax.push([maxCx, maxC])
       cycleIdx += 1
     })
-    if (out.length === 0) return { combinedStaticData: undefined, combinedCofData: undefined, combinedBoundaries: undefined, combinedForceMax: undefined, combinedCofMax: undefined }
+    if (out.length === 0) return { combinedStaticData: undefined, combinedCofData: undefined, combinedBoundaries: undefined, combinedForceMax: undefined, combinedCofMax: undefined, cycleMeta: [] }
     return {
       combinedStaticData: out,
       combinedCofData: cof,
       combinedBoundaries: boundaries,
       combinedForceMax: forceMax.length > 0 ? forceMax : undefined,
       combinedCofMax: cofMax.length > 0 ? cofMax : undefined,
+      cycleMeta: meta,
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allStamp, loopResults])
+
+  // Progressive detail-on-zoom for the stitched All-Tensions / All-CoF views. The
+  // once-decimated overview (combinedStaticData, ~PER_LOOP_MAX_POINTS/cycle) looks coarse
+  // when zoomed in; given a visible X window (cycle units), re-derive the FULL-resolution
+  // points of only the visible cycles from the cached raw waveforms (already in the
+  // react-query cache), capped at DETAIL_BUDGET. Mirrors HistoryDetail so live + history
+  // zoom behave identically. Wide views keep the rich overview.
+  const resampleWindow = useCallback((loX: number, hiX: number): Array<[number, number]> | null => {
+    const meta = cycleMeta
+    if (!meta || meta.length === 0) return null
+    const isCof = selectedCycle === 'allcof'
+    const overview = isCof ? combinedCofData : combinedStaticData
+    const DETAIL_SPAN_CYCLES = 18  // breakeven: DETAIL_BUDGET / this ≈ PER_LOOP_MAX_POINTS
+    const DETAIL_BUDGET = 6000
+    if (hiX - loX >= DETAIL_SPAN_CYCLES) return overview ?? null
+    const lo = Math.max(0, Math.floor(loX))
+    const hi = Math.min(meta.length, Math.ceil(hiX))
+    if (hi <= lo) return overview ?? null
+    const pts: Array<[number, number]> = []
+    for (let c = lo; c < hi; c++) {
+      const m = meta[c]
+      const raw = dropPreRoll((allLoopResults[m.i]?.data ?? []) as WaveformPoint[])
+      const active = m.endMs != null
+        ? raw.filter((p) => p.t_ms <= m.endMs!)
+        : raw.slice(0, activeEndIdx(raw))
+      for (const p of active) {
+        const y = isCof ? (m.clamp != null ? p.force_n / m.clamp : NaN) : p.force_n
+        pts.push([c + (p.t_ms - m.t0) / m.duration, y])
+      }
+    }
+    return pts.length > 0 ? decimate(pts, DETAIL_BUDGET, (p) => p[1]) : (overview ?? null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allStamp, selectedCycle, cycleMeta, combinedStaticData, combinedCofData])
 
   const [showMax, setShowMax] = useState(true)
   const cycleOverlay = !showMax
@@ -654,7 +701,7 @@ export default function Run() {
             </button>
             */}
           </div>
-          <div className="flex-1 min-h-0 overflow-y-auto">
+          <div ref={loopListRef} className="flex-1 min-h-0 overflow-y-auto">
           <Table>
             <TableHeader>
               <TableRow className="border-b border-border">
@@ -827,6 +874,7 @@ export default function Run() {
             <div className={cn('w-full h-full', selectedCycle === 'allmax' && 'invisible pointer-events-none')}>
               <WaveformChart
                 staticData={staticData}
+                resampleWindow={selectedCycle === 'all' || selectedCycle === 'allcof' ? resampleWindow : undefined}
                 cycleBoundaries={selectedCycle === 'all' || selectedCycle === 'allcof' ? combinedBoundaries : undefined}
                 xMode={selectedCycle === 'all' || selectedCycle === 'allcof' ? 'cycle' : 'time'}
                 yLabel={selectedCycle === 'allcof' ? t('run.cof') : undefined}

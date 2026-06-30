@@ -78,6 +78,8 @@ export const api = {
       req<{ ok: boolean }>('POST', '/hardware/reconnect', { device }),
     pulseBit: (addr: number, pulse_ms = 200) =>
       req<{ ok: boolean }>('POST', '/hardware/plc/bit', { addr, value: true, pulse_ms }),
+    setBit: (addr: number, value: boolean) =>
+      req<{ ok: boolean; addr: number; value: boolean }>('POST', '/hardware/plc/bit', { addr, value }),
     setWords: (words: Record<number, number>) =>
       req<{ ok: boolean }>('POST', '/hardware/plc/words', { words }),
     imadaTare: () =>
