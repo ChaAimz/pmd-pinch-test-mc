@@ -38,6 +38,7 @@ class PlcDeviceMap(BaseModel):
         807: [12, 807],  # MR807  Finish All Loops
         809: [12, 809],  # MR809  Timer Start (PLC→Web — triggers UI countdown)
         811: [12, 811],  # MR811  Max Stroke of Clamp (PLC→Web, safety alarm)
+        814: [12, 814],  # MR814  Loops Complete ack — PLC drives HIGH on finish; Web writes LOW to confirm
         3:   [12, 3],    # MR3    Emergency Stop (hardware)
         2:   [12, 2],    # MR2    Axis 3 Alarm
         100: [12, 100],  # MR100  Axis 1 Alarm
@@ -67,6 +68,7 @@ class PlcDeviceMap(BaseModel):
         803,                 # Press Clamp — PLC drives this; backend polls & waits for it
         809,                 # Timer Start — PLC drives this; triggers UI countdown
         811,                 # Max Stroke of Clamp — safety alarm (PLC→Web)
+        814,                 # Loops Complete ack — PLC drives HIGH on finish; UI shows confirm dialog
     ])
 
 

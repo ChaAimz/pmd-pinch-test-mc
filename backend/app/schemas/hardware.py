@@ -17,13 +17,15 @@ class ReconnectRequest(BaseModel):
 
 # Web→PLC writable MR addresses only (PLC→Web bits must never be driven from here)
 # MR808 = Tare ESP32 (pulses HIGH → backend forwards 't' to ESP32 over RS232)
-_WEB_TO_PLC_MR = {800, 801, 802, 803, 804, 808, 101, 201, 502}
+# MR814 = Loops Complete ack — PLC drives it HIGH on finish; the operator's "Confirm"
+#         on the Complete-Loops dialog writes it LOW (value=false) through this endpoint.
+_WEB_TO_PLC_MR = {800, 801, 802, 803, 804, 808, 814, 101, 201, 502}
 
 
 class PlcBitRequest(BaseModel):
     addr: int = Field(
         ...,
-        description="Web→PLC MR address (MR800–MR804, MR808, MR101, MR201, MR502)",
+        description="Web→PLC MR address (MR800–MR804, MR808, MR814, MR101, MR201, MR502)",
     )
     value: bool
     pulse_ms: Optional[int] = Field(None, ge=1, description="If set, write value then invert after this many ms")

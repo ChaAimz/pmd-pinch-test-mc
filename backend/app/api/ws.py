@@ -13,7 +13,9 @@ router = APIRouter()
 # and the Start-button gate (MR303 = Machine Ready).  Without an
 # initial snapshot the frontend only learns about them on the first
 # *change*, so a bit that starts ON and never changes is never seen.
-_SNAPSHOT_BIT_ADDRS = [300, 301, 302, 303]
+# MR814 (Loops Complete ack) is included so a kiosk reload while the
+# ack is still pending re-raises the Complete-Loops confirm dialog.
+_SNAPSHOT_BIT_ADDRS = [300, 301, 302, 303, 814]
 
 
 @router.websocket("/ws")

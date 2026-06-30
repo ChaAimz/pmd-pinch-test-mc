@@ -32,6 +32,10 @@ class MockPlcScript:
     after_mr805_to_mr806_ms: int = 200
     after_mr806_to_mr807_ms: int = 50
     final_mr807: bool = True
+    # On the final loop, also drive MR814 (Loops Complete ack) HIGH after MR807 so the
+    # UI raises its "Complete Loops" confirm dialog. The operator confirms by writing
+    # MR814 LOW (Web→PLC); the real PLC ladder owns this handshake on hardware.
+    final_mr814: bool = True
 
 
 class MockPlc:
@@ -96,6 +100,8 @@ class MockPlc:
         # ourselves (803/805/806/807) re-enter here too, but none match below.
         if addr == 800 and on:
             self._loops_pressed = 0
+            # Clear any stale Loops-Complete ack from a previous run on a fresh start.
+            self.set_bit(814, False)
             self._press_clamp()
         elif addr == 804 and on:
             # Backend acknowledged clamp force → run the tension cycle.
@@ -138,5 +144,7 @@ class MockPlc:
                 return
             if self._script.final_mr807:
                 self.set_bit(807, True)  # Finish All Loops
+            if self._script.final_mr814:
+                self.set_bit(814, True)  # Loops Complete — UI raises confirm dialog
         else:
             self._press_clamp()  # press again for the next loop
