@@ -38,10 +38,12 @@ export const BIT_META: BitMeta[] = [
   { addr: 804, label: 'Clamp Stop',        labelKey: 'hardware.bits.clampStop',    dir: 'web-to-plc', group: 'operation' },
   { addr: 808, label: 'Tare ESP32',        labelKey: 'hardware.bits.tareEsp32',    dir: 'web-to-plc', group: 'operation' },
   { addr: 810, label: 'Force Limit',       labelKey: 'hardware.bits.forceLimit',   dir: 'web-to-plc', group: 'operation' },
+  { addr: 815, label: 'Tension Limit',     labelKey: 'hardware.bits.tensionLimit', dir: 'web-to-plc', group: 'operation' },
   { addr: 3,   label: 'E-Stop (HW)',       labelKey: 'hardware.bits.eStop',        dir: 'plc-to-web', group: 'operation', urgent: true },
   { addr: 805, label: 'Tension Start',     labelKey: 'hardware.bits.tensionStart', dir: 'plc-to-web', group: 'operation' },
   { addr: 806, label: 'End Loop',          labelKey: 'hardware.bits.endLoop',      dir: 'plc-to-web', group: 'operation' },
   { addr: 807, label: 'All Loops Done',    labelKey: 'hardware.bits.allLoopsDone', dir: 'plc-to-web', group: 'operation' },
+  { addr: 814, label: 'Loops Complete',    labelKey: 'hardware.bits.loopsComplete', dir: 'plc-to-web', group: 'operation' },
 ]
 
 // ─── usePlcBitPulse ────────────────────────────────────────────────────────

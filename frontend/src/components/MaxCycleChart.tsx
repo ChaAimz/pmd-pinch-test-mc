@@ -9,7 +9,7 @@ export function MaxCycleChart({
   exportRef,
 }: {
   loopResults: LoopResult[]
-  exportRef?: MutableRefObject<((filename: string) => void) | null>
+  exportRef?: MutableRefObject<(() => string | null) | null>
 }) {
   const chartRef = useRef<ReactECharts>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -126,17 +126,14 @@ export function MaxCycleChart({
     return () => zr.off('dblclick', reset)
   }, [])
 
-  // Expose a PNG export callback to the parent via exportRef.
+  // Expose a PNG dataURL getter to the parent via exportRef — the parent decides what
+  // to do with the string (POST it to the backend exporter).
   useEffect(() => {
     if (!exportRef) return
-    exportRef.current = (filename: string) => {
+    exportRef.current = () => {
       const inst = chartRef.current?.getEchartsInstance()
-      if (!inst) return
-      const url = inst.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: isDark ? '#0f172a' : '#ffffff' })
-      const a = document.createElement('a')
-      a.href = url
-      a.download = filename
-      a.click()
+      if (!inst) return null
+      return inst.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: isDark ? '#0f172a' : '#ffffff' })
     }
   }, [exportRef, isDark])
 

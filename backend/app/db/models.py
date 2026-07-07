@@ -64,3 +64,14 @@ class AppSettings(SQLModel, table=True):
 
     id: Optional[int] = Field(default=1, primary_key=True)
     data: str = "{}"  # JSON-encoded UI settings blob (camelCase keys, opaque to backend)
+
+
+class Comparison(SQLModel, table=True):
+    __tablename__ = "comparisons"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str = Field(index=True)
+    description: Optional[str] = None
+    data: str = "{}"  # JSON blob: {"run_ids": [...], "labels": {...}, "annotations": [...]}
+    created_at: str
+    updated_at: str

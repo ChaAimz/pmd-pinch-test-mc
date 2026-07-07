@@ -12,6 +12,7 @@ hardware:
     port: "COM5"
     baud: 19200
     decimal_format: true
+    tension_limit_n: 2.0     # warn (MR815) when a TENSION_CHECK sample >= this; null disables
   esp32:
     enabled: true
     port: "COM7"
@@ -29,6 +30,12 @@ hardware:
     tension_start_offset_ms: 50     # ms after MR805 to skip (mechanical travel delay)
 
 mock_mode: true
+
+export:
+  # Drive letters to never treat as a flash-drive export target, even if
+  # Windows reports them as removable (some permanently-attached USB disks
+  # are misreported this way). Example: excluded_drive_letters: ["D"]
+  excluded_drive_letters: []
 
 storage:
   db_url: "sqlite:///./../data/pinch.db"

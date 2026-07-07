@@ -1,6 +1,7 @@
 /**
  * KeyboardInput — text input with an on-screen keyboard bottom sheet.
- * Clicking or focusing the input opens the keyboard automatically.
+ * Tapping the input opens the keyboard (not on focus alone, so a dialog's
+ * auto-focus on open doesn't pop the sheet without the user tapping it).
  * Every key press updates the value in real-time via onChange.
  *
  * Supports 3 language layouts:
@@ -419,7 +420,9 @@ export function KeyboardInput({
 
   return (
     <>
-      {/* Visible input — clicking/focusing opens the keyboard */}
+      {/* Visible input — tapping opens the keyboard. Not onFocus: dialogs
+          auto-focus their first focusable descendant on open, which would
+          pop the keyboard sheet immediately even though nobody tapped it. */}
       <Input
         ref={inputRef}
         id={id}
@@ -428,13 +431,17 @@ export function KeyboardInput({
         className={cn('cursor-pointer', className)}
         disabled={disabled}
         readOnly
-        onFocus={openKeyboard}
         onClick={openKeyboard}
         onBlur={onBlur}
       />
 
       {/* Bottom-sheet keyboard */}
-      <DialogPrimitive.Root open={open} onOpenChange={handleOpenChange}>
+      {/* disablePointerDismissal: base-ui's own outside-press dismiss races the click
+          that opens the sheet (the triggering Input is never a registered Trigger, so
+          base-ui treats that same gesture as "outside" and closes it on pointerup).
+          useCloseOnOutsidePointer above already implements the intended outside-tap
+          close, so base-ui's default is redundant as well as broken here. */}
+      <DialogPrimitive.Root open={open} onOpenChange={handleOpenChange} disablePointerDismissal>
         <DialogPrimitive.Portal>
           {/* Backdrop is visual-only — pointer-events-none so clicks pass through */}
           <DialogPrimitive.Backdrop className="fixed inset-0 z-40 bg-black/20 pointer-events-none duration-150 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0" />
@@ -574,7 +581,7 @@ export function KeyboardSheet({
   const commit = useCallback(() => onOpenChange(false), [onOpenChange])
 
   return (
-    <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
+    <DialogPrimitive.Root open={open} onOpenChange={onOpenChange} disablePointerDismissal>
       <DialogPrimitive.Portal>
         {/* Backdrop visual-only — pointer-events-none so clicks reach underlying elements */}
         <DialogPrimitive.Backdrop className="fixed inset-0 z-40 bg-black/20 pointer-events-none duration-150 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0" />

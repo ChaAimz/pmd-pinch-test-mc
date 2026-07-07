@@ -21,4 +21,16 @@ describe('useChartStore', () => {
     useChartStore.getState().clear()
     expect(useChartStore.getState().imadaCount).toBe(0)
   })
+  it('armClear defers the wipe until the next batch (gated window hold)', () => {
+    useChartStore.getState().pushImadaBatch([[100, 1.5], [150, 2.0]])
+    expect(useChartStore.getState().imadaCount).toBe(2)
+    // Arm at MR805 — the previous window must STAY until the new one starts drawing.
+    useChartStore.getState().armClear()
+    expect(useChartStore.getState().pendingClear).toBe(true)
+    expect(useChartStore.getState().imadaCount).toBe(2)
+    // First batch of the new window: buffer wipes, then only the new sample remains.
+    useChartStore.getState().pushImadaBatch([[200, 3.0]])
+    expect(useChartStore.getState().imadaCount).toBe(1)
+    expect(useChartStore.getState().pendingClear).toBe(false)
+  })
 })

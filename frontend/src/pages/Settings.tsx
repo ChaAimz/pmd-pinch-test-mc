@@ -6,6 +6,7 @@ import type { Language } from '@/store/settings'
 import { useChartStore } from '@/store/chart'
 import { useAppStore } from '@/store/app'
 import { Switch } from '@/components/ui/switch'
+import { Input } from '@/components/ui/input'
 
 // Mirror useSessionControl's isRunning — the live buffer is only (re)sized at run
 // start, so the chart-mode toggle must be locked mid-run to avoid a mis-sized ring.
@@ -68,6 +69,13 @@ export default function Settings() {
     chartMode, setChartMode,
     minimalView, setMinimalView,
     language, setLanguage,
+    chartLineWidth, setChartLineWidth,
+    chartShowSymbol, setChartShowSymbol,
+    chartSymbolSize, setChartSymbolSize,
+    chartSmooth, setChartSmooth,
+    chartShowGrid, setChartShowGrid,
+    chartDecimals, setChartDecimals,
+    chartShowThresholds, setChartShowThresholds,
   } = useSettingsStore()
 
   const machineState = useAppStore((s) => s.machineState)
@@ -238,6 +246,78 @@ export default function Settings() {
               </button>
             )
           })}
+        </div>
+      </SettingsCard>
+
+      {/* ── Chart Display ─────────────────────────────────────────────────── */}
+      <SettingsCard title={t('settings.chartDisplay')} description={t('settings.chartDisplayDesc')}>
+        <div className="space-y-1 divide-y divide-border/50">
+
+          <SettingsRow label={t('settings.chartLineWidth')}>
+            <Input
+              type="number"
+              min={1}
+              max={6}
+              value={chartLineWidth}
+              onChange={(e) => setChartLineWidth(Math.max(1, Math.min(6, Number(e.target.value))))}
+              className="h-8 w-20 text-sm"
+            />
+          </SettingsRow>
+
+          <div className="pt-4">
+            <SettingsRow label={t('settings.chartShowSymbol')}>
+              <Switch checked={chartShowSymbol} onCheckedChange={setChartShowSymbol} />
+            </SettingsRow>
+          </div>
+
+          <div className="pt-4">
+            <SettingsRow label={t('settings.chartSymbolSize')}>
+              <Input
+                type="number"
+                min={2}
+                max={16}
+                value={chartSymbolSize}
+                disabled={!chartShowSymbol}
+                onChange={(e) => setChartSymbolSize(Math.max(2, Math.min(16, Number(e.target.value))))}
+                className="h-8 w-20 text-sm disabled:opacity-40"
+              />
+            </SettingsRow>
+          </div>
+
+          <div className="pt-4">
+            <SettingsRow label={t('settings.chartSmooth')}>
+              <Switch checked={chartSmooth} onCheckedChange={setChartSmooth} />
+            </SettingsRow>
+          </div>
+
+          <div className="pt-4">
+            <SettingsRow label={t('settings.chartShowGrid')}>
+              <Switch checked={chartShowGrid} onCheckedChange={setChartShowGrid} />
+            </SettingsRow>
+          </div>
+
+          <div className="pt-4">
+            <SettingsRow label={t('settings.chartDecimals')}>
+              <Input
+                type="number"
+                min={0}
+                max={6}
+                value={chartDecimals}
+                onChange={(e) => setChartDecimals(Math.max(0, Math.min(6, Number(e.target.value))))}
+                className="h-8 w-20 text-sm"
+              />
+            </SettingsRow>
+          </div>
+
+          <div className="pt-4">
+            <SettingsRow
+              label={t('settings.chartShowThresholds')}
+              description={t('settings.chartShowThresholdsDesc')}
+            >
+              <Switch checked={chartShowThresholds} onCheckedChange={setChartShowThresholds} />
+            </SettingsRow>
+          </div>
+
         </div>
       </SettingsCard>
 

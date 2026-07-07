@@ -52,6 +52,11 @@ class HardwareManager:
         # ESP32 clamp offset — software offset applied to recipe clamp threshold
         self._esp32_clamp_offset_gf: float = 0.0
 
+        # Imada tension-limit warning (MR815) — manual-dismiss latch, no auto-clear
+        self._imada_tension_limit_n: Optional[float] = None
+        self._imada_tension_limit_n_config: Optional[float] = None  # value from config.yaml at startup
+        self._imada_tension_alarm_active: bool = False
+
     async def start(self) -> None:
         self.loop = asyncio.get_running_loop()
         self._t_baseline_ns = time.monotonic_ns()
@@ -84,6 +89,10 @@ class HardwareManager:
 
         # Seed clamp offset from config.
         self._esp32_clamp_offset_gf = hw.esp32.clamp_offset_gf
+
+        # Seed Imada tension limit from config (may be None = disabled).
+        self._imada_tension_limit_n = hw.imada.tension_limit_n
+        self._imada_tension_limit_n_config = hw.imada.tension_limit_n
 
         # Connect each device; failure of one must not block the others.
         for name, dev in (("plc", self.plc), ("imada", self.imada), ("esp32", self.esp32)):
@@ -182,6 +191,86 @@ class HardwareManager:
 
     def set_esp32_clamp_offset(self, offset_gf: float) -> None:
         self._esp32_clamp_offset_gf = offset_gf
+
+    # ------------------------------------------------------------------
+    # Imada tension-limit warning (MR815)
+    # ------------------------------------------------------------------
+
+    def set_imada_tension_limit(self, limit_n: Optional[float]) -> None:
+        self._imada_tension_limit_n = limit_n
+        # If limit is cleared, also clear the PLC bit so the ladder doesn't stay latched.
+        if limit_n is None and self._imada_tension_alarm_active:
+            self._imada_tension_alarm_active = False
+            if self.plc is not None and self.plc.is_connected:
+                try:
+                    self.plc.set_bit(815, False)
+                except Exception:
+                    logger.exception("Failed to clear MR815 on limit disable")
+
+    def get_imada_tension_limit(self) -> Optional[float]:
+        return self._imada_tension_limit_n
+
+    def get_imada_tension_limit_config(self) -> Optional[float]:
+        return self._imada_tension_limit_n_config
+
+    def is_imada_tension_alarm_active(self) -> bool:
+        return self._imada_tension_alarm_active
+
+    def acknowledge_imada_tension_alarm(self) -> None:
+        """Operator dismissed the 'Imada Tension Limit Reached' dialog.
+
+        Clears the latch, writes MR815 LOW, and broadcasts an explicit
+        active:false event so every connected client closes the dialog.
+        """
+        self._imada_tension_alarm_active = False
+        if self.plc is not None and self.plc.is_connected:
+            try:
+                self.plc.set_bit(815, False)
+            except Exception:
+                logger.exception("Failed to clear MR815 on acknowledge")
+
+        if self.loop is None:
+            return
+        try:
+            from app.deps import get_ws_hub
+            get_ws_hub().broadcast_threadsafe(
+                {
+                    "type": "imada_tension_alarm",
+                    "active": False,
+                    "message": None,
+                    "limit_n": None,
+                },
+                self.loop,
+            )
+        except Exception:
+            logger.exception("Imada tension alarm ack: WS broadcast failed")
+
+    def _raise_imada_tension_alarm(self) -> None:
+        """Imada tension limit (tension_limit_n) exceeded during TENSION_CHECK.
+
+        Runs in the Imada reader thread (called from _on_imada_reading). MR815 has
+        already been set by the caller. Unlike _raise_clamp_force_alarm, this does
+        NOT force the running test to ERROR — the test keeps running normally.
+        Fires once per limit crossing (gated by _imada_tension_alarm_active); no
+        auto-clear, latch stays until acknowledge_imada_tension_alarm() is called.
+        """
+        if self.loop is None:
+            return
+        try:
+            from app.deps import get_ws_hub
+            get_ws_hub().broadcast_threadsafe(
+                {
+                    "type": "imada_tension_alarm",
+                    "active": True,
+                    "message": "Imada Tension Limit Reached",
+                    "limit_n": self._imada_tension_limit_n,
+                },
+                self.loop,
+            )
+        except Exception:
+            logger.exception("Imada tension alarm: WS broadcast failed")
+
+        logger.warning("IMADA TENSION LIMIT REACHED — tension_limit_n exceeded (test continues)")
 
     def _raise_clamp_force_alarm(self) -> None:
         """Hardware clamp-force limit (force_limit_gf) exceeded — always-on safety.
@@ -305,6 +394,25 @@ class HardwareManager:
 
     def _on_imada_reading(self, r: ImadaReading) -> None:
         self._push(self.imada_queue, r)
+
+        # Tension-limit interlock: drive MR815 HIGH when force_n >= limit.
+        # No auto-clear — the bit/dialog stay latched until the operator
+        # acknowledges via POST /api/hardware/imada/tension-alarm/ack.
+        limit_n = self._imada_tension_limit_n
+        if (
+            limit_n is not None
+            and not self._imada_tension_alarm_active
+            and r.force_n >= limit_n
+            and self.plc is not None
+            and self.plc.is_connected
+        ):
+            self._imada_tension_alarm_active = True
+            try:
+                self.plc.set_bit(815, True)
+            except Exception:
+                logger.exception("Failed to set MR815")
+            self._raise_imada_tension_alarm()
+
         self._buffer_and_broadcast(
             r.timestamp_ns,
             r.force_n,

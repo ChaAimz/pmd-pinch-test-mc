@@ -462,7 +462,7 @@ function ClampPanel() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-[400px_1fr_1fr] gap-4 items-center">
+    <div className="grid grid-cols-1 sm:grid-cols-[400px_minmax(0,1fr)_minmax(0,1fr)] gap-4 items-center">
 
       {/* Col 1: Live value row */}
       <div className={cn(
@@ -523,19 +523,21 @@ function ClampPanel() {
 
       {/* Col 2: Force limit */}
       <div className="space-y-1">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground shrink-0">
             {t('hardware.forceLimit')}
             <span className="font-mono normal-case tracking-normal opacity-40">MR810</span>
           </span>
-          <NumpadInput
-            value={limitInput}
-            onChange={handleLimitChange}
-            decimal={true}
-            className={cn('w-24 h-8 text-sm font-mono', limitError && 'border-red-500 focus-visible:ring-red-500')}
-            placeholder={`(${esp32Unit})`}
-            disabled={limitM.isPending}
-          />
+          <span className="inline-block w-24 shrink-0">
+            <NumpadInput
+              value={limitInput}
+              onChange={handleLimitChange}
+              decimal={true}
+              className={cn('w-24 h-8 text-sm font-mono', limitError && 'border-red-500 focus-visible:ring-red-500')}
+              placeholder={`(${esp32Unit})`}
+              disabled={limitM.isPending}
+            />
+          </span>
           <span className="text-xs text-muted-foreground">{esp32Unit}</span>
           <Button
             size="sm"
@@ -544,15 +546,6 @@ function ClampPanel() {
             onClick={handleSetLimit}
           >
             {t('common.set')}
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            className="h-8"
-            disabled={limitM.isPending || !limitData?.limit_gf}
-            onClick={() => { setLimitInput(''); setLimitError(''); limitM.mutate(null) }}
-          >
-            {t('common.clear')}
           </Button>
           {limitData?.active && (
             <span className="flex items-center gap-1.5 text-xs font-semibold text-red-500 shrink-0">
@@ -566,19 +559,21 @@ function ClampPanel() {
 
       {/* Col 3: Clamp offset */}
       <div className="space-y-1">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground shrink-0">
             {t('hardware.clampOffset')}
           </span>
-          <NumpadInput
-            value={offsetInput}
-            onChange={handleOffsetChange}
-            decimal={true}
-            negative={true}
-            className={cn('w-24 h-8 text-sm font-mono', offsetError && 'border-red-500 focus-visible:ring-red-500')}
-            placeholder="(gf)"
-            disabled={offsetM.isPending}
-          />
+          <span className="inline-block w-24 shrink-0">
+            <NumpadInput
+              value={offsetInput}
+              onChange={handleOffsetChange}
+              decimal={true}
+              negative={true}
+              className={cn('w-24 h-8 text-sm font-mono', offsetError && 'border-red-500 focus-visible:ring-red-500')}
+              placeholder="(gf)"
+              disabled={offsetM.isPending}
+            />
+          </span>
           <span className="text-xs text-muted-foreground">gf</span>
           <Button
             size="sm"
@@ -590,6 +585,139 @@ function ClampPanel() {
           </Button>
         </div>
         {offsetError && <p className="text-xs text-red-500">{offsetError}</p>}
+      </div>
+
+    </div>
+  )
+}
+
+// ─── Imada tension-limit panel ─────────────────────────────────────────────────
+// MR815 "Imada Tension Limit Reached" — informational warning limit checked against
+// the live Imada force gauge reading during a tension check. Imada readings are
+// natively in N (no gf conversion, unlike the ESP32 clamp sensor). The dedicated
+// ImadaTensionAlarmDialog (mounted in App.tsx) handles the operator-ack UX when the
+// limit is reached; this panel is only for viewing/setting the threshold.
+function ImadaTensionPanel() {
+  const { t } = useTranslation()
+  const force = useAppStore((s) => s.latestImadaForce)
+  const connected = useAppStore((s) => s.hwStatus.imada)
+  const queryClient = useQueryClient()
+  const [limitInput, setLimitInput] = useState<string>('')
+  const [limitError, setLimitError] = useState<string>('')
+
+  const hasValue = force !== null && Number.isFinite(force)
+  const display = hasValue ? force!.toFixed(3) : '—'
+
+  const { data: limitData } = useQuery({
+    queryKey: ['imada-tension-limit'],
+    queryFn: api.hardware.getImadaTensionLimit,
+    refetchInterval: 5000,
+  })
+
+  const limitM = useMutation({
+    mutationFn: (limit_n: number | null) => api.hardware.setImadaTensionLimit(limit_n),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['imada-tension-limit'] })
+      toast.success(t('hardware.imadaTension.updated'))
+    },
+    onError: (e: Error) => toast.error(e.message),
+  })
+
+  useEffect(() => {
+    if (limitData?.limit_n != null && limitInput === '') {
+      setLimitInput(limitData.limit_n.toFixed(2))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [limitData])
+
+  function handleLimitChange(v: string) {
+    setLimitInput(v)
+    const parsed = parseFloat(v)
+    if (v === '' || Number.isNaN(parsed) || parsed <= 0) {
+      setLimitError(v === '' ? '' : t('hardware.imadaTension.mustBePositive'))
+    } else {
+      setLimitError('')
+    }
+  }
+
+  function handleSetLimit() {
+    const parsed = parseFloat(limitInput)
+    if (limitInput === '') { setLimitError(t('hardware.imadaTension.enterValue')); return }
+    if (Number.isNaN(parsed) || parsed <= 0) { setLimitError(t('hardware.imadaTension.mustBePositive')); return }
+    setLimitError('')
+    limitM.mutate(parsed)
+  }
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-[400px_minmax(0,1fr)] gap-4 items-center">
+
+      {/* Col 1: Live value row */}
+      <div className={cn(
+        'flex items-center gap-3 rounded-lg border px-4 py-3 transition-all',
+        !connected ? 'border-border bg-muted/20' : 'border-border bg-card',
+      )}>
+        <span className={cn(
+          'w-2 h-2 rounded-full shrink-0',
+          !connected ? 'bg-red-500 animate-pulse' : 'bg-emerald-500 animate-pulse',
+        )} />
+        <span className={cn(
+          'font-mono font-bold tabular-nums text-3xl',
+          !connected ? 'text-muted-foreground/25' : hasValue ? 'text-foreground' : 'text-muted-foreground/30',
+        )}>
+          {display}
+        </span>
+        <span className="text-sm font-medium text-muted-foreground">N</span>
+        <span className={cn(
+          'text-sm font-semibold ml-auto',
+          !connected ? 'text-red-500' : 'text-emerald-600 dark:text-emerald-400',
+        )}>
+          {!connected ? t('common.offline') : t('common.online')}
+        </span>
+      </div>
+
+      {/* Col 2: Tension limit */}
+      <div className="space-y-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground shrink-0">
+            {t('hardware.imadaTension.limit')}
+            <span className="font-mono normal-case tracking-normal opacity-40">MR815</span>
+          </span>
+          <span className="inline-block w-24 shrink-0">
+            <NumpadInput
+              value={limitInput}
+              onChange={handleLimitChange}
+              decimal={true}
+              className={cn('w-24 h-8 text-sm font-mono', limitError && 'border-red-500 focus-visible:ring-red-500')}
+              placeholder="(N)"
+              disabled={limitM.isPending}
+            />
+          </span>
+          <span className="text-xs text-muted-foreground">N</span>
+          <Button
+            size="sm"
+            className="h-8"
+            disabled={limitM.isPending || !!limitError || !limitInput}
+            onClick={handleSetLimit}
+          >
+            {t('common.set')}
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-8"
+            disabled={limitM.isPending || limitData?.limit_n == null}
+            onClick={() => { setLimitInput(''); setLimitError(''); limitM.mutate(null) }}
+          >
+            {t('common.clear')}
+          </Button>
+          {limitData?.active && (
+            <span className="flex items-center gap-1.5 text-xs font-semibold text-sky-500 shrink-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
+              {t('hardware.limitReached')}
+            </span>
+          )}
+        </div>
+        {limitError && <p className="text-xs text-red-500">{limitError}</p>}
       </div>
 
     </div>
@@ -616,7 +744,7 @@ export default function Hardware() {
   const hw = status as HardwareStatus | undefined
 
   return (
-    <div className="flex flex-col gap-3 w-full h-full overflow-auto">
+    <div className="flex flex-col gap-3 w-full h-full overflow-y-auto overflow-x-hidden">
 
       {/* ── Device status ─────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -672,6 +800,19 @@ export default function Hardware() {
         }
       >
         <ClampPanel />
+      </Card>
+
+      {/* ── Imada Tension Limit ───────────────────────────────────────────── */}
+      <Card
+        title={t('hardware.imadaTension.title')}
+        headerRight={
+          <InfoButton
+            title={t('hardware.info.imadaTensionTitle')}
+            body={t('hardware.info.imadaTensionBody')}
+          />
+        }
+      >
+        <ImadaTensionPanel />
       </Card>
     </div>
   )

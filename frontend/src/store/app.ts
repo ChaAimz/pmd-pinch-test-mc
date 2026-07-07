@@ -9,10 +9,10 @@ export interface ErrorEntry { fromState: string; at: string; loop: number | null
 function makeInitialPlcBits(): Record<number, PlcBitState> {
   const bits: Record<number, PlcBitState> = {}
   // All MR addresses tracked in the UI — mirrors backend/config.yaml hardware.plc.device_map.bits
-  // Web→PLC (commands)
-  for (const addr of [800, 801, 802, 803, 804, 808, 810, 101, 201, 502]) bits[addr] = { value: false, ts: 0 }
-  // PLC→Web (status/events)
-  for (const addr of [805, 806, 807, 3, 2, 100, 200, 300, 301, 302, 303, 809, 811]) bits[addr] = { value: false, ts: 0 }
+  // Web→PLC (commands)  — MR815 = Imada Tension Limit Reached (backend owns clear via ack REST)
+  for (const addr of [800, 801, 802, 803, 804, 808, 810, 815, 101, 201, 502]) bits[addr] = { value: false, ts: 0 }
+  // PLC→Web (status/events)  — MR814 = Loops Complete ack (drives the confirm dialog)
+  for (const addr of [805, 806, 807, 3, 2, 100, 200, 300, 301, 302, 303, 809, 811, 814]) bits[addr] = { value: false, ts: 0 }
   return bits
 }
 
@@ -30,7 +30,10 @@ interface AppState {
   unseenErrorCount: number
   clampForceAlarm: string | null
   clampForceAlarmLimit: number | null   // limit_gf at the time the alarm fired
+  imadaTensionAlarm: string | null
+  imadaTensionAlarmLimit: number | null // limit_n at the time the alarm fired
   maxStrokeAlarm: boolean
+  loopsCompleteAck: boolean             // MR814 HIGH → show Complete-Loops confirm dialog
   setWsConnected: (v: boolean) => void
   handleStateChange: (msg: { type: string; from: string; to: string; run_id?: number; loop?: number; at?: string }) => void
   setHwStatus: (msg: { type: string; plc: boolean; imada: boolean; esp32: boolean }) => void
@@ -42,7 +45,9 @@ interface AppState {
   setLatestEsp32Force: (v: number | null) => void
   clearErrorCount: () => void
   setClampForceAlarm: (msg: string | null, limit_gf?: number | null) => void
+  setImadaTensionAlarm: (msg: string | null, limit_n?: number | null) => void
   setMaxStrokeAlarm: (v: boolean) => void
+  setLoopsCompleteAck: (v: boolean) => void
 }
 
 export const initialAppState = {
@@ -59,7 +64,10 @@ export const initialAppState = {
   unseenErrorCount: 0,
   clampForceAlarm: null as string | null,
   clampForceAlarmLimit: null as number | null,
+  imadaTensionAlarm: null as string | null,
+  imadaTensionAlarmLimit: null as number | null,
   maxStrokeAlarm: false,
+  loopsCompleteAck: false,
 }
 
 export type AppStoreType = typeof useAppStore
@@ -100,6 +108,9 @@ export const useAppStore = create<AppState>((set) => ({
     unseenErrorCount: 0,
     clampForceAlarm: null,
     clampForceAlarmLimit: null,
+    imadaTensionAlarm: null,
+    imadaTensionAlarmLimit: null,
+    loopsCompleteAck: false,
     // preserve live connection state — hwStatus, wsConnected, plcBits stay intact
     hwStatus: s.hwStatus,
     wsConnected: s.wsConnected,
@@ -119,5 +130,10 @@ export const useAppStore = create<AppState>((set) => ({
     clampForceAlarm: msg,
     clampForceAlarmLimit: msg === null ? null : (limit_gf !== undefined ? limit_gf : s.clampForceAlarmLimit),
   })),
+  setImadaTensionAlarm: (msg, limit_n) => set((s) => ({
+    imadaTensionAlarm: msg,
+    imadaTensionAlarmLimit: msg === null ? null : (limit_n !== undefined ? limit_n : s.imadaTensionAlarmLimit),
+  })),
   setMaxStrokeAlarm: (v) => set({ maxStrokeAlarm: v }),
+  setLoopsCompleteAck: (v) => set({ loopsCompleteAck: v }),
 }))

@@ -19,7 +19,7 @@ async def start_session(req: SessionStartRequest, session: Session = Depends(get
         raise HTTPException(409, "Session already running")
     recipe = RecipeService(session).get(req.recipe_id)
     if recipe is None:
-        raise HTTPException(404, "Recipe not found")
+        raise HTTPException(404, "Protocol not found")
     run_id = await runner.start(
         recipe=recipe,
         operator=req.operator,

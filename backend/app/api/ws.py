@@ -13,7 +13,9 @@ router = APIRouter()
 # and the Start-button gate (MR303 = Machine Ready).  Without an
 # initial snapshot the frontend only learns about them on the first
 # *change*, so a bit that starts ON and never changes is never seen.
-_SNAPSHOT_BIT_ADDRS = [300, 301, 302, 303]
+# MR814 (Loops Complete ack) is included so a kiosk reload while the
+# ack is still pending re-raises the Complete-Loops confirm dialog.
+_SNAPSHOT_BIT_ADDRS = [300, 301, 302, 303, 814]
 
 
 @router.websocket("/ws")
@@ -34,6 +36,20 @@ async def ws_endpoint(websocket: WebSocket):
                 await websocket.send_json({"type": "plc_bit", "addr": addr, "value": value})
             except Exception:
                 pass  # addr not in device_map (real PLC) — skip silently
+
+    # MR815 (Imada Tension Limit Reached) is manual-dismiss-only and can stay
+    # latched a long time, unlike the transient MR810 alarm — re-raise the
+    # dialog on reload/reconnect while unacknowledged.
+    if mgr.is_imada_tension_alarm_active():
+        try:
+            await websocket.send_json({
+                "type": "imada_tension_alarm",
+                "active": True,
+                "message": "Imada Tension Limit Reached",
+                "limit_n": mgr.get_imada_tension_limit(),
+            })
+        except Exception:
+            pass
 
     async def _sender():
         while True:

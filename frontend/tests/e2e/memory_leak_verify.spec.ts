@@ -149,7 +149,7 @@ test.describe('Memory-leak regression: 100-loop × 3 runs', () => {
     await page.screenshot({ path: 'tests/e2e/screenshots/01_page_load.png' })
 
     // Confirm recipe picker is visible
-    const comboTrigger = page.locator('[class*="PopoverTrigger"], button').filter({ hasText: /Select recipe|select recipe|MemTest/ }).first()
+    const comboTrigger = page.locator('[class*="PopoverTrigger"], button').filter({ hasText: /Select protocol|select protocol|MemTest/ }).first()
     // Fallback: look for the ChevronsUpDown button (the recipe combobox trigger)
     const recipeSelector = page.locator('button[class*="inline-flex"][class*="w-56"]').first()
     await expect(recipeSelector).toBeVisible({ timeout: 15_000 })

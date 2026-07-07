@@ -1,6 +1,8 @@
 import type {
   Recipe, RecipeCreate, RecipeUpdate,
   TestRun, HardwareStatus, WaveformPoint, UiSettings,
+  Comparison, ComparisonCreate, ComparisonUpdate,
+  RemovableDrive, ExportFileRequest, ExportFileResponse,
 } from './types'
 
 async function req<T>(method: string, path: string, body?: unknown): Promise<T> {
@@ -60,6 +62,13 @@ export const api = {
     summaryCsvUrl: (runId: number) => `/api/runs/${runId}/summary.csv`,
     delete: (id: number) => req<void>('DELETE', `/runs/${id}`),
   },
+  comparisons: {
+    list: () => req<Comparison[]>('GET', '/comparisons'),
+    get: (id: number) => req<Comparison>('GET', `/comparisons/${id}`),
+    create: (data: ComparisonCreate) => req<Comparison>('POST', '/comparisons', data),
+    update: (id: number, data: ComparisonUpdate) => req<Comparison>('PUT', `/comparisons/${id}`, data),
+    delete: (id: number) => req<void>('DELETE', `/comparisons/${id}`),
+  },
   settings: {
     get: () => req<Partial<UiSettings>>('GET', '/settings'),
     save: (data: UiSettings) => req<{ ok: boolean }>('PUT', '/settings', data),
@@ -70,6 +79,8 @@ export const api = {
       req<{ ok: boolean }>('POST', '/hardware/reconnect', { device }),
     pulseBit: (addr: number, pulse_ms = 200) =>
       req<{ ok: boolean }>('POST', '/hardware/plc/bit', { addr, value: true, pulse_ms }),
+    setBit: (addr: number, value: boolean) =>
+      req<{ ok: boolean; addr: number; value: boolean }>('POST', '/hardware/plc/bit', { addr, value }),
     setWords: (words: Record<number, number>) =>
       req<{ ok: boolean }>('POST', '/hardware/plc/words', { words }),
     imadaTare: () =>
@@ -84,5 +95,18 @@ export const api = {
       req<{ offset_gf: number }>('GET', '/hardware/esp32/clamp-offset'),
     setClampOffset: (offset_gf: number) =>
       req<{ ok: boolean; offset_gf: number }>('POST', '/hardware/esp32/clamp-offset', { offset_gf }),
+    getImadaTensionLimit: () =>
+      req<{ limit_n: number | null; active: boolean; config_limit_n: number | null }>('GET', '/hardware/imada/tension-limit'),
+    setImadaTensionLimit: (limit_n: number | null) =>
+      req<{ ok: boolean; limit_n: number | null }>('POST', '/hardware/imada/tension-limit', { limit_n }),
+    ackImadaTensionAlarm: () =>
+      req<{ ok: boolean }>('POST', '/hardware/imada/tension-alarm/ack', {}),
+  },
+  system: {
+    // Informational only — feeds a live status line, NEVER a picker/select.
+    // Backend re-resolves the actual save target fresh on every export-file call.
+    removableDrives: () => req<{ drives: RemovableDrive[] }>('GET', '/system/removable-drives'),
+    exportFile: (body: ExportFileRequest) =>
+      req<ExportFileResponse>('POST', '/system/export-file', body),
   },
 }

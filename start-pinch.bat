@@ -45,9 +45,25 @@ REM --- 1) Start backend in a new window ---
 echo Starting backend on :8000 ...
 start "pinch-backend" /MIN cmd /c "cd /d "%BACKEND%" && "%VENV_PY%" -m uvicorn app.main:app --port 8000 --host 127.0.0.1"
 
-REM --- 2) Start frontend dev server in a new window ---
-echo Starting frontend on :5173 ...
-start "pinch-frontend" /MIN cmd /c "cd /d "%FRONTEND%" && npm run dev"
+REM --- 2) Build the PRODUCTION frontend, then serve it ---
+REM   The kiosk serves the PRODUCTION build, NOT the React dev server. Why: React 19's
+REM   development build emits a performance.measure() per render that is never evicted,
+REM   leaking ~0.65 MB per test loop until the kiosk browser bogs down. The production
+REM   build emits none (and is smaller + faster). We call `vite build` directly instead of
+REM   `npm run build` to skip the `tsc -b` type-check, which currently fails on some
+REM   pre-existing Base-UI `asChild` typings; the bundle itself is correct.
+REM   `vite preview` (frontend/vite.config.ts -> preview) then serves dist/ on :5173 with
+REM   the same /api + /ws proxy to the backend as the old dev server, so the kiosk URL and
+REM   the wait-for-frontend check below are unchanged.
+echo Building frontend (production) ...
+cmd /c "cd /d "%FRONTEND%" && npx vite build"
+if errorlevel 1 (
+  echo [error] Frontend production build failed. See the messages above.
+  pause
+  exit /b 1
+)
+echo Starting frontend (production preview) on :5173 ...
+start "pinch-frontend" /MIN cmd /c "cd /d "%FRONTEND%" && npm run preview"
 
 REM --- 3a) Wait for backend to come up ---
 REM   Backend must be ready first so the UI can fetch recipes on first paint.
@@ -86,9 +102,17 @@ if not exist "%MSEDGE%" (
 )
 
 echo Launching Edge kiosk at http://127.0.0.1:5173 ...
+REM Defensive kiosk touch hygiene (NOT the chart-pinch fix — that lives in
+REM   frontend/src/lib/echarts-touch-fix.ts). --disable-pinch blocks accidental
+REM   browser viewport-zoom of the whole UI; --overscroll-history-navigation=0 stops a
+REM   horizontal swipe from triggering back/forward nav. Verified the browser was NOT
+REM   eating the chart pinch as viewport zoom (visualViewport.scale stayed at 1), so
+REM   these only harden the kiosk shell; they are safe to drop if unwanted.
 start "" "%MSEDGE%" ^
   --kiosk http://127.0.0.1:5173 ^
   --edge-kiosk-type=fullscreen ^
+  --disable-pinch ^
+  --overscroll-history-navigation=0 ^
   --no-first-run ^
   --no-default-browser-check ^
   --disable-session-crashed-bubble ^
