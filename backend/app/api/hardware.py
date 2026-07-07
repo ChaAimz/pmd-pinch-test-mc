@@ -12,6 +12,7 @@ from app.schemas.hardware import (
     Esp32ClampOffsetRequest,
     Esp32ForceLimitRequest,
     HardwareStatus,
+    ImadaTensionLimitRequest,
     PlcBitRequest,
     PlcWordsRequest,
     ReconnectRequest,
@@ -137,6 +138,62 @@ def set_clamp_offset(req: Esp32ClampOffsetRequest):
     mgr.set_esp32_clamp_offset(req.offset_gf)
     _persist_clamp_offset_gf(req.offset_gf)
     return {"ok": True, "offset_gf": req.offset_gf}
+
+
+@router.get("/imada/tension-limit")
+def get_imada_tension_limit():
+    """Return the current Imada tension limit and whether the alarm is currently active."""
+    mgr = deps.get_manager()
+    return {
+        "limit_n": mgr.get_imada_tension_limit(),
+        "active": mgr.is_imada_tension_alarm_active(),
+        "config_limit_n": mgr.get_imada_tension_limit_config(),
+    }
+
+
+@router.post("/imada/tension-limit")
+def set_imada_tension_limit(req: ImadaTensionLimitRequest):
+    """Set or clear the Imada tension limit. When force_n >= limit_n during
+    TENSION_CHECK, MR815 is set HIGH (warning only — test keeps running)."""
+    runner = deps.get_runner()
+    if runner.is_running:
+        raise HTTPException(409, "Cannot update config while a session is running")
+    mgr = deps.get_manager()
+    mgr.set_imada_tension_limit(req.limit_n)
+    _persist_imada_field("tension_limit_n", req.limit_n)
+    return {"ok": True, "limit_n": req.limit_n}
+
+
+@router.post("/imada/tension-alarm/ack")
+def ack_imada_tension_alarm():
+    """Operator dismissed the 'Imada Tension Limit Reached' dialog.
+
+    Clears the latch, writes MR815 LOW, and broadcasts active:false so all
+    connected clients close the dialog.
+    """
+    mgr = deps.get_manager()
+    mgr.acknowledge_imada_tension_alarm()
+    return {"ok": True}
+
+
+def _persist_imada_field(field: str, value) -> None:
+    """Update a single hardware.imada.<field> in config.yaml and in-memory settings."""
+    config_path = deps.get_config_path()
+    if config_path is None or not config_path.exists():
+        return
+    try:
+        raw = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
+        raw.setdefault("hardware", {}).setdefault("imada", {})[field] = value
+        config_path.write_text(
+            yaml.dump(raw, default_flow_style=False, allow_unicode=True),
+            encoding="utf-8",
+        )
+        settings = deps.get_settings()
+        new_imada = settings.hardware.imada.model_copy(update={field: value})
+        new_hw = settings.hardware.model_copy(update={"imada": new_imada})
+        deps.set_settings(settings.model_copy(update={"hardware": new_hw}))
+    except Exception:
+        logger.exception("Failed to persist hardware.imada.%s to config.yaml", field)
 
 
 @router.post("/plc/words")

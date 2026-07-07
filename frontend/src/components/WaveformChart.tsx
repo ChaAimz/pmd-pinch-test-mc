@@ -190,7 +190,7 @@ export function WaveformChart({
   maxForceN?: number | null
   /** Optional 2nd line (e.g. peak value per test cycle); empty/undefined = hidden. */
   overlay?: Array<[number, number]>
-  exportRef?: MutableRefObject<((filename: string) => void) | null>
+  exportRef?: MutableRefObject<(() => string | null) | null>
   /**
    * Optional progressive-detail resampler for static data. Given the visible X window
    * (axis units), returns higher-resolution points for that window (or the overview when
@@ -437,17 +437,15 @@ export function WaveformChart({
     return () => el.removeEventListener('click', onClick)
   }, [])
 
-  // Expose a PNG export callback to the parent via exportRef.
+  // Expose a PNG dataURL getter to the parent via exportRef. The parent decides what
+  // to do with the string (POST it to the backend exporter) — no download side effect
+  // lives in the chart anymore.
   useEffect(() => {
     if (!exportRef) return
-    exportRef.current = (filename: string) => {
+    exportRef.current = () => {
       const inst = chartRef.current?.getEchartsInstance()
-      if (!inst) return
-      const url = inst.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: isDark ? '#0f172a' : '#ffffff' })
-      const a = document.createElement('a')
-      a.href = url
-      a.download = filename
-      a.click()
+      if (!inst) return null
+      return inst.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: isDark ? '#0f172a' : '#ffffff' })
     }
     // Null the callback on unmount so a parent that retained exportRef can't invoke a
     // closure bound to a disposed chart instance after navigating away.

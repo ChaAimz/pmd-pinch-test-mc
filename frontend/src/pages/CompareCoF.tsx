@@ -22,6 +22,7 @@ import {
   DialogClose,
 } from '@/components/ui/dialog'
 import { api } from '@/lib/api'
+import { ExportFilenameDialog, type PendingExport } from '@/components/ExportFilenameDialog'
 import { CompareCofChart, SERIES_COLORS, ANNOTATION_COLORS, DEFAULT_CHART_CONFIG } from '@/components/CompareCofChart'
 import type { RunCofSeries, Annotation } from '@/components/CompareCofChart'
 import type { TestRun, Recipe, ChartConfig } from '@/lib/types'
@@ -29,16 +30,6 @@ import type { TestRun, Recipe, ChartConfig } from '@/lib/types'
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function downloadCsv(filename: string, content: string) {
-  const blob = new Blob([content], { type: 'text/csv' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  a.click()
-  URL.revokeObjectURL(url)
-}
 
 function nowStamp() {
   const now = new Date()
@@ -111,7 +102,7 @@ function RenameDialog({ open, onOpenChange, runId, recipeName, currentLabel, onS
               disabled={!recipeName}
             />
             <span className={`flex-1 text-sm ${!recipeName ? 'text-muted-foreground' : ''}`}>
-              Recipe name
+              Protocol name
             </span>
             <span className="text-sm font-mono text-muted-foreground truncate max-w-[140px]">
               {recipeName ?? <em className="not-italic opacity-50">loading…</em>}
@@ -658,8 +649,9 @@ export default function CompareCoF() {
   }, [runs, recipeMap, labelOverrides]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // --- Export ---
-  const exportRef = useRef<((filename: string) => void) | null>(null)
+  const exportRef = useRef<(() => string | null) | null>(null)
   const idStr = ids.join('-')
+  const [pendingExport, setPendingExport] = useState<PendingExport | null>(null)
 
   function handleExportCsv() {
     if (!series.length || maxCycles === 0) return
@@ -673,11 +665,22 @@ export default function CompareCoF() {
       })
       return [`C${i + 1}`, ...vals].join(',')
     })
-    downloadCsv(`compare_cof_${idStr}_${nowStamp()}.csv`, [header, ...rows].join('\n'))
+    const content = [header, ...rows].join('\n')
+    const filename = `compare_cof_${idStr}_${nowStamp()}.csv`
+    setPendingExport({ suggested: filename, ext: 'csv', getContent: () => ({ content, encoding: 'utf8' }) })
   }
 
   function handleExportPng() {
-    exportRef.current?.(`compare_cof_${idStr}_${nowStamp()}.png`)
+    const filename = `compare_cof_${idStr}_${nowStamp()}.png`
+    setPendingExport({
+      suggested: filename,
+      ext: 'png',
+      getContent: () => {
+        const url = exportRef.current?.()
+        if (!url) return null
+        return { content: url.split(',')[1] ?? '', encoding: 'base64' as const }
+      },
+    })
   }
 
   // --- Series legend toggle ---
@@ -982,6 +985,12 @@ export default function CompareCoF() {
         initialDescription={savedComparison?.description ?? ''}
         onSave={handleSaveComparison}
         isPending={saveMutation.isPending}
+      />
+
+      {/* Export filename dialog */}
+      <ExportFilenameDialog
+        pending={pendingExport}
+        onOpenChange={(o) => { if (!o) setPendingExport(null) }}
       />
     </div>
   )

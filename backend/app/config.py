@@ -32,6 +32,7 @@ class PlcDeviceMap(BaseModel):
         808: [12, 808],  # MR808  Tare ESP32 trigger (PLC→Web)
         810: [12, 810],  # MR810  ESP32 Force Limit Reached (Web→PLC, set by backend)
         812: [12, 812],  # MR812  Tare Imada (force gauge) trigger (PLC→Web)
+        815: [12, 815],  # MR815  Imada Tension Limit Reached (Web→PLC, set by backend)
         # ── PLC → Web (status / events, polled) ──────────────────
         805: [12, 805],  # MR805  Start Tension Check
         806: [12, 806],  # MR806  End Loop Force-Gauge Check
@@ -99,6 +100,9 @@ class ImadaConfig(BaseModel):
     # Measured ceiling on this rig ~130 Hz (round-trip USB-CDC at 19200 baud).
     # 13 ms = ~75 Hz gives 40% headroom under the ceiling and good resolution for tension peaks.
     poll_interval_ms: int = 13
+    tension_limit_n: Optional[float] = Field(
+        2.0, description="Tension limit in N during TENSION_CHECK; None = disabled"
+    )
 
 
 class Esp32Calibration(BaseModel):
@@ -141,10 +145,20 @@ class ServerConfig(BaseModel):
     port: int = 8000
 
 
+class ExportConfig(BaseModel):
+    # Windows' GetDriveTypeW reports DRIVE_REMOVABLE for genuine USB flash
+    # drives AND for some permanently-attached USB hard disks/enclosures —
+    # the OS has no clean way to tell them apart. List drive letters here
+    # (e.g. ["D"]) that should never be treated as an export flash-drive
+    # target, even if Windows reports them as removable.
+    excluded_drive_letters: List[str] = Field(default_factory=list)
+
+
 class Settings(BaseSettings):
     hardware: HardwareConfig
     storage: StorageConfig
     server: ServerConfig
+    export: ExportConfig = Field(default_factory=ExportConfig)
     mock_mode: bool = True
 
     model_config = SettingsConfigDict(env_prefix="PINCH_", env_nested_delimiter="__")

@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, Suspense, lazy } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import { useSettingsStore } from '@/store/settings'
@@ -10,16 +10,20 @@ import { EmergencyStopOverlay } from '@/components/EmergencyStopOverlay'
 import { ClampForceAlarmDialog } from '@/components/ClampForceAlarmDialog'
 import { MaxStrokeAlarmDialog } from '@/components/MaxStrokeAlarmDialog'
 import { CompleteLoopsDialog } from '@/components/CompleteLoopsDialog'
+import { ImadaTensionAlarmDialog } from '@/components/ImadaTensionAlarmDialog'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useWsHandlers } from '@/hooks/useWsHandlers'
 import { api } from '@/lib/api'
 import Run from '@/pages/Run'
-import Recipes from '@/pages/Recipes'
-import History from '@/pages/History'
-import HistoryDetail from '@/pages/HistoryDetail'
-import CompareCoF from '@/pages/CompareCoF'
-import Hardware from '@/pages/Hardware'
-import Settings from '@/pages/Settings'
+
+// Lazy-loaded: not needed for the landing route (/run redirects here on boot),
+// so keeping them out of the initial chunk shrinks first-paint JS.
+const Recipes = lazy(() => import('@/pages/Recipes'))
+const History = lazy(() => import('@/pages/History'))
+const HistoryDetail = lazy(() => import('@/pages/HistoryDetail'))
+const CompareCoF = lazy(() => import('@/pages/CompareCoF'))
+const Hardware = lazy(() => import('@/pages/Hardware'))
+const Settings = lazy(() => import('@/pages/Settings'))
 
 export default function App() {
   const { i18n } = useTranslation()
@@ -46,19 +50,22 @@ export default function App() {
       <ClampForceAlarmDialog />
       <MaxStrokeAlarmDialog />
       <CompleteLoopsDialog />
+      <ImadaTensionAlarmDialog />
       <ErrorBoundary>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Navigate to="/run" replace />} />
-            <Route path="run" element={<Run />} />
-            <Route path="recipes" element={<Recipes />} />
-            <Route path="history" element={<History />} />
-            <Route path="history/compare" element={<CompareCoF />} />
-            <Route path="history/:id" element={<HistoryDetail />} />
-            <Route path="hardware" element={<Hardware />} />
-            <Route path="settings" element={<Settings />} />
-          </Route>
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Navigate to="/run" replace />} />
+              <Route path="run" element={<Run />} />
+              <Route path="recipes" element={<Recipes />} />
+              <Route path="history" element={<History />} />
+              <Route path="history/compare" element={<CompareCoF />} />
+              <Route path="history/:id" element={<HistoryDetail />} />
+              <Route path="hardware" element={<Hardware />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+          </Routes>
+        </Suspense>
       </ErrorBoundary>
     </>
   )

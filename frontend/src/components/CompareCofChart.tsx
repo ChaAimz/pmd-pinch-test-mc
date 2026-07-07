@@ -52,7 +52,7 @@ export function CompareCofChart({
 }: {
   series: RunCofSeries[]
   maxCycles: number
-  exportRef?: MutableRefObject<((filename: string) => void) | null>
+  exportRef?: MutableRefObject<(() => string | null) | null>
   annotations?: Annotation[]
   onChartClick?: (cycleIndex: number, yValue: number) => void
   annotationMode?: boolean
@@ -262,21 +262,18 @@ export function CompareCofChart({
     return () => zr.off('click', handler)
   }, [annotationMode, maxCycles, onChartClick])
 
-  // Export PNG
+  // Export PNG — expose the dataURL to the parent, which decides what to do with it
+  // (POST it to the backend exporter).
   useEffect(() => {
     if (!exportRef) return
-    exportRef.current = (filename: string) => {
+    exportRef.current = () => {
       const inst = chartRef.current?.getEchartsInstance()
-      if (!inst) return
-      const url = inst.getDataURL({
+      if (!inst) return null
+      return inst.getDataURL({
         type: 'png',
         pixelRatio: 2,
         backgroundColor: isDark ? '#0f172a' : '#ffffff',
       })
-      const a = document.createElement('a')
-      a.href = url
-      a.download = filename
-      a.click()
     }
   }, [exportRef, isDark])
 

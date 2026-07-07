@@ -13,6 +13,7 @@ import { useSettingsStore } from '@/store/settings'
 import type { TestLoop, WaveformPoint, Recipe } from '@/lib/types'
 import { MaxCycleChart } from '@/components/MaxCycleChart'
 import { WaveformChart } from '@/components/WaveformChart'
+import { ExportFilenameDialog, type PendingExport } from '@/components/ExportFilenameDialog'
 import { dropPreRoll, activeEndIdx, decimate } from '@/lib/waveform'
 
 const GF_PER_N = 101.97162129779283
@@ -22,16 +23,6 @@ const GF_PER_N = 101.97162129779283
 const PER_LOOP_MAX_POINTS = 300
 function fmtClamp(n: number, unit: 'gf' | 'N') {
   return unit === 'gf' ? (n * GF_PER_N).toFixed(1) : n.toFixed(4)
-}
-
-function downloadRows(filename: string, rows: string[]) {
-  const blob = new Blob([rows.join('\n')], { type: 'text/csv' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  a.click()
-  URL.revokeObjectURL(url)
 }
 
 function buildChartFilename(
@@ -62,8 +53,8 @@ export default function HistoryDetail() {
   const { t } = useTranslation()
   const { id } = useParams<{ id: string }>()
   const runId = id != null ? Number(id) : null
-  // Default to the full-run waveform so the raw Imada trace is visible on entry.
-  const [view, setView] = useState<View>('all')
+  // Default to the All CoF view on entry.
+  const [view, setView] = useState<View>('allcof')
 
   const { data: run, isLoading } = useQuery({
     queryKey: ['run', runId],
@@ -79,8 +70,9 @@ export default function HistoryDetail() {
 
   const esp32Unit = useSettingsStore((s) => s.esp32Unit)
 
-  const waveformExportRef = useRef<((filename: string) => void) | null>(null)
-  const maxCycleExportRef = useRef<((filename: string) => void) | null>(null)
+  const waveformExportRef = useRef<(() => string | null) | null>(null)
+  const maxCycleExportRef = useRef<(() => string | null) | null>(null)
+  const [pendingExport, setPendingExport] = useState<PendingExport | null>(null)
 
   // --- Data layer (hooks must run before any early return) ---
   // Fetch every loop's waveform once. The same fetch set feeds the stitched
@@ -101,10 +93,9 @@ export default function HistoryDetail() {
   // Stitched all-cycles force + CoF on one Test-Cycle axis. `combinedCofData`
   // mirrors `combinedStaticData` point-for-point but each cycle's force is divided
   // by that cycle's avg clamp force → coefficient of friction (NaN = gap).
-  const { combinedStaticData, combinedCofData, combinedClampData, combinedBoundaries, combinedForceMax, combinedCofMax, cycleMeta } = useMemo(() => {
+  const { combinedStaticData, combinedCofData, combinedBoundaries, combinedForceMax, combinedCofMax, cycleMeta } = useMemo(() => {
     const out: Array<[number, number]> = []
     const cofOut: Array<[number, number]> = []
-    const clampOut: Array<[number, number | null]> = []
     const boundaries: number[] = []
     const forceMax: Array<[number, number]> = []
     const cofMax: Array<[number, number]> = []
@@ -141,7 +132,6 @@ export default function HistoryDetail() {
         const cofv = cofValid ? p.force_n / clamp : NaN
         out.push([x, p.force_n])
         cofOut.push([x, cofv])
-        clampOut.push([x, cofValid ? clamp : null])
         if (p.force_n > maxF) { maxF = p.force_n; maxFx = x }
         if (cofValid && Number.isFinite(cofv) && cofv > maxC) { maxC = cofv; maxCx = x }
       }
@@ -152,7 +142,6 @@ export default function HistoryDetail() {
     return {
       combinedStaticData: out.length > 0 ? out : undefined,
       combinedCofData: cofOut.length > 0 ? cofOut : undefined,
-      combinedClampData: clampOut.length > 0 ? clampOut : undefined,
       combinedBoundaries: boundaries.length > 0 ? boundaries : undefined,
       combinedForceMax: forceMax.length > 0 ? forceMax : undefined,
       combinedCofMax: cofMax.length > 0 ? cofMax : undefined,
@@ -371,31 +360,33 @@ export default function HistoryDetail() {
                 className="flex-1 gap-1"
                 onClick={() => {
                   const csvSuffix = view === 'allmax' ? '_all_max'
-                    : view === 'allcof' ? '_all_cof'
+                    : view === 'allcof' ? '_all_max_cof'
                     : view === 'all' ? '_all_cycles'
                     : `_cycle${view}`
                   const csvFilename = buildChartFilename(recipe?.name, run.id, recipe?.position_mm, recipe?.speed_mms, recipe?.loop_count, csvSuffix, 'csv')
                   if (view === 'allmax') {
-                    downloadRows(csvFilename, [
+                    const rows = [
                       'cycle,max_force_n,avg_clamp_n,cof,judgment',
                       ...run.loops.filter((l) => l.peak_force_n != null).map((l) => {
                         const cof = l.avg_clamp_n != null && l.avg_clamp_n !== 0
                           ? (l.peak_force_n! / l.avg_clamp_n).toFixed(4) : ''
                         return `${l.loop_index},${l.peak_force_n!.toFixed(4)},${l.avg_clamp_n?.toFixed(4) ?? ''},${cof},${l.judgment ?? ''}`
                       }),
-                    ])
+                    ]
+                    setPendingExport({ suggested: csvFilename, ext: 'csv', getContent: () => ({ content: rows.join('\n'), encoding: 'utf8' }) })
                     return
                   }
                   if (view === 'all' || view === 'allcof') {
-                    if (!combinedStaticData || !combinedCofData || !combinedClampData) return
-                    const rows = ['cycle_x,tension_n,cof,clamp_n']
-                    for (let i = 0; i < combinedStaticData.length; i++) {
-                      const [x, force_n] = combinedStaticData[i]
-                      const [, cof] = combinedCofData[i]
-                      const [, clamp] = combinedClampData[i]
-                      rows.push(`${x.toFixed(4)},${force_n.toFixed(4)},${Number.isFinite(cof) ? cof.toFixed(4) : ''},${clamp != null ? clamp.toFixed(4) : ''}`)
+                    // Per-cycle max summary — mirrors the Summary Card table, not the raw waveform.
+                    const rows = ['Test Cycles,Max CoF,Max Tension(N),Clamp (gf)']
+                    for (const l of run.loops) {
+                      if (l.peak_force_n == null) continue
+                      const clampGf = l.avg_clamp_n != null ? (l.avg_clamp_n * GF_PER_N).toFixed(1) : ''
+                      const cof = l.avg_clamp_n != null && l.avg_clamp_n !== 0
+                        ? (l.peak_force_n / l.avg_clamp_n).toFixed(4) : ''
+                      rows.push(`${l.loop_index},${cof},${l.peak_force_n.toFixed(4)},${clampGf}`)
                     }
-                    downloadRows(csvFilename, rows)
+                    setPendingExport({ suggested: csvFilename, ext: 'csv', getContent: () => ({ content: rows.join('\n'), encoding: 'utf8' }) })
                     return
                   }
                   if (!singleData) return
@@ -406,16 +397,20 @@ export default function HistoryDetail() {
                     const cof = clamp_n != null && clamp_n !== 0 ? force_n / clamp_n : NaN
                     rows.push(`${time_s.toFixed(4)},${force_n.toFixed(4)},${Number.isFinite(cof) ? cof.toFixed(4) : ''},${clamp_n?.toFixed(4) ?? ''}`)
                   }
-                  downloadRows(csvFilename, rows)
+                  setPendingExport({ suggested: csvFilename, ext: 'csv', getContent: () => ({ content: rows.join('\n'), encoding: 'utf8' }) })
                 }}
-                title={t('historyDetail.exportCsvTitle')}
+                title={
+                  view === 'all' || view === 'allcof'
+                    ? 'Export per-cycle Max Tension / Max CoF summary as CSV'
+                    : t('historyDetail.exportCsvTitle')
+                }
               >
                 <Download size={14} />
                 {t('run.exportCSV')}
                 <span className="text-muted-foreground font-normal">·{' '}
                   {view === 'allmax' ? t('run.allMax')
-                    : view === 'allcof' ? t('run.allCof')
-                    : view === 'all' ? t('run.allCycles')
+                    : view === 'allcof' ? t('run.allMaxCof')
+                    : view === 'all' ? t('run.allTensionMax')
                     : `${t('run.cycle')} ${view}`}
                 </span>
               </Button>
@@ -429,11 +424,15 @@ export default function HistoryDetail() {
                     : view === 'all' ? '_all_cycles'
                     : `_cycle${view}`
                   const filename = buildChartFilename(recipe?.name, run.id, recipe?.position_mm, recipe?.speed_mms, recipe?.loop_count, pngSuffix, 'png')
-                  if (view === 'allmax') {
-                    maxCycleExportRef.current?.(filename)
-                  } else {
-                    waveformExportRef.current?.(filename)
-                  }
+                  setPendingExport({
+                    suggested: filename,
+                    ext: 'png',
+                    getContent: () => {
+                      const url = view === 'allmax' ? maxCycleExportRef.current?.() : waveformExportRef.current?.()
+                      if (!url) return null
+                      return { content: url.split(',')[1] ?? '', encoding: 'base64' as const }
+                    },
+                  })
                 }}
                 title="Export chart as PNG"
               >
@@ -571,6 +570,11 @@ export default function HistoryDetail() {
           </div>
         </div>
       )}
+
+      <ExportFilenameDialog
+        pending={pendingExport}
+        onOpenChange={(o) => { if (!o) setPendingExport(null) }}
+      />
     </div>
   )
 }

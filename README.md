@@ -44,6 +44,30 @@ pytest -v
 | Plan 3 — Real hardware drivers | Partial | PLC (KVComPlus USB) done; Imada + ESP32 pending hardware |
 | [Plan 4 — History + Hardware UI](docs/superpowers/plans/2026-05-20-plan-4-frontend-history-hardware.md) | Done | History list/detail, Hardware page, ESP32 calibration wizard |
 
+## Production deployment (tray app)
+
+The production launcher is **`tray/`** — a system-tray manager that replaces
+`start-pinch-docker.bat` in the Windows Startup folder.
+
+| Component | Runtime |
+|-----------|---------|
+| Backend (FastAPI :8000) | Native Windows process (COM ports + USB PLC) |
+| Frontend (React :8080) | Docker container `pinch-frontend:latest` (`restart: always`) |
+| Kiosk | Edge `--kiosk http://localhost:8080` |
+
+One-time assembly (while the repo still exists):
+```powershell
+powershell -File tray\assemble-standalone.ps1
+```
+This copies the backend, builds the Docker image, creates a fresh venv at
+`C:\pinch-test-mc\backend\.venv`, and produces `C:\pinch-test-mc\pinch-tray.exe`.
+After assembly the repo can be deleted — the app runs entirely from `C:\pinch-test-mc\`.
+
+See [`tray/README.md`](tray/README.md) for full instructions, troubleshooting, and
+the `pinch-tray.ini` configuration reference.
+
+`start-pinch.bat` and `start-pinch-docker.bat` remain as manual/dev fallbacks.
+
 ## PLC architecture (KVComPlus USB bridge)
 
 The KV-3000 CPU RS-232C port speaks only Keyence's proprietary HMI protocol. We use USB + KVComPlus:

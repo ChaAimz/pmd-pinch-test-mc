@@ -148,6 +148,7 @@ Source of truth: spec §2. Quick reference:
 | B7 | PLC → Web | Finish process |
 | MR811 | PLC → Web | Max Stroke of Clamp — safety warning; shows "Max Stroke of Clamp Reached" dialog when HIGH, auto-clears when LOW |
 | MR812 | PLC → Web | Tare Imada (force gauge) — when HIGH, backend sends zero/tare command to Imada; separate from MR808 (ESP32 clamp tare) |
+| MR815 | Web → PLC | Imada Tension Limit Reached — backend sets HIGH when a Imada sample during tension check reaches configurable `hardware.imada.tension_limit_n` (default 2 N); shows "Imada Tension Limit Reached" warning dialog, test keeps running (not an abort). No auto-clear — latches until operator acknowledges (writes MR815 LOW via `POST /api/hardware/imada/tension-alarm/ack`). Settable on the Hardware page. |
 
 | DM register | Direction | Meaning |
 |---|---|---|
@@ -217,6 +218,27 @@ The `graphify` skill (global: `~/.claude/skills/graphify/SKILL.md`) turns any in
 - **Trigger:** when the user types `/graphify`, invoke the Skill tool with `skill: "graphify"` **before doing anything else**.
 - **Good fits in this repo:** mapping the state machine + event flow, visualising the dependency tree of `app/services/`, or comparing the spec's stated contracts against the implemented code.
 - Do not pre-invoke graphify for unrelated tasks. It's user-triggered only.
+
+## Production deployment launcher
+
+The system-tray manager in `tray/` is the production launcher (replaces `start-pinch-docker.bat`).
+
+| Component | Where |
+|-----------|-------|
+| Tray exe | `C:\pinch-test-mc\pinch-tray.exe` (built by `tray\build.bat` or `assemble-standalone.ps1`) |
+| Backend | Launched natively by tray; dir = `C:\pinch-test-mc\backend\` |
+| Frontend | Docker container `pinch-frontend:latest` on :8080 (`restart: always`) |
+| Kiosk | Edge `--kiosk http://localhost:8080` |
+
+One-time install:
+```powershell
+powershell -File tray\assemble-standalone.ps1   # builds everything into C:\pinch-test-mc\
+powershell -File C:\pinch-test-mc\install_autostart.ps1  # adds Startup shortcut
+```
+Path config lives in `C:\pinch-test-mc\pinch-tray.ini`.
+See `tray/README.md` for full documentation, troubleshooting, and path overrides.
+
+`start-pinch.bat` / `start-pinch-docker.bat` remain as manual/dev fallbacks — do NOT delete.
 
 ## Current status (2026-05-29)
 

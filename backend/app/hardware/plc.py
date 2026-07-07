@@ -87,11 +87,16 @@ class RealPlc:
         port = self._cfg.bridge_port
         logger.info("PLC: spawning bridge {} {} {}", py32, script, port)
 
+        # CREATE_NEW_PROCESS_GROUP: lets us send Ctrl-Break for clean shutdown.
+        # CREATE_NO_WINDOW: suppress the console window that would flash on screen.
+        _win_flags = (
+            subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.CREATE_NO_WINDOW
+        ) if sys.platform == "win32" else 0
         self._process = subprocess.Popen(
             [str(py32), str(script), str(port)],
             stderr=subprocess.PIPE,
             cwd=str(backend_dir),
-            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if sys.platform == "win32" else 0,
+            creationflags=_win_flags,
         )
         # Drain bridge stderr in a daemon thread so it doesn't block
         threading.Thread(

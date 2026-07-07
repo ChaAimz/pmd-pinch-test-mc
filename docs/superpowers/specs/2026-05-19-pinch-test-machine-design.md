@@ -29,6 +29,7 @@ A web-based control and data-acquisition application for a pinch test machine. T
 | B5 | PLC → Web | Start tension check (Imada read begins) |
 | B6 | PLC → Web | End tension check (Imada read ends) |
 | B7 | PLC → Web | Finish process (all loops complete) |
+| MR815 | Web → PLC | Imada Tension Limit Reached — backend sets HIGH the instant an Imada sample during `TENSION_CHECK` reaches the configurable **`hardware.imada.tension_limit_n`** (default 2 N); broadcasts a warning dialog but does **not** abort the run (test continues). No auto-clear on force drop — MR815 stays latched until the operator acknowledges the dialog, which writes MR815 LOW via `POST /api/hardware/imada/tension-alarm/ack`. |
 
 ### 2.2 PLC word map
 
@@ -98,6 +99,9 @@ WAIT_B5
   → wait for PLC bit B5 = ON (timeout: configurable, default 30s)
 TENSION_CHECK
   → consume Imada samples at sampling_hz, broadcast via WebSocket, write to in-memory buffer
+  → if any sample force_n ≥ hardware.imada.tension_limit_n (default 2 N, configurable, disabled when null) →
+    set MR815 HIGH once, broadcast "Imada Tension Limit Reached" warning (non-blocking — test keeps running).
+    MR815 latches until the operator acknowledges the dialog (writes MR815 LOW); no auto-clear on force drop.
   → exits when PLC bit B6 = ON (timeout: configurable, default 30s)
 EVALUATE
   → compute peak_force = max(buffer.force_n), avg_force = mean(buffer.force_n)
@@ -270,6 +274,8 @@ Written with PyArrow at loop end (after B6); buffered in memory during TENSION_C
 | POST | `/api/hardware/esp32/calibrate` | `{raw_at_zero, raw_at_known, known_force_n}` → updates config |
 | GET | `/api/config` | read merged config |
 | PUT | `/api/config` | update (writes config.yaml) — restarts HardwareManager |
+| GET | `/api/system/removable-drives` | live readout only (status line, not a picker) → `{drives: [{path, label, free_bytes, total_bytes}]}` |
+| POST | `/api/system/export-file` | fully automatic destination — no client-supplied drive. `{folder, filename, ext: 'csv'|'png', content, encoding: 'utf8'|'base64'}` → `{saved_path, target: 'flash_drive'|'desktop'}`. Server resolves the target fresh on every request: first entry of `list_removable_drives()` if non-empty, else the current Windows user's Desktop. `folder`/`filename` are sanitized server-side (400 if either sanitizes to empty); filesystem errors → 500. No 404 case — an unplugged/absent drive just falls back to Desktop. |
 
 ## 8. WebSocket Protocol
 

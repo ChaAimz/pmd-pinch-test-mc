@@ -37,6 +37,20 @@ async def ws_endpoint(websocket: WebSocket):
             except Exception:
                 pass  # addr not in device_map (real PLC) — skip silently
 
+    # MR815 (Imada Tension Limit Reached) is manual-dismiss-only and can stay
+    # latched a long time, unlike the transient MR810 alarm — re-raise the
+    # dialog on reload/reconnect while unacknowledged.
+    if mgr.is_imada_tension_alarm_active():
+        try:
+            await websocket.send_json({
+                "type": "imada_tension_alarm",
+                "active": True,
+                "message": "Imada Tension Limit Reached",
+                "limit_n": mgr.get_imada_tension_limit(),
+            })
+        except Exception:
+            pass
+
     async def _sender():
         while True:
             msg = await q.get()

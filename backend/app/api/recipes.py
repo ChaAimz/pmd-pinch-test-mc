@@ -26,7 +26,7 @@ def create_recipe(data: RecipeCreate, session: Session = Depends(get_session)):
 def get_recipe(recipe_id: int, session: Session = Depends(get_session)):
     r = RecipeService(session).get(recipe_id)
     if r is None:
-        raise HTTPException(status_code=404, detail="Recipe not found")
+        raise HTTPException(status_code=404, detail="Protocol not found")
     return r
 
 
@@ -35,7 +35,7 @@ def update_recipe(recipe_id: int, data: RecipeUpdate, session: Session = Depends
     try:
         return RecipeService(session).update(recipe_id, data)
     except KeyError:
-        raise HTTPException(status_code=404, detail="Recipe not found")
+        raise HTTPException(status_code=404, detail="Protocol not found")
 
 
 @router.delete("/{recipe_id}", status_code=status.HTTP_204_NO_CONTENT)

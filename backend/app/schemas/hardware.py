@@ -52,3 +52,7 @@ class Esp32ForceLimitRequest(BaseModel):
 
 class Esp32ClampOffsetRequest(BaseModel):
     offset_gf: float = 0.0
+
+
+class ImadaTensionLimitRequest(BaseModel):
+    limit_n: Optional[float] = Field(None, ge=0.0, description="Tension limit in N; null to disable")

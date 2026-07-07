@@ -14,6 +14,7 @@ import type {
   WsRunFinished,
   WsPlcBit,
   WsClampForceAlarm,
+  WsImadaTensionAlarm,
 } from '@/lib/types'
 
 // Backend already batches at 50 ms (20 Hz) — no extra frontend throttle needed.
@@ -50,6 +51,7 @@ export function useWsHandlers() {
       setLatestEsp32Force,
       setPlcBit,
       setClampForceAlarm,
+      setImadaTensionAlarm,
       setMaxStrokeAlarm,
       setLoopsCompleteAck,
     } = useAppStore.getState()
@@ -116,6 +118,12 @@ export function useWsHandlers() {
       // Backend already stopped the machine + forced ERROR; we just raise the dialog.
       ws.on<WsClampForceAlarm>('clamp_force_alarm', (msg) => {
         setClampForceAlarm(msg.message, msg.limit_gf)
+      }),
+      // imada_tension_alarm: Imada tension reading reached the configured warning
+      // limit (MR815). Informational only — the test keeps running. `active: false`
+      // arrives either as an echo of our own ack call or from another client's ack.
+      ws.on<WsImadaTensionAlarm>('imada_tension_alarm', (msg) => {
+        setImadaTensionAlarm(msg.active ? msg.message : null, msg.active ? msg.limit_n : null)
       }),
     ]
 

@@ -55,6 +55,10 @@ export interface WsError { type: 'error'; message: string }
 // Hardware clamp-force limit (force_limit_gf) exceeded — always-on safety alarm.
 // Backend has already driven MR804/MR801/MR802 and forced the run to ERROR.
 export interface WsClampForceAlarm { type: 'clamp_force_alarm'; message: string; limit_gf: number | null }
+// Imada tension warning limit (hardware.imada.tension_limit_n) reached — MR815.
+// Informational only: the test keeps running. Operator must ack via REST
+// (POST /hardware/imada/tension-alarm/ack) — backend owns clearing the bit.
+export interface WsImadaTensionAlarm { type: 'imada_tension_alarm'; active: boolean; message: string | null; limit_n: number | null }
 
 // --- History / Runs ---
 
@@ -144,3 +148,26 @@ export interface Comparison {
 }
 export type ComparisonCreate = Omit<Comparison, 'id' | 'created_at' | 'updated_at'>
 export type ComparisonUpdate = Partial<ComparisonCreate>
+
+// --- System export (flash-drive / desktop file writer) ---
+// Field names mirror backend/app/schemas/system.py — keep in sync.
+
+export interface RemovableDrive {
+  path: string
+  label: string | null
+  free_bytes: number
+  total_bytes: number
+}
+
+export interface ExportFileRequest {
+  folder: string
+  filename: string
+  ext: 'csv' | 'png'
+  content: string
+  encoding: 'utf8' | 'base64'
+}
+
+export interface ExportFileResponse {
+  saved_path: string
+  target: 'flash_drive' | 'desktop'
+}

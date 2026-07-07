@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
-import { Pencil, Loader2, Play, Square, RotateCcw, ChevronsUpDown, Check, AlertTriangle, Download, ImageDown, Radio, Activity, Grip, Ruler, Zap, Repeat, Keyboard } from 'lucide-react'
+import { Loader2, Play, Square, RotateCcw, ChevronsUpDown, Check, AlertTriangle, Download, ImageDown, Radio, Activity, Grip, Ruler, Zap, Repeat, Keyboard } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useQuery, useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueries, useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
@@ -14,6 +14,7 @@ import { WaveformChart } from '@/components/WaveformChart'
 import { MaxCycleChart } from '@/components/MaxCycleChart'
 import { ImadaReadout } from '@/components/ImadaReadout'
 import { Esp32Readout } from '@/components/Esp32Readout'
+import { ExportFilenameDialog, type PendingExport } from '@/components/ExportFilenameDialog'
 import { useChartStore } from '@/store/chart'
 import { useAppStore } from '@/store/app'
 import { useSettingsStore } from '@/store/settings'
@@ -22,7 +23,6 @@ import { api } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import type { Recipe, WaveformPoint } from '@/lib/types'
 import { dropPreRoll, activeEndIdx, decimate } from '@/lib/waveform'
-import { RecipeForm } from './RecipeForm'
 import { KeyboardSheet } from '@/components/ui/keyboard-input'
 
 const GF_PER_N = 101.97162129779283
@@ -34,21 +34,11 @@ function fmtClamp(n: number, unit: 'gf' | 'N') {
   return unit === 'gf' ? (n * GF_PER_N).toFixed(1) : n.toFixed(4)
 }
 
-function downloadCsvBlob(rows: string[], filename: string) {
-  const blob = new Blob([rows.join('\n')], { type: 'text/csv' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  a.click()
-  URL.revokeObjectURL(url)
-}
-
-function exportLiveImadaCsv() {
+function buildLiveImadaCsv(): { rows: string[]; filename: string } | null {
   const state = useChartStore.getState()
   const { timestamps, force, count, head } = state.imada
   const { maxSamples } = state
-  if (count === 0) return
+  if (count === 0) return null
   const start = count < maxSamples ? 0 : head
   const t0 = timestamps[start]
   const rows = ['time_s,force_n']
@@ -56,7 +46,8 @@ function exportLiveImadaCsv() {
     const idx = (start + i) % maxSamples
     rows.push(`${((timestamps[idx] - t0) / 1000).toFixed(4)},${force[idx].toFixed(4)}`)
   }
-  downloadCsvBlob(rows, `imada_live_${new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')}.csv`)
+  const filename = `imada_live_${new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')}.csv`
+  return { rows, filename }
 }
 
 function buildChartFilename(
@@ -91,11 +82,9 @@ const ALARM_BITS = [
 
 export default function Run() {
   const { t } = useTranslation()
-  const qc = useQueryClient()
   const [recipeId, setRecipeId] = useState<number | null>(null)
   const [comboOpen, setComboOpen] = useState(false)
   const [recipeInvalid, setRecipeInvalid] = useState(false)
-  const [editOpen, setEditOpen] = useState(false)
   const [commandSearch, setCommandSearch] = useState('')
   const [commandKbOpen, setCommandKbOpen] = useState(false)
   const { data: recipes = [], isLoading: recipesLoading, isError: recipesError } = useQuery({
@@ -122,9 +111,10 @@ export default function Run() {
   const [selectedCycle, setSelectedCycle] = useState<number | 'all' | 'allmax' | 'allcof' | null>(null)
   const currentRunId = useAppStore((s) => s.currentRunId)
 
-  const waveformExportRef = useRef<((filename: string) => void) | null>(null)
-  const maxCycleExportRef = useRef<((filename: string) => void) | null>(null)
+  const waveformExportRef = useRef<(() => string | null) | null>(null)
+  const maxCycleExportRef = useRef<(() => string | null) | null>(null)
   const loopListRef = useRef<HTMLDivElement>(null)
+  const [pendingExport, setPendingExport] = useState<PendingExport | null>(null)
 
   useEffect(() => {
     if (loopListRef.current) {
@@ -319,19 +309,6 @@ export default function Run() {
     onError: (e: Error) => toast.error(`Reset failed: ${e.message}`),
   })
 
-  // Write recipe parameters to PLC on recipe select.
-  // DM28 = loop count, DM30 = position mm×100, DM32 = speed mm/s×100
-  const writeWordsM = useMutation({
-    mutationFn: (recipe: Recipe) =>
-      api.hardware.setWords({
-        0:   recipe.loop_count,
-        100: Math.round(recipe.position_mm * 100),
-        102: Math.round(recipe.speed_mms * 100),
-      }),
-    onSuccess: () => toast.success('Recipe loaded to PLC'),
-    onError: (e: Error) => toast.error(`PLC write failed: ${e.message}`),
-  })
-
   // On recipe select: write words then pulse MR802 (Reset) in sequence.
   const selectRecipeM = useMutation({
     mutationFn: async (recipe: Recipe) => {
@@ -342,7 +319,7 @@ export default function Run() {
       })
       await api.hardware.pulseBit(802, 200)
     },
-    onSuccess: () => toast.success('Recipe loaded & Reset sent (MR802)'),
+    onSuccess: () => toast.success('Protocol loaded & Reset sent (MR802)'),
     onError: (e: Error) => toast.error(`PLC write failed: ${e.message}`),
   })
 
@@ -369,29 +346,8 @@ export default function Run() {
     resetM.mutate()
   }
 
-  function handleRecipeSaved(saved: Recipe) {
-    setEditOpen(false)
-    void qc.invalidateQueries({ queryKey: ['recipes'] })
-    toast.success('Recipe updated')
-    // Push the new values to PLC immediately so the operator doesn't have to
-    // re-select the recipe — same write as the recipe-select onValueChange.
-    if (!isRunning) writeWordsM.mutate(saved)
-  }
-
   return (
     <div className="flex flex-col gap-3 w-full h-full min-h-0">
-      {/* Edit recipe — opened by the pencil button next to the recipe selector */}
-      <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>{t('run.editRecipe')} — {activeRecipe?.name ?? ''}</DialogTitle>
-          </DialogHeader>
-          {activeRecipe && (
-            <RecipeForm recipe={activeRecipe} onSaved={handleRecipeSaved} />
-          )}
-        </DialogContent>
-      </Dialog>
-
       {/* Alarm reset dialog */}
       <Dialog open={alarmClearTarget !== null} onOpenChange={(o) => { if (!o) setAlarmClearTarget(null) }}>
         <DialogContent className="sm:max-w-sm">
@@ -561,7 +517,7 @@ export default function Run() {
           {/* On-screen keyboard for recipe search — opens the recipe picker then filters via keyboard */}
           <button
             type="button"
-            aria-label="Open keyboard for recipe search"
+            aria-label="Open keyboard for protocol search"
             disabled={isRunning || recipesLoading}
             onClick={() => {
               setComboOpen(true)
@@ -588,22 +544,6 @@ export default function Run() {
             }}
             title={t('run.searchRecipe')}
           />
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-11 w-11 shrink-0"
-            disabled={!activeRecipe || isRunning}
-            title={
-              isRunning
-                ? 'Cannot edit while a loop is running — stop or wait for finish'
-                : activeRecipe
-                  ? `Edit ${activeRecipe.name}`
-                  : 'Select a recipe to edit'
-            }
-            onClick={() => setEditOpen(true)}
-          >
-            <Pencil size={16} />
-          </Button>
           <Button
             className="h-11 w-28 text-base font-bold bg-emerald-600 hover:bg-emerald-500 text-white disabled:opacity-40"
             disabled={!machineReady || isRunning || isStarting}
@@ -748,20 +688,35 @@ export default function Run() {
               size="sm"
               className="flex-1 gap-1"
               onClick={() => {
-                if (staticData) {
-                  const csvSuffix = selectedCycle === 'all' ? '_all_cycles'
-                    : selectedCycle === 'allcof' ? '_all_cof'
-                    : selectedCycle === 'allmax' ? '_all_max'
-                    : `_cycle${selectedCycle}`
+                if (selectedCycle === 'all' || selectedCycle === 'allcof') {
+                  // Per-cycle max summary — mirrors the Summary Card table, not the raw waveform.
+                  const csvSuffix = selectedCycle === 'all' ? '_all_cycles' : '_all_max_cof'
                   const filename = buildChartFilename(activeRecipe?.name, currentRunId, activeRecipe?.position_mm, activeRecipe?.speed_mms, activeRecipe?.loop_count, csvSuffix, 'csv')
-                  const header = selectedCycle === 'allcof' ? 'cycle,cof' : 'time_s,force_n'
-                  const rows = [header, ...staticData.map(([tv, fv]) => `${tv.toFixed(4)},${fv.toFixed(4)}`)]
-                  downloadCsvBlob(rows, filename)
+                  const rows = ['Test Cycles,Max CoF,Max Tension(N),Clamp (gf)']
+                  for (const r of loopResults) {
+                    const clampGf = r.avg_clamp_n != null ? (r.avg_clamp_n * GF_PER_N).toFixed(1) : ''
+                    const cof = r.avg_clamp_n != null && r.avg_clamp_n !== 0
+                      ? (r.peak_force_n / r.avg_clamp_n).toFixed(4) : ''
+                    rows.push(`${r.loop},${cof},${r.peak_force_n.toFixed(4)},${clampGf}`)
+                  }
+                  setPendingExport({ suggested: filename, ext: 'csv', getContent: () => ({ content: rows.join('\n'), encoding: 'utf8' }) })
+                  return
+                }
+                if (staticData) {
+                  const csvSuffix = selectedCycle === 'allmax' ? '_all_max' : `_cycle${selectedCycle}`
+                  const filename = buildChartFilename(activeRecipe?.name, currentRunId, activeRecipe?.position_mm, activeRecipe?.speed_mms, activeRecipe?.loop_count, csvSuffix, 'csv')
+                  const rows = ['time_s,force_n', ...staticData.map(([tv, fv]) => `${tv.toFixed(4)},${fv.toFixed(4)}`)]
+                  setPendingExport({ suggested: filename, ext: 'csv', getContent: () => ({ content: rows.join('\n'), encoding: 'utf8' }) })
                 } else {
-                  exportLiveImadaCsv()
+                  const live = buildLiveImadaCsv()
+                  if (live) setPendingExport({ suggested: live.filename, ext: 'csv', getContent: () => ({ content: live.rows.join('\n'), encoding: 'utf8' }) })
                 }
               }}
-              title={staticData ? 'Export trimmed waveform as CSV (matches chart)' : 'Export live Imada stream as CSV'}
+              title={
+                selectedCycle === 'all' || selectedCycle === 'allcof'
+                  ? 'Export per-cycle Max Tension / Max CoF summary as CSV'
+                  : staticData ? 'Export trimmed waveform as CSV (matches chart)' : 'Export live Imada stream as CSV'
+              }
             >
               <Download size={14} /> {t('run.exportCSV')}
             </Button>
@@ -775,11 +730,15 @@ export default function Run() {
                   : selectedCycle === 'allmax' ? '_all_max'
                   : selectedCycle != null ? `_cycle${selectedCycle}` : ''
                 const filename = buildChartFilename(activeRecipe?.name, currentRunId, activeRecipe?.position_mm, activeRecipe?.speed_mms, activeRecipe?.loop_count, pngSuffix, 'png')
-                if (selectedCycle === 'allmax') {
-                  maxCycleExportRef.current?.(filename)
-                } else {
-                  waveformExportRef.current?.(filename)
-                }
+                setPendingExport({
+                  suggested: filename,
+                  ext: 'png',
+                  getContent: () => {
+                    const url = selectedCycle === 'allmax' ? maxCycleExportRef.current?.() : waveformExportRef.current?.()
+                    if (!url) return null
+                    return { content: url.split(',')[1] ?? '', encoding: 'base64' as const }
+                  },
+                })
               }}
               title="Export chart as PNG"
             >
@@ -909,6 +868,11 @@ export default function Run() {
           </div>
         </div>
       </div>
+
+      <ExportFilenameDialog
+        pending={pendingExport}
+        onOpenChange={(o) => { if (!o) setPendingExport(null) }}
+      />
     </div>
   )
 }

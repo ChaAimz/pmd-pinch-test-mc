@@ -13,6 +13,7 @@ from fastapi import FastAPI
 from app import deps
 from app.api import comparisons, config as config_api, hardware as hardware_api, recipes, runs, sessions, ws
 from app.api import settings as settings_api
+from app.api import system as system_api
 from app.config import Settings, load_settings
 from app.db.engine import init_engine
 from app.hardware.manager import HardwareManager
@@ -97,6 +98,7 @@ def build_app(test_mode: bool = False, waveform_dir: Optional[Path] = None) -> F
     app.include_router(hardware_api.router)
     app.include_router(config_api.router)
     app.include_router(settings_api.router)
+    app.include_router(system_api.router)
     app.include_router(ws.router)
 
     from fastapi import APIRouter as _AR
