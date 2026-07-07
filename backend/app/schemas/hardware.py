@@ -19,3 +19,7 @@ class CalibrateRequest(BaseModel):
     raw_at_zero: int
     raw_at_known: int
     known_force_n: float
+
+
+class PlcWordsRequest(BaseModel):
+    words: dict[int, int]  # abstract word addr -> integer value
