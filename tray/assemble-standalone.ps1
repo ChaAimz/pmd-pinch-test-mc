@@ -250,7 +250,7 @@ services:
       - "host.docker.internal:host-gateway"
     restart: always
 "@
-Set-Content -Path "$DEST\docker-compose.yml" -Value $standalonCompose -Encoding UTF8
+[System.IO.File]::WriteAllText("$DEST\docker-compose.yml", $standalonCompose, (New-Object System.Text.UTF8Encoding $false))
 Write-Host "  Written: $DEST\docker-compose.yml"
 
 # ---------------------------------------------------------------------------
@@ -300,7 +300,7 @@ backend_dir  = $DEST_BACKEND
 ; Absolute path to the standalone docker-compose.yml
 compose_file = $DEST\docker-compose.yml
 "@
-Set-Content -Path "$DEST\pinch-tray.ini" -Value $ini -Encoding UTF8
+[System.IO.File]::WriteAllText("$DEST\pinch-tray.ini", $ini, (New-Object System.Text.UTF8Encoding $false))
 Write-Host "  Written: $DEST\pinch-tray.ini"
 
 # Copy tray support scripts

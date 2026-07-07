@@ -74,7 +74,10 @@ _ASSETS = _EXE_DIR / "assets"
 _ini_path = _EXE_DIR / "pinch-tray.ini"
 _ini = configparser.ConfigParser()
 if _ini_path.exists():
-    _ini.read(_ini_path, encoding="utf-8")
+    # utf-8-sig strips a leading BOM if present (e.g. from PowerShell 5.1's
+    # `Set-Content -Encoding UTF8`, which always writes one) -- plain utf-8
+    # leaves it in front of "[pinch]" and configparser rejects the file.
+    _ini.read(_ini_path, encoding="utf-8-sig")
 
 
 def _ini_get(key: str) -> str:
@@ -195,6 +198,20 @@ def _make_tray_icon_fallback(hex_colour: str) -> QIcon:
     f = QFont("Arial", 16, QFont.Bold)
     painter.setFont(f)
     painter.drawText(px.rect(), Qt.AlignCenter, "P")
+    painter.end()
+    return QIcon(px)
+
+
+def _make_dot_icon(hex_colour: str) -> QIcon:
+    """Small filled-circle icon -- QAction has no setStyleSheet, so menu-row
+    status colour is conveyed via icon instead of text colour."""
+    px = QPixmap(12, 12)
+    px.fill(Qt.transparent)
+    painter = QPainter(px)
+    painter.setRenderHint(QPainter.Antialiasing)
+    painter.setBrush(QColor(hex_colour))
+    painter.setPen(Qt.NoPen)
+    painter.drawEllipse(1, 1, 10, 10)
     painter.end()
     return QIcon(px)
 
@@ -609,7 +626,11 @@ class StartupWorker(QThread):
         EDGE_PROFILE.mkdir(parents=True, exist_ok=True)
         cmd = [
             str(EDGE_EXE),
-            f"--kiosk={KIOSK_URL}",
+            # NOTE: must be two separate argv entries -- "--kiosk=<url>" (joined
+            # with '=') is not recognized as the kiosk start URL by Edge; it
+            # silently falls back to opening the InPrivate New Tab Page instead.
+            "--kiosk",
+            KIOSK_URL,
             "--edge-kiosk-type=fullscreen",
             "--disable-pinch",
             "--overscroll-history-navigation=0",
@@ -664,7 +685,18 @@ class HealthWorker(QThread):
                 else:
                     _unhealthy += 1
                     self.stateChanged.emit("unhealthy")
-                    if _unhealthy >= _THRESH and not self._holder.user_stopped:
+                    # Gate on was_running: a backend that hasn't gone healthy yet is
+                    # still starting up (StartupWorker allows up to
+                    # BACKEND_START_TIMEOUT_S and shows its own dialog on failure --
+                    # real hardware connects (PLC bridge, Imada, ESP32) run inside
+                    # that window and can legitimately take longer than this
+                    # threshold). Only alert here for a backend that WAS healthy and
+                    # has since stopped responding.
+                    if (
+                        _unhealthy >= _THRESH
+                        and not self._holder.user_stopped
+                        and self._holder.was_running
+                    ):
                         msg = (
                             "The backend process is running but stopped responding.\n\n"
                             f"URL: {BACKEND_HEALTH_URL}\n"
@@ -840,13 +872,14 @@ class TrayApp(QObject):
 
         # Build tray icon
         self._tray = QSystemTrayIcon(self)
-        self._set_tray_state("starting")
-        self._tray.setToolTip("Pinch Test Machine -- Starting...")
         self._tray.activated.connect(self._on_tray_activated)
 
-        # Build menu
+        # Build menu -- must exist before _set_tray_state(), which drives
+        # _update_menu_state() and reads self._act_start / _act_stop / etc.
         self._menu = self._build_menu()
         self._tray.setContextMenu(self._menu)
+
+        self._set_tray_state("starting")
         self._tray.show()
 
         # Splash
@@ -927,11 +960,10 @@ class TrayApp(QObject):
             "unhealthy": "Unhealthy",
             "error":     "Error",
         }
-        dot = "●"   # filled circle
         self._act_status_detail.setText(
-            f"  {dot} {label_map.get(self._tray_state, self._tray_state)}"
+            f"  {label_map.get(self._tray_state, self._tray_state)}"
         )
-        self._act_status_detail.setStyleSheet(f"color: {dot_colour};")
+        self._act_status_detail.setIcon(_make_dot_icon(dot_colour))
         # Autostart checkbox
         self._act_autostart.setChecked(_autostart_is_enabled())
 
@@ -1101,7 +1133,11 @@ class TrayApp(QObject):
         EDGE_PROFILE.mkdir(parents=True, exist_ok=True)
         cmd = [
             str(EDGE_EXE),
-            f"--kiosk={KIOSK_URL}",
+            # NOTE: must be two separate argv entries -- "--kiosk=<url>" (joined
+            # with '=') is not recognized as the kiosk start URL by Edge; it
+            # silently falls back to opening the InPrivate New Tab Page instead.
+            "--kiosk",
+            KIOSK_URL,
             "--edge-kiosk-type=fullscreen",
             "--disable-pinch",
             "--overscroll-history-navigation=0",
