@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { StateBadge } from '@/components/StateBadge'
@@ -8,6 +9,7 @@ import { useAppStore } from '@/store/app'
 import { useSessionControl } from '@/hooks/useSessionControl'
 import { getWsClient } from '@/lib/ws'
 import { api } from '@/lib/api'
+import type { Recipe } from '@/lib/types'
 
 export default function Run() {
   const [recipeId, setRecipeId] = useState<number | null>(null)
@@ -18,6 +20,16 @@ export default function Run() {
   const currentLoop = useAppStore((s) => s.currentLoop)
 
   const { isRunning, start, stop, isStarting, isStopping } = useSessionControl()
+
+  const writeWordsM = useMutation({
+    mutationFn: (recipe: Recipe) =>
+      api.hardware.setWords({
+        0: recipe.loops,
+        100: Math.round(recipe.actuator_position_mm * 100),
+        102: Math.round(recipe.speed_mm_s * 100),
+      }),
+    onError: (e: Error) => toast.error(`PLC write failed: ${e.message}`),
+  })
 
   useEffect(() => { getWsClient() }, [])
 
@@ -34,7 +46,14 @@ export default function Run() {
         )}
 
         <div className="ml-auto flex items-center gap-3">
-          <Select disabled={isRunning} onValueChange={(v) => setRecipeId(v ? Number(v) : null)}>
+          <Select disabled={isRunning} onValueChange={(v) => {
+            const id = v ? Number(v) : null
+            setRecipeId(id)
+            if (id && !isRunning) {
+              const r = recipes.find(rec => rec.id === id)
+              if (r) writeWordsM.mutate(r)
+            }
+          }}>
             <SelectTrigger className="w-64">
               <SelectValue placeholder="Select recipe…" />
             </SelectTrigger>

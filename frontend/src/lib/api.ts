@@ -57,5 +57,7 @@ export const api = {
       req<{ slope: number; offset: number }>('POST', '/hardware/esp32/calibrate', {
         raw_at_zero, raw_at_known, known_force_n,
       }),
+    setWords: (words: Record<number, number>) =>
+      req<{ ok: boolean }>('POST', '/hardware/plc/words', { words }),
   },
 }

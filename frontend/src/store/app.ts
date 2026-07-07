@@ -10,11 +10,13 @@ interface AppState {
   currentLoop: number | null
   hwStatus: HwStatus
   loopResults: LoopResult[]
+  latestImadaForce: number | null
   setWsConnected: (v: boolean) => void
   handleStateChange: (msg: { type: string; from: string; to: string; run_id?: number; loop?: number }) => void
   setHwStatus: (msg: { type: string; plc: boolean; imada: boolean; esp32: boolean }) => void
   addLoopResult: (msg: { type: string; loop: number; result: 'pass' | 'fail'; peak_n: number; hold_ms: number }) => void
   setRunFinished: (msg: { type: string; run_id: number; passed: number; failed: number }) => void
+  setImadaForce: (force: number) => void
   resetRun: () => void
 }
 
@@ -25,6 +27,7 @@ export const initialAppState = {
   currentLoop: null as number | null,
   hwStatus: { plc: false, imada: false, esp32: false } as HwStatus,
   loopResults: [] as LoopResult[],
+  latestImadaForce: null as number | null,
 }
 
 export type AppStoreType = typeof useAppStore
@@ -42,5 +45,6 @@ export const useAppStore = create<AppState>((set) => ({
   addLoopResult: ({ type: _t, ...r }) =>
     set((s) => ({ loopResults: [...s.loopResults, r] })),
   setRunFinished: (_msg) => set({ machineState: 'IDLE' }),
+  setImadaForce: (force) => set({ latestImadaForce: force }),
   resetRun: () => set({ ...initialAppState }),
 }))
