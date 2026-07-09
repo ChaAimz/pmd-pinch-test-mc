@@ -172,18 +172,18 @@ export function RecipeForm({ recipe: r, cloneFrom, onSaved }: Props) {
         />
       </div>
 
-      {/* Row: Position | Speed */}
+      {/* Row: Pull Distance | Pull Speed */}
       {numField('position_mm', Ruler, `${t('recipes.form.positionMm')}  [0 – 190]`, numRule(0, 190, 0.1), true)}
       {numField('speed_mms', Gauge, `${t('recipes.form.speedMms')}  [0.1 – 100]`, numRule(0.1, 100, 0.1), true)}
 
-      {/* Row: Diameter OD | Clamp Force */}
+      {/* Row: Specimen OD | Clamp Force */}
       {numField('diameter_mm', Circle, `${t('recipes.form.diameterMm')}  [0 – 200]`, numRule(0, 200, 0.01), true)}
       {esp32Unit === 'gf'
         ? numField('clamp_threshold_n', Weight, `${t('recipes.form.clampForceGf')}  [0.1 – 917.7]`, numRule(0.1, 917.7, 0.1), true)
         : numField('clamp_threshold_n', Weight, `${t('recipes.form.clampForceN')}  [0.001 – 9.0]`, numRule(0.001, 9.0, 0.001), true)
       }
 
-      {/* Row: Test Cycles | Prepare Timer */}
+      {/* Row: Test Cycles | Soaking Time */}
       {numField('loop_count', Repeat, `${t('recipes.form.testCycles')}  [1 – 1000]`, numRule(1, 1000, 1), false)}
       {numField('prepare_timer_s', Timer, `${t('recipes.form.prepareTimer')}  [0 – 9999]`, numRule(0, 9999, 1), false)}
 

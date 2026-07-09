@@ -40,6 +40,11 @@ export const DEFAULT_CHART_CONFIG: ChartConfig = {
   showAnnotationLabels: true,
 }
 
+// Internal series name MUST be unique even when two runs share the same
+// display label (e.g. comparing repeats of the same recipe). Legend toggle
+// works by name, so colliding names would hide/show every matching series.
+const seriesName = (s: RunCofSeries) => `run-${s.runId}`
+
 export function CompareCofChart({
   series,
   maxCycles,
@@ -76,11 +81,6 @@ export function CompareCofChart({
     const splitLine = isDark ? 'rgba(148,163,184,0.12)' : 'rgba(148,163,184,0.25)'
 
     const categories = Array.from({ length: maxCycles }, (_, i) => `C${i + 1}`)
-
-    // Internal series name MUST be unique even when two runs share the same
-    // display label (e.g. comparing repeats of the same recipe). Legend toggle
-    // works by name, so colliding names would hide/show every matching series.
-    const seriesName = (s: RunCofSeries) => `run-${s.runId}`
 
     // Build markPoint data for first series if there are annotations
     const markPointData =
@@ -269,13 +269,36 @@ export function CompareCofChart({
     exportRef.current = () => {
       const inst = chartRef.current?.getEchartsInstance()
       if (!inst) return null
-      return inst.getDataURL({
+
+      // The on-screen legend is hidden (series are listed in a sidebar card
+      // instead), but that sidebar isn't part of the canvas. Bake a real
+      // legend into the exported image so series stay identifiable once the
+      // PNG leaves the app, then revert to the normal hidden-legend option.
+      inst.setOption(
+        {
+          grid: { top: 48 },
+          legend: {
+            show: true,
+            top: 6,
+            left: 'center',
+            textStyle: { color: isDark ? '#e2e8f0' : '#0f172a', fontSize: 11 },
+            formatter: (name: string) => series.find((s) => seriesName(s) === name)?.label ?? name,
+          },
+        },
+        false
+      )
+
+      const url = inst.getDataURL({
         type: 'png',
         pixelRatio: 2,
         backgroundColor: isDark ? '#0f172a' : '#ffffff',
       })
+
+      inst.setOption(option, false)
+
+      return url
     }
-  }, [exportRef, isDark])
+  }, [exportRef, isDark, option, series])
 
   return (
     <div

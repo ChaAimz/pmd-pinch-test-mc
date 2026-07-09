@@ -25,7 +25,13 @@ const DATA_KEYS: Array<keyof UiSettings> = [
   'chartShowGrid',
   'chartDecimals',
   'chartShowThresholds',
+  'exportFolderHistory',
 ]
+
+// Most-recent-first, deduped, capped at 5 — shown as quick-select chips in
+// the export dialog's folder field so the operator isn't retyping the same
+// USB drive folder name every export.
+const EXPORT_FOLDER_HISTORY_LIMIT = 5
 
 interface SettingsState extends UiSettings {
   // Async boot action — call once on app mount.
@@ -47,11 +53,19 @@ interface SettingsState extends UiSettings {
   setChartShowGrid: (v: boolean) => void
   setChartDecimals: (v: number) => void
   setChartShowThresholds: (v: boolean) => void
+  addExportFolder: (folder: string) => void
+  clearExportFolderHistory: () => void
 }
 
 // Internal flag: skip write-back while we're applying server data to avoid
-// the hydration immediately echoing back to the server.
-let _hydrating = false
+// the hydration immediately echoing back to the server. Starts true (not false)
+// so any set() that fires between module load and hydrateFromServer() resolving
+// — e.g. zustand persist's own localStorage rehydration, or another component's
+// mount effect touching an unrelated field — can't schedule a write-through with
+// pre-hydration state and clobber real backend data with stale local defaults.
+// Flips to false once the first hydrateFromServer() attempt finishes (its
+// `finally` block), success or not.
+let _hydrating = true
 
 // Debounce handle for write-through.
 let _writeTimer: ReturnType<typeof setTimeout> | null = null
@@ -83,6 +97,7 @@ export const useSettingsStore = create<SettingsState>()(
       chartShowGrid: true,
       chartDecimals: 4,
       chartShowThresholds: true,
+      exportFolderHistory: [] as string[],
 
       // --- async hydration ---
       hydrateFromServer: async () => {
@@ -120,6 +135,13 @@ export const useSettingsStore = create<SettingsState>()(
       setChartShowGrid: (chartShowGrid) => set({ chartShowGrid }),
       setChartDecimals: (chartDecimals) => set({ chartDecimals }),
       setChartShowThresholds: (chartShowThresholds) => set({ chartShowThresholds }),
+      addExportFolder: (folder) => set((state) => ({
+        exportFolderHistory: [
+          folder,
+          ...state.exportFolderHistory.filter((f) => f !== folder),
+        ].slice(0, EXPORT_FOLDER_HISTORY_LIMIT),
+      })),
+      clearExportFolderHistory: () => set({ exportFolderHistory: [] }),
     }),
     { name: 'pmd-settings' }
   )

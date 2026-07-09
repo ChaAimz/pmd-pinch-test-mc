@@ -18,6 +18,7 @@ export interface UiSettings {
   chartShowGrid: boolean
   chartDecimals: number
   chartShowThresholds: boolean
+  exportFolderHistory: string[]
 }
 
 // Field names mirror backend/app/schemas/recipe.py. Do NOT rename without

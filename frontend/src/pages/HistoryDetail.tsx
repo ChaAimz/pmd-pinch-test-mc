@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useQuery, useQueries } from '@tanstack/react-query'
-import { ArrowLeft, Download, FileText, ImageDown, Ruler, Zap, Repeat, Grip, Circle, Timer, Radio } from 'lucide-react'
+import { ArrowLeft, Download, ImageDown, Ruler, Zap, Repeat, Grip, Circle, Timer, Radio } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -245,6 +245,7 @@ export default function HistoryDetail() {
           </Button>
         </Link>
         <h1 className="text-xl font-semibold">Run #{run.id}</h1>
+        {/* Export CSV / Summary buttons hidden — uncomment to restore
         <div className="ml-auto flex items-center gap-2">
           <a href={api.runs.exportCsvUrl(run.id)} download>
             <Button variant="outline" size="sm" className="gap-1" title="Imada waveform across all loops, trimmed to the active tension window (matches chart)">
@@ -257,6 +258,7 @@ export default function HistoryDetail() {
             </Button>
           </a>
         </div>
+        */}
       </div>
 
       {run.loops.length === 0 ? (
@@ -474,13 +476,13 @@ export default function HistoryDetail() {
                     </span>
                     <span className="flex items-center gap-1.5 bg-orange-50 dark:bg-orange-950/30 border border-orange-300/60 dark:border-orange-600/40 rounded-md px-2.5 py-1 shadow-sm">
                       <Circle size={12} className="shrink-0 text-orange-500 dark:text-orange-400" />
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Dia</span>
+                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider">OD</span>
                       <span className="inline-block font-mono font-bold text-orange-700 dark:text-orange-300 text-sm tabular-nums leading-none">{recipe.diameter_mm}</span>
                       <span className="text-xs text-muted-foreground font-medium">mm</span>
                     </span>
                     <span className="flex items-center gap-1.5 bg-sky-50 dark:bg-sky-950/30 border border-sky-300/60 dark:border-sky-600/40 rounded-md px-2.5 py-1 shadow-sm">
                       <Timer size={12} className="shrink-0 text-sky-500 dark:text-sky-400" />
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Prep</span>
+                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Soak</span>
                       <span className="inline-block font-mono font-bold text-sky-700 dark:text-sky-300 text-sm tabular-nums leading-none">{recipe.prepare_timer_s}</span>
                       <span className="text-xs text-muted-foreground font-medium">s</span>
                     </span>
