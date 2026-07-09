@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { KeyboardInput } from '@/components/ui/keyboard-input'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { toast } from 'sonner'
 import { api } from '@/lib/api'
@@ -185,7 +184,6 @@ function SavedComparisonsTab() {
 export default function History() {
   const { t } = useTranslation()
   const [tab, setTab] = useState<'runs' | 'comparisons'>('runs')
-  const [statusFilter, setStatusFilter] = useState<string>('all')
   const [search, setSearch] = useState('')
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null)
@@ -194,8 +192,8 @@ export default function History() {
   const parentRef = useRef<HTMLDivElement>(null)
 
   const { data: runs = [], isLoading } = useQuery({
-    queryKey: ['runs', statusFilter],
-    queryFn: () => api.runs.list(statusFilter !== 'all' ? { status: statusFilter } : undefined),
+    queryKey: ['runs'],
+    queryFn: () => api.runs.list(),
     refetchInterval: 5000,
   })
 
@@ -422,19 +420,6 @@ export default function History() {
                 </Button>
               </>
             )}
-
-            <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v ?? 'all')}>
-              <SelectTrigger className="w-36 shrink-0">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('common.all')}</SelectItem>
-                <SelectItem value="pass">{t('common.pass')}</SelectItem>
-                <SelectItem value="fail">{t('common.fail')}</SelectItem>
-                <SelectItem value="aborted">{t('common.aborted')}</SelectItem>
-                <SelectItem value="error">{t('common.error')}</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
 
           {isLoading ? (
