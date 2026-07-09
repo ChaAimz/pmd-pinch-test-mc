@@ -8,6 +8,8 @@ const th = {
     brand: 'พินช์ เทสต์',
     expand: 'ขยายแถบ',
     collapse: 'ย่อแถบ',
+    aboutDeveloper: 'ผู้พัฒนา',
+    aboutCopyright: '© 2026 PMD, AIT Thailand. All rights reserved.',
   },
   common: {
     cancel: 'ยกเลิก',

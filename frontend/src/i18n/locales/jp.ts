@@ -8,6 +8,8 @@ const jp = {
     brand: 'ピンチテスト',
     expand: 'サイドバーを展開',
     collapse: 'サイドバーを折りたたむ',
+    aboutDeveloper: '開発者',
+    aboutCopyright: '© 2026 PMD, AIT Thailand. All rights reserved.',
   },
   common: {
     cancel: 'キャンセル',

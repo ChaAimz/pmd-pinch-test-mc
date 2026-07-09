@@ -8,6 +8,8 @@ const en = {
     brand: 'Pinch Test',
     expand: 'Expand sidebar',
     collapse: 'Collapse sidebar',
+    aboutDeveloper: 'Developer',
+    aboutCopyright: '© 2026 PMD, AIT Thailand. All rights reserved.',
   },
   common: {
     cancel: 'Cancel',

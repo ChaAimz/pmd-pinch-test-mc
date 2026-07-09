@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { useSettingsStore } from '@/store/settings'
 import { TopBar } from '@/components/TopBar'
+import pmdLogoLight from '@/assets/pmd-logo-light.png'
+import pmdLogoDark from '@/assets/pmd-logo-dark.png'
 
 export default function Layout() {
   const { t } = useTranslation()
@@ -84,14 +86,27 @@ export default function Layout() {
           ))}
         </nav>
 
-        {/* Footer signature — subtle "version" or status hint */}
-        {!sidebarCollapsed && (
-          <div className="px-4 py-3 border-t border-zinc-300 dark:border-zinc-700">
-            <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500 font-semibold">
-              v0.1 · pmd
+        {/* About footer — logo + developer credit */}
+        <div className="px-4 py-3 border-t border-zinc-300 dark:border-zinc-700">
+          <img
+            src={pmdLogoLight}
+            alt="PMD"
+            title={sidebarCollapsed ? t('nav.aboutCopyright') : undefined}
+            className={cn('dark:hidden', sidebarCollapsed ? 'w-7 h-auto mx-auto' : 'h-6 w-auto mb-2')}
+          />
+          <img
+            src={pmdLogoDark}
+            alt="PMD"
+            title={sidebarCollapsed ? t('nav.aboutCopyright') : undefined}
+            className={cn('hidden dark:block', sidebarCollapsed ? 'w-7 h-auto mx-auto' : 'h-6 w-auto mb-2')}
+          />
+          {!sidebarCollapsed && (
+            <div className="text-[10px] leading-relaxed text-zinc-500 dark:text-zinc-400 space-y-0.5">
+              <div>{t('nav.aboutDeveloper')}: Veeraphat Philaskhanapong</div>
+              <div>{t('nav.aboutCopyright')}</div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </aside>
 
       <main className="flex-1 flex flex-col overflow-hidden">
