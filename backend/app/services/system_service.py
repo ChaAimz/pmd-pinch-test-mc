@@ -129,7 +129,14 @@ def reveal_in_explorer(path: Path) -> None:
     session, headless service account, etc.) must not fail the export itself.
     """
     try:
-        subprocess.Popen(["explorer", f"/select,{path}"])
+        # Must be a single pre-quoted command string, not an args list. Explorer's
+        # /select switch has non-standard parsing: it needs the quotes to wrap only
+        # the path, e.g. `/select,"C:\a b\f.csv"`. If args is a list, Python's
+        # list2cmdline quotes the WHOLE "/select,<path>" token together whenever the
+        # path contains a space (folder/filename sanitization allows spaces), giving
+        # `"/select,C:\a b\f.csv"` — Explorer can't parse that and silently opens a
+        # default location instead of the export folder.
+        subprocess.Popen(f'explorer /select,"{path}"')
     except OSError as exc:
         logger.warning("reveal_in_explorer({}) failed: {}", path, exc)
 

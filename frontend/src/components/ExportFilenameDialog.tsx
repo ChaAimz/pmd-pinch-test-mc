@@ -55,8 +55,12 @@ export function ExportFilenameDialog({
   useEffect(() => {
     if (pending) {
       setBaseName(stripExt(pending.suggested, pending.ext))
-      setFolderName(todayFolder())
+      // Default to the most-recently-used folder (history is most-recent-first)
+      // so the operator doesn't retype the same folder name every export; only
+      // fall back to today's date when there's no history yet.
+      setFolderName(folderHistory[0] ?? todayFolder())
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pending])
 
   // Informational status line only — never a destination picker. The backend

@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Input } from '@/components/ui/input'
+import { KeyboardInput } from '@/components/ui/keyboard-input'
+import { NumpadInput } from '@/components/ui/numpad-input'
 import { Switch } from '@/components/ui/switch'
 import {
   Popover,
@@ -86,7 +87,10 @@ function RenameDialog({ open, onOpenChange, runId, recipeName, currentLabel, onS
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton>
+      {/* Anchored near the top — the Custom field's on-screen keyboard is a fixed
+          bottom sheet covering roughly half the viewport, which would hide this
+          dialog's footer (Cancel/Save) once it opens under a centered dialog. */}
+      <DialogContent showCloseButton className="top-6 -translate-y-0 sm:top-10">
         <DialogHeader>
           <DialogTitle>Rename series</DialogTitle>
         </DialogHeader>
@@ -130,14 +134,13 @@ function RenameDialog({ open, onOpenChange, runId, recipeName, currentLabel, onS
               onChange={() => setMode('custom')}
             />
             <span className="text-sm shrink-0">Custom</span>
-            <Input
+            <KeyboardInput
               className="h-7 text-sm"
               placeholder="Enter label…"
+              title="Custom label"
               value={customText}
               disabled={mode !== 'custom'}
-              onChange={(e) => setCustomText(e.target.value)}
-              onFocus={() => setMode('custom')}
-              onKeyDown={(e) => { if (e.key === 'Enter') handleSave() }}
+              onChange={setCustomText}
             />
           </label>
         </div>
@@ -187,28 +190,30 @@ function SaveDialog({ open, onOpenChange, initialName, initialDescription, onSav
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton>
+      {/* Anchored near the top — KeyboardInput's on-screen keyboard is a fixed
+          bottom sheet covering roughly half the viewport, which would hide a
+          centered dialog's footer (Cancel/Save) once it opens. */}
+      <DialogContent showCloseButton className="top-6 -translate-y-0 sm:top-10">
         <DialogHeader>
           <DialogTitle>Save Comparison</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-3 py-1">
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium">Name <span className="text-destructive">*</span></label>
-            <Input
+            <KeyboardInput
               placeholder="e.g. Batch A vs B"
+              title="Name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') handleSave() }}
-              autoFocus
+              onChange={setName}
             />
           </div>
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-muted-foreground">Description <span className="text-xs font-normal">(optional)</span></label>
-            <Input
+            <KeyboardInput
               placeholder="Optional notes…"
+              title="Description"
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') handleSave() }}
+              onChange={setDescription}
             />
           </div>
         </div>
@@ -241,13 +246,17 @@ function ChartSettingsPanel({ config: cfg, onChange, t }: ChartSettingsPanelProp
   }
 
   function parseNullableNumber(raw: string): number | null {
-    return raw === '' ? null : Number(raw)
+    return raw.trim() === '' ? null : Number(raw)
   }
 
   const inputCls = 'h-7 w-20 text-sm'
 
   return (
-    <div className="flex flex-col gap-3 max-h-[70vh] overflow-y-auto px-0.5">
+    // overflow-x-hidden is load-bearing alongside overflow-y-auto: per the CSS overflow
+    // spec, giving one axis a non-visible value forces the other axis's used value to
+    // auto too, so without this a translation string a few px wider than the box (e.g.
+    // Thai "เชื่อมช่องว่าง") pops a horizontal scrollbar even though nothing needs it.
+    <div className="flex flex-col gap-3 max-h-[70vh] overflow-y-auto overflow-x-hidden px-0.5">
       {/* Y-Axis */}
       <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
         {t('compare.chart.yAxis')}
@@ -255,22 +264,24 @@ function ChartSettingsPanel({ config: cfg, onChange, t }: ChartSettingsPanelProp
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
           <span className="text-sm">{t('compare.chart.yMin')}</span>
-          <Input
-            type="number"
+          <NumpadInput
             className={inputCls}
             placeholder="auto"
-            value={cfg.yMin ?? ''}
-            onChange={(e) => set('yMin', parseNullableNumber(e.target.value))}
+            decimal
+            negative
+            value={cfg.yMin != null ? String(cfg.yMin) : ''}
+            onChange={(v) => set('yMin', parseNullableNumber(v))}
           />
         </div>
         <div className="flex items-center justify-between gap-2">
           <span className="text-sm">{t('compare.chart.yMax')}</span>
-          <Input
-            type="number"
+          <NumpadInput
             className={inputCls}
             placeholder="auto"
-            value={cfg.yMax ?? ''}
-            onChange={(e) => set('yMax', parseNullableNumber(e.target.value))}
+            decimal
+            negative
+            value={cfg.yMax != null ? String(cfg.yMax) : ''}
+            onChange={(v) => set('yMax', parseNullableNumber(v))}
           />
         </div>
         <div className="flex items-center justify-between gap-2">
@@ -283,11 +294,11 @@ function ChartSettingsPanel({ config: cfg, onChange, t }: ChartSettingsPanelProp
         </div>
         <div className="flex items-center justify-between gap-2">
           <span className="text-sm">{t('compare.chart.yLabelGap')}</span>
-          <Input
-            type="number"
+          <NumpadInput
             className={inputCls}
-            value={cfg.yNameGap}
-            onChange={(e) => set('yNameGap', Number(e.target.value))}
+            decimal={false}
+            value={String(cfg.yNameGap)}
+            onChange={(v) => set('yNameGap', Number(v))}
           />
         </div>
       </div>
@@ -301,12 +312,12 @@ function ChartSettingsPanel({ config: cfg, onChange, t }: ChartSettingsPanelProp
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
           <span className="text-sm">{t('compare.chart.xLabelInterval')}</span>
-          <Input
-            type="number"
+          <NumpadInput
             className={inputCls}
             placeholder="auto"
-            value={cfg.xLabelInterval ?? ''}
-            onChange={(e) => set('xLabelInterval', parseNullableNumber(e.target.value))}
+            decimal={false}
+            value={cfg.xLabelInterval != null ? String(cfg.xLabelInterval) : ''}
+            onChange={(v) => set('xLabelInterval', parseNullableNumber(v))}
           />
         </div>
       </div>
@@ -320,23 +331,20 @@ function ChartSettingsPanel({ config: cfg, onChange, t }: ChartSettingsPanelProp
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
           <span className="text-sm">{t('compare.chart.lineWidth')}</span>
-          <Input
-            type="number"
+          <NumpadInput
             className={inputCls}
-            min={0.5}
-            step={0.5}
-            value={cfg.lineWidth}
-            onChange={(e) => set('lineWidth', Number(e.target.value))}
+            decimal
+            value={String(cfg.lineWidth)}
+            onChange={(v) => set('lineWidth', Math.max(0.5, Number(v)))}
           />
         </div>
         <div className="flex items-center justify-between gap-2">
           <span className="text-sm">{t('compare.chart.symbolSize')}</span>
-          <Input
-            type="number"
+          <NumpadInput
             className={inputCls}
-            min={0}
-            value={cfg.symbolSize}
-            onChange={(e) => set('symbolSize', Number(e.target.value))}
+            decimal={false}
+            value={String(cfg.symbolSize)}
+            onChange={(v) => set('symbolSize', Math.max(0, Number(v)))}
           />
         </div>
         <div className="flex items-center justify-between gap-2">
@@ -373,13 +381,11 @@ function ChartSettingsPanel({ config: cfg, onChange, t }: ChartSettingsPanelProp
         </div>
         <div className="flex items-center justify-between gap-2">
           <span className="text-sm">{t('compare.chart.decimals')}</span>
-          <Input
-            type="number"
+          <NumpadInput
             className={inputCls}
-            min={0}
-            max={8}
-            value={cfg.decimals}
-            onChange={(e) => set('decimals', Number(e.target.value))}
+            decimal={false}
+            value={String(cfg.decimals)}
+            onChange={(v) => set('decimals', Math.max(0, Math.min(8, Number(v))))}
           />
         </div>
       </div>
@@ -393,22 +399,20 @@ function ChartSettingsPanel({ config: cfg, onChange, t }: ChartSettingsPanelProp
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
           <span className="text-sm">{t('compare.chart.markerSize')}</span>
-          <Input
-            type="number"
+          <NumpadInput
             className={inputCls}
-            min={4}
-            value={cfg.annotationSymbolSize}
-            onChange={(e) => set('annotationSymbolSize', Number(e.target.value))}
+            decimal={false}
+            value={String(cfg.annotationSymbolSize)}
+            onChange={(v) => set('annotationSymbolSize', Math.max(4, Number(v)))}
           />
         </div>
         <div className="flex items-center justify-between gap-2">
           <span className="text-sm">{t('compare.chart.labelSize')}</span>
-          <Input
-            type="number"
+          <NumpadInput
             className={inputCls}
-            min={6}
-            value={cfg.annotationFontSize}
-            onChange={(e) => set('annotationFontSize', Number(e.target.value))}
+            decimal={false}
+            value={String(cfg.annotationFontSize)}
+            onChange={(v) => set('annotationFontSize', Math.max(6, Number(v)))}
           />
         </div>
         <div className="flex items-center justify-between gap-2">
@@ -731,7 +735,7 @@ export default function CompareCoF() {
                 </Button>
               }
             />
-            <PopoverContent side="bottom" align="end" className="w-72 p-3">
+            <PopoverContent side="bottom" align="end" className="w-80 p-3">
               <p className="text-sm font-semibold mb-3">{t('compare.chartSettings')}</p>
               <ChartSettingsPanel
                 config={chartConfig}
@@ -885,16 +889,12 @@ export default function CompareCoF() {
                   <p className="text-xs text-muted-foreground">
                     C{pendingAnnotation.cycleIndex + 1} · {pendingAnnotation.yValue.toFixed(3)}
                   </p>
-                  <Input
+                  <KeyboardInput
                     className="h-7 text-xs"
                     placeholder="Note text…"
+                    title="Note text"
                     value={pendingText}
-                    onChange={(e) => setPendingText(e.target.value)}
-                    autoFocus
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleSavePendingAnnotation()
-                      if (e.key === 'Escape') setPendingAnnotation(null)
-                    }}
+                    onChange={setPendingText}
                   />
                   <div className="flex items-center gap-1.5">
                     {ANNOTATION_COLORS.map((c) => (

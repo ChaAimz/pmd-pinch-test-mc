@@ -6,7 +6,7 @@ import type { Language } from '@/store/settings'
 import { useChartStore } from '@/store/chart'
 import { useAppStore } from '@/store/app'
 import { Switch } from '@/components/ui/switch'
-import { Input } from '@/components/ui/input'
+import { NumpadInput } from '@/components/ui/numpad-input'
 
 // Mirror useSessionControl's isRunning — the live buffer is only (re)sized at run
 // start, so the chart-mode toggle must be locked mid-run to avoid a mis-sized ring.
@@ -254,12 +254,10 @@ export default function Settings() {
         <div className="space-y-1 divide-y divide-border/50">
 
           <SettingsRow label={t('settings.chartLineWidth')}>
-            <Input
-              type="number"
-              min={1}
-              max={6}
-              value={chartLineWidth}
-              onChange={(e) => setChartLineWidth(Math.max(1, Math.min(6, Number(e.target.value))))}
+            <NumpadInput
+              value={String(chartLineWidth)}
+              onChange={(v) => setChartLineWidth(Math.max(1, Math.min(6, Number(v))))}
+              decimal={false}
               className="h-8 w-20 text-sm"
             />
           </SettingsRow>
@@ -272,13 +270,11 @@ export default function Settings() {
 
           <div className="pt-4">
             <SettingsRow label={t('settings.chartSymbolSize')}>
-              <Input
-                type="number"
-                min={2}
-                max={16}
-                value={chartSymbolSize}
+              <NumpadInput
+                value={String(chartSymbolSize)}
                 disabled={!chartShowSymbol}
-                onChange={(e) => setChartSymbolSize(Math.max(2, Math.min(16, Number(e.target.value))))}
+                onChange={(v) => setChartSymbolSize(Math.max(2, Math.min(16, Number(v))))}
+                decimal={false}
                 className="h-8 w-20 text-sm disabled:opacity-40"
               />
             </SettingsRow>
@@ -298,12 +294,10 @@ export default function Settings() {
 
           <div className="pt-4">
             <SettingsRow label={t('settings.chartDecimals')}>
-              <Input
-                type="number"
-                min={0}
-                max={6}
-                value={chartDecimals}
-                onChange={(e) => setChartDecimals(Math.max(0, Math.min(6, Number(e.target.value))))}
+              <NumpadInput
+                value={String(chartDecimals)}
+                onChange={(v) => setChartDecimals(Math.max(0, Math.min(6, Number(v))))}
+                decimal={false}
                 className="h-8 w-20 text-sm"
               />
             </SettingsRow>

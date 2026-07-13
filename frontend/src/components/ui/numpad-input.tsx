@@ -74,21 +74,46 @@ export function NumpadInput({
     })
   }
 
-  function commit() {
+  // Defensive guard against Input's onFocus (below) re-opening the popover right
+  // after we've just closed it (Popover.Trigger returns focus to itself on close).
+  function suppressReopenBriefly() {
     suppressOpenRef.current = true
-    onChange(draft)
-    setOpen(false)
-    onBlur?.()
     // Clear flag after focus restoration has settled
     setTimeout(() => { suppressOpenRef.current = false }, 300)
   }
 
-  function handleOpenChange(next: boolean) {
+  function commit() {
+    suppressReopenBriefly()
+    onChange(draft)
+    setOpen(false)
+    onBlur?.()
+  }
+
+  function handleOpenChange(next: boolean, eventDetails: { reason?: string; cancel?: () => void }) {
+    // Root cause of the "popover won't stay open/closed reliably" bug: Popover.Trigger's
+    // click handling special-cases "typeable" reference elements (inputs) — mousedown
+    // opens the popover, then the click that follows (same physical tap, no actual
+    // second press) is evaluated against the now-already-open state and, because a
+    // repeat press on an open trigger normally means "toggle it closed", base-ui closes
+    // it right back a few ms after it opened. Confirmed via stack trace: the close comes
+    // through with reason 'trigger-press', not 'outside-press'. A tap on this field
+    // should always open and STAY open — only an outside tap, Esc, or OK should close it
+    // — so veto this specific self-inflicted close via Base UI's cancel() hook rather
+    // than fighting it with more state (that's what let the original bug "sometimes"
+    // reproduce: two different bugs — this one, and the focus-restore reopen handled by
+    // suppressReopenBriefly below — happened to mask each other on plenty of taps).
+    if (!next && eventDetails.reason === 'trigger-press') {
+      eventDetails.cancel?.()
+      return
+    }
     if (next) {
       // Initialise draft from the current external value on open
       setDraft(value ?? '')
     } else {
-      // Commit on dismiss (click-outside / Esc)
+      // Commit on dismiss (click-outside / Esc). Arm the reopen guard — Popover.Trigger
+      // returns focus to the Input when it closes, which re-fires onFocus below and
+      // would otherwise reopen the popover right back up after every legitimate close.
+      suppressReopenBriefly()
       onChange(draft)
       onBlur?.()
     }
@@ -97,27 +122,40 @@ export function NumpadInput({
 
   return (
     <Popover open={open && !disabled} onOpenChange={handleOpenChange}>
-      {/* Base UI Popover doesn't support asChild — render trigger as invisible block,
-          Input is the actual visible element. Both anchor the popover to the same spot. */}
+      {/* render={<Input .../>} merges Popover.Trigger's props directly onto the Input —
+          a single DOM node, not Input nested inside a separate wrapper <button> (avoids
+          an invalid <button><input></button> DOM tree and its own hydration warnings).
+          The real fix for the self-close bug lives in handleOpenChange above (vetoing
+          'trigger-press' closes) — this element still needs to BE the registered
+          Popover.Trigger reference (not just visually anchored) so base-ui's own
+          outside-press dismiss logic correctly recognises taps on this Input as "on the
+          trigger", not "outside". No onClick of our own here — Trigger's built-in click
+          handling opens it; onFocus below covers tab-navigation accessibility, which is
+          why the reopen-suppression guard above still matters (Trigger returns focus to
+          itself whenever the popover closes, re-firing onFocus). */}
       <PopoverTrigger
-        className="block w-full p-0 m-0 border-0 bg-transparent cursor-default focus:outline-none"
-        tabIndex={-1}
-        aria-hidden
-      >
-        <Input
-          ref={inputRef}
-          id={id}
-          value={open ? draft : (value ?? '')}
-          placeholder={placeholder}
-          className={className}
-          disabled={disabled}
-          readOnly
-          onClick={() => { if (!disabled && !suppressOpenRef.current) setOpen(true) }}
-          onFocus={() => { if (!disabled && !suppressOpenRef.current) setOpen(true) }}
-          onKeyDown={(e) => e.preventDefault()}
-          tabIndex={disabled ? -1 : 0}
-        />
-      </PopoverTrigger>
+        disabled={disabled}
+        nativeButton={false}
+        render={
+          <Input
+            ref={inputRef}
+            id={id}
+            value={open ? draft : (value ?? '')}
+            placeholder={placeholder}
+            className={className}
+            // Base UI's useButton only sets aria-disabled for non-native-button
+            // triggers (nativeButton={false}, required since we're rendering an
+            // <input>) — the actual HTML `disabled` attribute must still be set here
+            // directly, or the Tailwind `disabled:*` styling on callers (e.g. Settings'
+            // symbol-size field, disabled:opacity-40) silently stops applying.
+            disabled={disabled}
+            readOnly
+            onFocus={() => { if (!disabled && !suppressOpenRef.current) setOpen(true) }}
+            onKeyDown={(e) => e.preventDefault()}
+            tabIndex={disabled ? -1 : 0}
+          />
+        }
+      />
 
       <PopoverContent
         className="w-52 p-3 select-none"
